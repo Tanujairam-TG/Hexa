@@ -10,8 +10,6 @@ logger = logging.getLogger(__name__)
 cache_time = CACHE_TIME
 
 async def inline_users(query: InlineQuery):
-    if query.from_user and query.from_user.id in temp.BANNED_USERS:
-        return False
     return True
 
 @Client.on_inline_query()
@@ -85,4 +83,10 @@ async def answer(bot, query):
                            is_personal=True,
                            cache_time=cache_time,
                            switch_pm_text=switch_pm_text,
-                           switch_pm
+                           switch_pm_parameter="okay")
+
+
+def get_reply_markup(query):
+    buttons = [
+        [
+            InlineKeyboardButton('Search
