@@ -17,7 +17,8 @@ async def inline_users(query: InlineQuery):
             return True
     if query.from_user and query.from_user.id not in temp.BANNED_USERS:
         return True
-    return False
+    else:
+        return False
 
 @Client.on_inline_query()
 async def answer(bot, query):
