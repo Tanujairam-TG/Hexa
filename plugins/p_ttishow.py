@@ -6,6 +6,7 @@ from database.users_chats_db import db
 from database.ia_filterdb import Media
 from utils import get_size, temp, get_settings
 from Script import script
+import datetime
 from pyrogram.errors import ChatAdminRequired
 
 """-----------------------------------------https://t.me/CinemaVenoOfficial --------------------------------------"""
@@ -46,14 +47,40 @@ async def save_group(bot, message):
             reply_markup=reply_markup)
     else:
         settings = await get_settings(message.chat.id)
-        if settings["welcome"]:
-            for u in message.new_chat_members:
-                if (temp.MELCOW).get('welcome') is not None:
-                    try:
-                        await (temp.MELCOW['welcome']).delete()
-                    except:
-                        pass
-                temp.MELCOW['welcome'] = await message.reply(f"<b>Hey , {u.mention}, Welcome to {message.chat.title}</b>")
+if settings["welcome"]:
+    chat_title = message.chat.title
+    total_subscribes = len(await message.chat.get_members(filter="subscribers"))
+    roles = {
+        "wizard": {"role": "Wizard", "level": 3},
+        "baby": {"role": "Baby", "level": 1},
+        "citizen": {"role": "Citizen", "level": 2},
+        "Captain": {"role": "Captain", "level": 4}
+    }
+    current_date = datetime.date.today().strftime("%Y-%m-%d")  # Get the current date in the format YYYY-MM-DD
+    for u in message.new_chat_members:
+        last_subscribe_count = 0  # Default value if no previous count is stored
+        if (temp.MELCOW).get('welcome') is not None:
+            last_subscribe_count = temp.MELCOW['welcome'].get(u.id, 0)
+            try:
+                await temp.MELCOW['welcome'].delete()
+            except:
+                pass
+        user_role = roles.get(u.username, roles["more"])  # Assign role and level based on username, default to "More" role
+        role = user_role["role"]
+        level = user_role["level"]
+        welcome_message = f"""┌─❖
+│「 𝗛𝗶 」
+└┬❖ 「  {u.mention}  」
+ │✑  𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼 :- {chat_title}
+ │✑  Total subscribes: {total_subscribes}
+ │✑  Role: {role}
+ │✑  Level: {level}
+ │✑  𝗠𝗲𝗺𝗯𝗲𝗿 :- {last_subscribe_count}
+ │✑  Date: {current_date}
+└───────────────┈ ⳹"""
+        temp.MELCOW['welcome'] = {u.id: total_subscribes}  # Update the last subscribe count for the member
+        temp.MELCOW['welcome'] = await message.reply(welcome_message)
+
 
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
