@@ -57,12 +57,12 @@ async def save_group(bot, message):
                 temp.MELCOW['welcome'] = await message.reply(f"""┌─❖
 │「 𝗛𝗶 」
 └┬❖ 「  {u.mention}  」
- │✑  𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼 :- {chat_title}
- │✑  Total subscribes: {total_subscribes}
- │✑  Role: {role}
- │✑  Level: {level}
- │✑  𝗠𝗲𝗺𝗯𝗲𝗿 :- {last_subscribe_count}
- │✑  𝗝𝗼𝗶𝗻𝗲𝗱 : -
+ │✑  𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼 :- {message.chat.title}
+ │✑  Total subscribes: coming soon 
+ │✑  Role: working on it 
+ │✑  Level: wait for it
+ │✑  𝗠𝗲𝗺𝗯𝗲𝗿 :- he is dead 
+ │✑  𝗝𝗼𝗶𝗻𝗲𝗱 : - what who?
  │✑  Date: {current_date}
 └───────────────┈ ⳹""")
 
