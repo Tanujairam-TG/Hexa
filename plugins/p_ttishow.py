@@ -6,7 +6,6 @@ from database.users_chats_db import db
 from database.ia_filterdb import Media
 from utils import get_size, temp, get_settings
 from Script import script
-import datetime
 from pyrogram.errors import ChatAdminRequired
 
 """-----------------------------------------https://t.me/CinemaVenoOfficial --------------------------------------"""
@@ -54,17 +53,7 @@ async def save_group(bot, message):
                         await (temp.MELCOW['welcome']).delete()
                     except:
                         pass
-                temp.MELCOW['welcome'] = await message.reply(f"""┌─❖
-│「 𝗛𝗶 」
-└┬❖ 「  {u.mention}  」
- │✑  𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼 :- {message.chat.title}
- │✑  Total subscribes: coming soon 
- │✑  Role: working on it 
- │✑  Level: wait for it
- │✑  𝗠𝗲𝗺𝗯𝗲𝗿 :- he is dead 
- │✑  𝗝𝗼𝗶𝗻𝗲𝗱 : - what who?
- │✑  Date: {current_date}
-└───────────────┈ ⳹""")
+                temp.MELCOW['welcome'] = await message.reply(f"<b>Hey , {u.mention}, Welcome to {message.chat.title}</b>")
 
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
