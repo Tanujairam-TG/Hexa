@@ -69,7 +69,7 @@ if settings["welcome"]:
         role = user_role["role"]
         level = user_role["level"]
         welcome_message = f"""┌─❖
-│「 𝗛𝗶 」
+│「 𝗛𝗶  」
 └┬❖ 「  {u.mention}  」
  │✑  𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼 :- {chat_title}
  │✑  Total subscribes: {total_subscribes}
