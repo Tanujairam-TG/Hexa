@@ -46,30 +46,15 @@ async def save_group(bot, message):
             text=f"<b>Thankyou For Adding Me In {message.chat.title} ❣️\n\nIf you have any questions & doubts about using me contact support.</b>",
             reply_markup=reply_markup)
     else:
-        async def handle_new_chat_members(message):
-    settings = await get_settings(message.chat.id)
-    if settings["welcome"]:
-        chat_title = message.chat.title
-        total_subscribes = len(await message.chat.get_members(filter="subscribers"))
-        roles = {
-            "wizard": {"role": "Wizard", "level": 3},
-            "baby": {"role": "Baby", "level": 1},
-            "citizen": {"role": "Citizen", "level": 2},
-            "more": {"role": "More", "level": 0}
-        }
-        current_date = datetime.date.today().strftime("%Y-%m-%d")  # Get the current date in the format YYYY-MM-DD
-        for u in message.new_chat_members:
-            last_subscribe_count = 0  # Default value if no previous count is stored
-            if (temp.MELCOW).get('welcome') is not None:
-                last_subscribe_count = temp.MELCOW['welcome'].get(u.id, 0)
-                try:
-                    await temp.MELCOW['welcome'].delete()
-                except:
-                    pass
-            user_role = roles.get(u.username, roles["more"])  # Assign role and level based on username, default to "More" role
-            role = user_role["role"]
-            level = user_role["level"]
-            welcome_message = f"""┌─❖
+        settings = await get_settings(message.chat.id)
+        if settings["welcome"]:
+            for u in message.new_chat_members:
+                if (temp.MELCOW).get('welcome') is not None:
+                    try:
+                        await (temp.MELCOW['welcome']).delete()
+                    except:
+                        pass
+                temp.MELCOW['welcome'] = await message.reply(f"""┌─❖
 │「 𝗛𝗶 」
 └┬❖ 「  {u.mention}  」
  │✑  𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼 :- {chat_title}
@@ -79,14 +64,7 @@ async def save_group(bot, message):
  │✑  𝗠𝗲𝗺𝗯𝗲𝗿 :- {last_subscribe_count}
  │✑  𝗝𝗼𝗶𝗻𝗲𝗱 : -
  │✑  Date: {current_date}
-└───────────────┈ ⳹"""
-            temp.MELCOW['welcome'] = {u.id: total_subscribes}  # Update the last subscribe count for the member
-            temp.MELCOW['welcome'] = await message.reply(welcome_message)
-
-# Place the rest of your code here, including the event handler registration and starting the application
-
-
-
+└───────────────┈ ⳹""")
 
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
