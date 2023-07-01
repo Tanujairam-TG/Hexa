@@ -29,13 +29,13 @@ async def check_alive(_, message):
     await message.reply_photo(
         photo="https://i.imgur.com/DLVUuPk.jpeg",
         caption=f"┌─❖\n"
-                f"│「 𝗛𝗶 👋 」\n"
+                f"│「 𝗛𝗶  」\n"
                 "└┬❖\n"
-                 f"   │✑ 𝙃𝙚𝙡𝙡𝙤, 🈂️{message.from_user.mention}\n"
-                 f"   │✑ 𝙈𝙮𝙨𝙚𝙡𝙛 📍 <a href=https://t.me/Hexa_md_BOT>Ｈｅｘａ</a>\n"
-                 f"   │✑ A bot developed by <a href=https://t.me/CinemaVenoOfficial>ᶜᵛᵒ</a>\n"
-                 f"   │✑ 𝙑𝙚𝙧𝙨𝙞𝙤𝙣: ♻️{get_bot_version()}\n"
-                 f"   │✑ 𝘽𝙤𝙩 𝙍𝙪𝙣𝙩𝙞𝙢𝙚: 🛰️{elapsed_time_formatted}\n"
+                 f"   │✑ 𝙃𝙚𝙡𝙡𝙤, {message.from_user.first_name}\n"
+                 f"   │✑ 𝙈𝙮𝙨𝙚𝙡𝙛:- 📍 <a href=https://t.me/Hexa_md_BOT>Ｈｅｘａ</a>\n"
+                 f"   │✑ 𝙑𝙚𝙧𝙨𝙞𝙤𝙣:- ♻️{get_bot_version()}\n"
+                 f"   │✑ 𝘼 𝙗𝙤𝙩 𝙙𝙚𝙫𝙚𝙡𝙤𝙥𝙚𝙙 𝙗𝙮:- <a href=https://t.me/CinemaVenoOfficial>ᶜᵛᵒ</a>\n"
+                 f"   │✑ 𝘽𝙤𝙩 𝙍𝙪𝙣𝙩𝙞𝙢𝙚:- 🛰️{elapsed_time_formatted}\n"
                  "   └───────────────┈ ⳹",
         reply_markup=keyboard
     )
@@ -84,4 +84,3 @@ async def ping(_, message):
     time_taken_s = (end_t - start_t) * 1000
     await rm.edit(f"Pɪɴɢ\n{time_taken_s:.3f} ms")
     return time_taken_s
-
