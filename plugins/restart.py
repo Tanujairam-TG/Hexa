@@ -10,8 +10,8 @@ restart_time_seconds = random.randint(0, 59)
 restart_time = datetime.timedelta(minutes=restart_time_minutes, seconds=restart_time_seconds)
 
 # Telegram bot setup
-bot_token = os.environ.get("TOKEN")
-support_group_id = os.environ.get("GROUP_ID")
+bot_token = os.environ.get("BOT_TOKEN")
+support_group_id = os.environ.get("LOG_CHANNEL")
 
 # Restart flag
 is_restarted = True
