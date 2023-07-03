@@ -77,8 +77,6 @@ async def save_group(bot, message):
                                                              f"│✑ Enjoy your stay!\n"
                                                              f"│\n"
                                                              f"{custom_wish_string}"
-                                                             f"└┬❖ {temp.MELCOW['info']}\n"
-                                                             f"│\n"
                                                              f"├❖ Contact for any queries!\n"
                                                              f"│❖ Type !help for commands\n"
                                                              f"│❖ Type !support for help\n"
@@ -269,7 +267,7 @@ async def disable_welcome_message(bot, message):
     await db.set_settings(message.chat.id, settings)
     await message.reply_text("Welcome messages disabled!")
 
-@Client.on_message(filters.command(["enablegoodbye"]) & filters.group & filters.user(ADMINS))
+@Client.on_message(filters.command(["enablegoodbye "]) & filters.group & filters.user(ADMINS))
 async def enable_goodbye_message(bot, message):
     settings = await get_settings(message.chat.id)
     settings["goodbye"] = True
