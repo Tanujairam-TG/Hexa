@@ -60,13 +60,16 @@ async def save_group(bot, message):
                     custom_wish_string += f"│✑ Custom Wish: {wish}\n"
 
                 temp.MELCOW['welcome'] = await message.reply(
-                    f"┌─❖\n"
-                    f"│ 「 Hi 」\n"
-                    f"└┬❖\n"
-                    f"│✑ Welcome, {u.mention}!\n"
-                    f"├❖ Custom Wishes:\n"
-                    f"{custom_wish_string}"
-                    "└───────────────┈ ⳹",
+                    "┌─❖\n"
+                f"│ 「 Hi 」\n"
+                f"└┬❖\n"
+                f"┌┤✑ Welcome,「{u.mention}!」\n"
+                f"│└────────────┈ ⳹\n"
+                f"│✑ To {message.chat.title}!\n"
+                f"│✑ Enjoy your stay!\n"
+                f"│✑ Role: Member\n"
+                f"├❖ Contact for any queries!\n"
+                "└───────────────┈ ⳹",
                     reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton('🤥 Help', url=f"https://t.me/{temp.U_NAME}?start=help")], [InlineKeyboardButton('🔔 Updates', url='https://t.me/CinemaVenoOfficial')]]))
 
 @Client.on_message(filters.left_chat_member & filters.group)
