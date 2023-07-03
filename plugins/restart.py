@@ -18,25 +18,25 @@ is_restarted = True
 
 # Sending the restart message to the support group
 def send_restart_message():
-    restart_message = "⚡ Bot Restarted ⚡\n"
-    restart_message += f"🥂 Time Taken: {restart_time_minutes} Minutes {restart_time_seconds} Seconds"
+    restart_message = f"Bot Restarted\n🥂 Time Taken: {restart_time_minutes} Minutes {restart_time_seconds} Seconds"
+    emoji_message = "🦋"
 
-    sticker_url = "https://t.me/addstickers/tyan2d_anim"
-    sticker_data = {
-        "chat_id": support_group_id,
-        "sticker": sticker_url
-    }
-    sticker_response = requests.post(f"https://api.telegram.org/bot{bot_token}/sendSticker", json=sticker_data)
-    if sticker_response.status_code != 200:
-        print(f"Failed to send sticker. Error: {sticker_response.text}")
-
-    message_data = {
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    data = {
         "chat_id": support_group_id,
         "text": restart_message
     }
-    message_response = requests.post(f"https://api.telegram.org/bot{bot_token}/sendMessage", json=message_data)
-    if message_response.status_code != 200:
-        print(f"Failed to send restart message. Error: {message_response.text}")
+    response = requests.post(url, json=data)
+    if response.status_code != 200:
+        print(f"Failed to send restart message. Error: {response.text}")
+
+    data = {
+        "chat_id": support_group_id,
+        "text": emoji_message
+    }
+    response = requests.post(url, json=data)
+    if response.status_code != 200:
+        print(f"Failed to send emoji message. Error: {response.text}")
 
 # Delay before sending the restart message
 time.sleep(5)  # Adjust the delay as needed
