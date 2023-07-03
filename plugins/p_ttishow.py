@@ -43,20 +43,17 @@ async def save_group(bot, message):
         reply_markup=InlineKeyboardMarkup(buttons)
         await message.reply_text(
             text=f"<b>Thankyou For Adding Me In {message.chat.title} ❣️\n\nIf you have any questions & doubts about using me contact support.</b>",
-            reply_markup=reply_markup) 
+            reply_markup=reply_markup)
     else:
-    settings = await get_settings(message.chat.id)
-    if settings["welcome"]:
-        for u in message.new_chat_members:
-            if temp.MELCOW.get('welcome') is not None:
-                try:
-                    await temp.MELCOW['welcome'].delete()
-                except:
-                    pass
-
-            total_members = await bot.get_chat_members_count(message.chat.id)
-            welcome_message = (
-                f"┌─❖\n"
+        settings = await get_settings(message.chat.id)
+        if settings["welcome"]:
+            for u in message.new_chat_members:
+                if (temp.MELCOW).get('welcome') is not None:
+                    try:
+                        await (temp.MELCOW['welcome']).delete()
+                    except:
+                        pass
+                temp.MELCOW['welcome'] = await message.reply(f"┌─❖\n"
                 f"│ 「 Hi 」\n"
                 f"└┬❖\n"
                 f"┌┤✑  「{u.mention}」\n"
@@ -67,9 +64,6 @@ async def save_group(bot, message):
                 f"│✑ Role: Member\n"
                 "└───────────────┈ ⳹"
             )
-
-            temp.MELCOW['welcome'] = await message.reply(welcome_message)
-
 
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
@@ -168,7 +162,7 @@ async def get_ststs(bot, message):
 
 # a function for trespassing into others groups, Inspired by a Vazha
 # Not to be used , But Just to showcase his vazhatharam.
-@Client.on_message(filters.command('invite') & filters.user(ADMINS))
+# @Client.on_message(filters.command('invite') & filters.user(ADMINS))
 async def gen_invite(bot, message):
     if len(message.command) == 1:
         return await message.reply('Give me a chat id')
