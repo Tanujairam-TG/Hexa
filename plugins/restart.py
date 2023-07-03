@@ -24,11 +24,28 @@ def send_restart_message():
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     data = {
         "chat_id": support_group_id,
-        "text": restart_message
+        "text": restart_message,
+        "reply_markup": {
+            "inline_keyboard": [
+                [{"text": "🦋", "callback_data": "alive"}]
+            ]
+        }
     }
     response = requests.post(url, json=data)
     if response.status_code != 200:
         print(f"Failed to send restart message. Error: {response.text}")
+
+# Sending the reply message when the button is clicked
+def send_reply_message(chat_id):
+    reply_message = "I'm alive! 🦄"
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    data = {
+        "chat_id": chat_id,
+        "text": reply_message
+    }
+    response = requests.post(url, json=data)
+    if response.status_code != 200:
+        print(f"Failed to send reply message. Error: {response.text}")
 
 # Delay before sending the restart message
 time.sleep(5)  # Adjust the delay as needed
