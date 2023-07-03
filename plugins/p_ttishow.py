@@ -6,7 +6,6 @@ from database.users_chats_db import db
 from database.ia_filterdb import Media
 from utils import get_size, temp, get_settings
 from Script import script
-from datetime import datetime
 from pyrogram.errors import ChatAdminRequired
 
 """-----------------------------------------https://t.me/CinemaVenoOfficial --------------------------------------"""
@@ -45,33 +44,35 @@ async def save_group(bot, message):
         await message.reply_text(
             text=f"<b>Thankyou For Adding Me In {message.chat.title} ❣️\n\nIf you have any questions & doubts about using me contact support.</b>",
             reply_markup=reply_markup)
+            
     else:
-        settings = await get_settings(message.chat.id)
-        if settings["welcome"]:
-            for u in message.new_chat_members:
-                if (temp.MELCOW).get('welcome') is not None:
-                    try:
-                        await (temp.MELCOW['welcome']).delete()
-                    except:
-                        pass
-                temp.MELCOW['welcome'] = await message.reply(from datetime import datetime
+    settings = await get_settings(message.chat.id)
+    if settings["welcome"]:
+        for u in message.new_chat_members:
+            if temp.MELCOW.get('welcome') is not None:
+                try:
+                    await temp.MELCOW['welcome'].delete()
+                except:
+                    pass
+            current_time = datetime.now().strftime("%H:%M:%S")  # Get the current time
 
-current_time = datetime.now().strftime("%H:%M:%S")  # Get the current time
+            total_members = await bot.get_chat_members_count(message.chat.id)
+            welcome_message = (
+                f"┌─❖\n"
+                f"│ 「 Hi 」\n"
+                f"└┬❖\n"
+                f"┌┤✑  「{u.mention}」\n"
+                f"│└────────────┈ ⳹\n"
+                f"│\n"
+                f"│✑ 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼: {message.chat.title}\n"
+                f"│✑ Total Members: {total_members}\n"
+                f"│✑ Role: Member\n"
+                f"│✑  𝗧𝗶𝗺𝗲 : {current_time}\n"
+                "└───────────────┈ ⳹"
+            )
 
-total_members = await bot.get_chat_members_count(message.chat.id)
-welcome_message = (
-    f"┌─❖\n"
-    f"│ 「 Hi 」\n"
-    f"└┬❖\n"
-    f"┌┤✑  「{u.mention}」\n"
-    f"│└────────────┈ ⳹\n"
-    f"│\n"
-    f"│✑ 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼: {message.chat.title}\n"
-    f"│✑ Total Members: {total_members}\n"
-    f"│✑ Role: Member\n"
-    f"│✑  𝗧𝗶𝗺𝗲 : {current_time}\n"
-    "└───────────────┈ ⳹"
-)
+            temp.MELCOW['welcome'] = await message.reply(welcome_message)
+
 
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
