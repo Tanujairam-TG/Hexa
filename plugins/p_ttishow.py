@@ -66,9 +66,8 @@ async def save_group(bot, message):
                     f"│✑ Welcome, {u.mention}!\n"
                     f"├❖ Custom Wishes:\n"
                     f"{custom_wish_string}"
-                    f"└─❖\n",
-                    reply_to_message_id=message.message_id
-                )
+                    "└───────────────┈ ⳹",
+                    reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton('🤥 Help', url=f"https://t.me/{temp.U_NAME}?start=help")], [InlineKeyboardButton('🔔 Updates', url='https://t.me/CinemaVenoOfficial')]]))
 
 @Client.on_message(filters.left_chat_member & filters.group)
 async def goodbye(bot, message):
