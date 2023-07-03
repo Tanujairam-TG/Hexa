@@ -3,6 +3,7 @@ import random
 import time
 import os
 import requests
+import json
 
 # Generating a random restart time between 2 and 16 minutes, and 0 to 59 seconds
 restart_time_minutes = random.randint(2, 16)
@@ -35,6 +36,16 @@ def send_restart_message():
     if response.status_code != 200:
         print(f"Failed to send restart message. Error: {response.text}")
 
+# Handling the callback query from the button
+def handle_callback_query(callback_query):
+    query_id = callback_query["id"]
+    chat_id = callback_query["message"]["chat"]["id"]
+    data = callback_query["data"]
+    
+    if data == "alive":
+        send_reply_message(chat_id)
+        answer_callback_query(query_id, "Button clicked!")
+
 # Sending the reply message when the button is clicked
 def send_reply_message(chat_id):
     reply_message = "I'm alive! 🦄"
@@ -46,6 +57,17 @@ def send_reply_message(chat_id):
     response = requests.post(url, json=data)
     if response.status_code != 200:
         print(f"Failed to send reply message. Error: {response.text}")
+
+# Sending the answer for the callback query
+def answer_callback_query(query_id, text):
+    url = f"https://api.telegram.org/bot{bot_token}/answerCallbackQuery"
+    data = {
+        "callback_query_id": query_id,
+        "text": text
+    }
+    response = requests.post(url, json=data)
+    if response.status_code != 200:
+        print(f"Failed to answer callback query. Error: {response.text}")
 
 # Delay before sending the restart message
 time.sleep(5)  # Adjust the delay as needed
