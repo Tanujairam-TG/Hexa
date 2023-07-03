@@ -53,7 +53,6 @@ async def save_group(bot, message):
                     await temp.MELCOW['welcome'].delete()
                 except:
                     pass
-            current_time = datetime.now().strftime("%H:%M:%S")  # Get the current time
 
             total_members = await bot.get_chat_members_count(message.chat.id)
             welcome_message = (
@@ -66,11 +65,11 @@ async def save_group(bot, message):
                 f"│✑ 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼: {message.chat.title}\n"
                 f"│✑ Total Members: {total_members}\n"
                 f"│✑ Role: Member\n"
-                f"│✑  𝗧𝗶𝗺𝗲 : {current_time}\n"
                 "└───────────────┈ ⳹"
             )
 
             temp.MELCOW['welcome'] = await message.reply(welcome_message)
+
 
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
