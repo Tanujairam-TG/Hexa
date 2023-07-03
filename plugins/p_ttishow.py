@@ -53,7 +53,24 @@ async def save_group(bot, message):
                         await (temp.MELCOW['welcome']).delete()
                     except:
                         pass
-                temp.MELCOW['welcome'] = await message.reply(f"<b>Hey , {u.mention}, Welcome to {message.chat.title}</b>")
+                temp.MELCOW['welcome'] = await message.reply(from datetime import datetime
+
+current_time = datetime.now().strftime("%H:%M:%S")  # Get the current time
+
+total_members = await bot.get_chat_members_count(message.chat.id)
+welcome_message = (
+    f"┌─❖\n"
+    f"│ 「 Hi 」\n"
+    f"└┬❖\n"
+    f"┌┤✑  「{u.mention}」\n"
+    f"│└────────────┈ ⳹\n"
+    f"│\n"
+    f"│✑ 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼: {message.chat.title}\n"
+    f"│✑ Total Members: {total_members}\n"
+    f"│✑ Role: Member\n"
+    f"│✑  𝗧𝗶𝗺𝗲 : {current_time}\n"
+    "└───────────────┈ ⳹"
+)
 
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
@@ -152,7 +169,7 @@ async def get_ststs(bot, message):
 
 # a function for trespassing into others groups, Inspired by a Vazha
 # Not to be used , But Just to showcase his vazhatharam.
-# @Client.on_message(filters.command('invite') & filters.user(ADMINS))
+@Client.on_message(filters.command('invite') & filters.user(ADMINS))
 async def gen_invite(bot, message):
     if len(message.command) == 1:
         return await message.reply('Give me a chat id')
