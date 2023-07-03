@@ -18,7 +18,7 @@ is_restarted = True
 
 # Sending the restart message to the support group
 def send_restart_message():
-    restart_message = f"Bot Restarted\n🥂 Time Taken: {restart_time_minutes} Minutes {restart_time_seconds} Seconds"
+    restart_message = f"⚡ Bot Restarted ⚡\n🥂 Time Taken: {restart_time_minutes} Minutes {restart_time_seconds} Seconds"
     emoji_message = "🦋"
 
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
