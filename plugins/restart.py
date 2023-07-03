@@ -28,7 +28,12 @@ def send_restart_message():
         "text": restart_message,
         "reply_markup": {
             "inline_keyboard": [
-                [{"text": "🦋", "callback_data": "alive"}]
+                [
+                    {
+                        "text": "😜 Click Me",
+                        "callback_data": "sticker"
+                    }
+                ]
             ]
         }
     }
@@ -36,38 +41,18 @@ def send_restart_message():
     if response.status_code != 200:
         print(f"Failed to send restart message. Error: {response.text}")
 
-# Handling the callback query from the button
+# Handling callback queries
 def handle_callback_query(callback_query):
-    query_id = callback_query["id"]
-    chat_id = callback_query["message"]["chat"]["id"]
-    data = callback_query["data"]
-    
-    if data == "alive":
-        send_reply_message(chat_id)
-        answer_callback_query(query_id, "Button clicked!")
-
-# Sending the reply message when the button is clicked
-def send_reply_message(chat_id):
-    reply_message = "I'm alive! 🦄"
-    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-    data = {
-        "chat_id": chat_id,
-        "text": reply_message
-    }
-    response = requests.post(url, json=data)
-    if response.status_code != 200:
-        print(f"Failed to send reply message. Error: {response.text}")
-
-# Sending the answer for the callback query
-def answer_callback_query(query_id, text):
-    url = f"https://api.telegram.org/bot{bot_token}/answerCallbackQuery"
-    data = {
-        "callback_query_id": query_id,
-        "text": text
-    }
-    response = requests.post(url, json=data)
-    if response.status_code != 200:
-        print(f"Failed to answer callback query. Error: {response.text}")
+    query_data = callback_query.get("data")
+    if query_data == "sticker":
+        sticker_url = "https://t.me/addstickers/tyan2d_anim"
+        sticker_message = {
+            "chat_id": callback_query["message"]["chat"]["id"],
+            "sticker": sticker_url
+        }
+        response = requests.post(f"https://api.telegram.org/bot{bot_token}/sendSticker", json=sticker_message)
+        if response.status_code != 200:
+            print(f"Failed to send sticker. Error: {response.text}")
 
 # Delay before sending the restart message
 time.sleep(5)  # Adjust the delay as needed
@@ -75,3 +60,14 @@ time.sleep(5)  # Adjust the delay as needed
 # Check restart flag and send message
 if is_restarted:
     send_restart_message()
+    
+# Handling callback queries (example)
+callback_query_data = {
+    "message": {
+        "chat": {
+            "id": support_group_id
+        }
+    },
+    "data": "sticker"
+}
+handle_callback_query(callback_query_data)
