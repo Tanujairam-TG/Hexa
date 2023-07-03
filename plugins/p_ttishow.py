@@ -54,11 +54,11 @@ async def save_group(bot, message):
                     except:
                         pass
                 custom_wishes = [
-                    "Welcome aboard!",
+                    "welcome aboard!",
                 ]
                 custom_wish_string = ""
                 for wish in custom_wishes:
-                    custom_wish_string += f"│✑ Custom Wish: {wish}\n"
+                    custom_wish_string += f"│✑ Dear: {wish}\n"
 
                 temp.MELCOW['welcome'] = await message.reply(f"┌─❖\n"
                                                              f"│ 「 Hi 」\n"
@@ -66,12 +66,12 @@ async def save_group(bot, message):
                                                              f"│✑ Welcome, {u.mention}!\n"
                                                              f"├❖ To {message.chat.title}!\n"
                                                              f"│✑ Enjoy your stay!\n"
-                                                             f"│\n"
                                                              f"{custom_wish_string}"
                                                              f"├❖ Contact for any queries!\n"
                                                              f"│❖ Type !help for commands\n"
                                                              f"│❖ Type !support for help\n"
-                                                             f"└❖ Have a nice day!", reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton('🤥 Help', url=f"https://t.me/{temp.U_NAME}?start=help")], [InlineKeyboardButton('🔔 Updates', url='https://t.me/CinemaVenoOfficial')]]))
+                                                             f"└───────────────┈ ⳹", reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton('🤥 Help', url=f"https://t.me/{temp.U_NAME}?start=help")], [InlineKeyboardButton('🔔 Updates', url='https://t.me/CinemaVenoOfficial')]]))
+            
             try:
                 await (temp.MELCOW_NEW_USERS).delete()
             except:
@@ -80,16 +80,33 @@ async def save_group(bot, message):
 
 @Client.on_message(filters.left_chat_member & filters.group)
 async def goodbye(bot, message):
-    settings = await get_settings(message.chat.id)
-    if settings["goodbye"]:
-        user = message.left_chat_member
-        chat = message.chat
-        goodbye_text = settings["goodbye_text"]
-        if goodbye_text:
-            text = goodbye_text.replace("{mention}", user.mention).replace("{title}", chat.title)
-        else:
-            text = f"Goodbye, {user.mention}!"
-        await message.reply_text(text)
+    chat_id = message.chat.id
+    settings = await get_settings(chat_id)
+
+    if settings.get("goodbye"):
+        for user in message.left_chat_member:
+            if temp.get('goodbye_message') is not None:
+                try:
+                    await temp['goodbye_message'].delete()
+                except:
+                    pass
+
+            temp['goodbye_message'] = await message.reply(
+                f"┌─❖\n"
+                f"│ 「 Bye 」\n"
+                f"└┬❖\n"
+                f"│✑ Goodbye, {user.mention}!\n"
+                f"└─❖\n",
+                reply_to_message_id=message.message_id
+            )
+
+        try:
+            await temp['goodbye_new_users'].delete()
+        except:
+            pass
+        temp['goodbye_new_users'] = temp['goodbye_message']
+
+
 
 @Client.on_message(filters.command(["kick"]) & filters.group & filters.user(ADMINS) & filters.reply)
 async def kick_user(bot, message):
@@ -134,6 +151,7 @@ async def pin_message(bot, message):
     except ChatAdminRequired:
         await message.reply_text("I need administrative privileges to pin messages.")
 
+
 @Client.on_message(filters.command(["unpin"]) & filters.group & filters.user(ADMINS))
 async def unpin_message(bot, message):
     try:
@@ -160,23 +178,39 @@ async def promote_member(bot, message):
     except ChatAdminRequired:
         await message.reply_text("I need administrative privileges to promote users.")
 
+
 @Client.on_message(filters.command(["demote"]) & filters.group & filters.user(ADMINS) & filters.reply)
 async def demote_member(bot, message):
     reply_user_id = message.reply_to_message.from_user.id
     try:
-        await bot.promote_chat_member(message.chat.id, reply_user_id, can_change_info=False, can_delete_messages=False, can_invite_users=False, can_restrict_members=False, can_pin_messages=False, can_promote_members=False)
+        await bot.promote_chat_member(
+            chat_id=message.chat.id,
+            user_id=reply_user_id,
+            can_change_info=False,
+            can_delete_messages=False,
+            can_invite_users=False,
+            can_restrict_members=False,
+            can_pin_messages=False,
+            can_promote_members=False
+        )
         await message.reply_text("User demoted successfully!")
     except ChatAdminRequired:
         await message.reply_text("I need administrative privileges to demote users.")
+
 
 @Client.on_message(filters.command(["mute"]) & filters.group & filters.user(ADMINS) & filters.reply)
 async def mute_member(bot, message):
     reply_user_id = message.reply_to_message.from_user.id
     try:
-        await bot.restrict_chat_member(message.chat.id, reply_user_id, can_send_messages=False)
+        await bot.restrict_chat_member(
+            chat_id=message.chat.id,
+            user_id=reply_user_id,
+            permissions=ChatPermissions(can_send_messages=False)
+        )
         await message.reply_text("User muted successfully!")
     except ChatAdminRequired:
         await message.reply_text("I need administrative privileges to mute users.")
+
 
 @Client.on_message(filters.command(["unmute"]) & filters.group & filters.user(ADMINS) & filters.reply)
 async def unmute_member(bot, message):
@@ -215,12 +249,13 @@ async def get_user_id(bot, message):
 @Client.on_message(filters.command(["settings"]) & filters.group & filters.user(ADMINS))
 async def get_group_settings(bot, message):
     settings = await get_settings(message.chat.id)
-    welcome_status = "Enabled" if settings["welcome"] else "Disabled"
-    goodbye_status = "Enabled" if settings["goodbye"] else "Disabled"
-    welcome_text = settings["welcome_text"] if settings["welcome_text"] else "Not set"
-    goodbye_text = settings["goodbye_text"] if settings["goodbye_text"] else "Not set"
+    welcome_status = "Enabled" if settings.get("welcome") else "Disabled"
+    goodbye_status = "Enabled" if settings.get("goodbye") else "Disabled"
+    welcome_text = settings.get("welcome_text", "Not set")
+    goodbye_text = settings.get("goodbye_text", "Not set")
     text = f"Group Settings:\n\nWelcome: {welcome_status}\nWelcome Text: {welcome_text}\n\nGoodbye: {goodbye_status}\nGoodbye Text: {goodbye_text}"
     await message.reply_text(text)
+
 
 @Client.on_message(filters.command(["setwelcome"]) & filters.group & filters.user(ADMINS) & filters.reply)
 async def set_welcome_text(bot, message):
