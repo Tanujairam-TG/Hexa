@@ -29,14 +29,15 @@ async def check_alive(_, message):
     await message.reply_photo(
         photo="https://i.imgur.com/DLVUuPk.jpeg",
         caption=f"┌─❖\n"
-                f"│「 𝗛𝗶  」\n"
-                "└┬❖\n"
-                 f"│✑ 𝙃𝙚𝙡𝙡𝙤, {message.from_user.first_name}\n"
-                 f"│✑ 𝙈𝙮𝙨𝙚𝙡𝙛:- 📍 <a href=https://t.me/Hexa_md_BOT>Ｈｅｘａ</a>\n"
-                 f"│✑ 𝙑𝙚𝙧𝙨𝙞𝙤𝙣:- ♻️{get_bot_version()}\n"
-                 f"│✑ 𝘼 𝙗𝙤𝙩 𝙙𝙚𝙫𝙚𝙡𝙤𝙥𝙚𝙙 𝙗𝙮:- <a href=https://t.me/CinemaVenoOfficial>ᶜᵛᵒ</a>\n"
-                 f"│✑ 𝘽𝙤𝙩 𝙍𝙪𝙣𝙩𝙞𝙢𝙚:- 🛰️{elapsed_time_formatted}\n"
-                 "└───────────────┈ ⳹",
+f"│「 𝗛𝗶  」\n"
+f"└┬❖\n"
+f"┌┤❖ 𝙃𝙚𝙡𝙡𝙤, {message.from_user.first_name}\n"
+f"│└────────────┈ ⳹\n"
+f"│✑ 𝙈𝙮𝙨𝙚𝙡𝙛:- 📍 <a href=https://t.me/Hexa_md_BOT>Ｈｅｘａ</a>\n"
+f"│✑ 𝙑𝙚𝙧𝙨𝙞𝙤𝙣:- ♻️{get_bot_version()}\n"
+f"│✑ 𝘼 𝙗𝙤𝙩 𝙙𝙚𝙫𝙚𝙡𝙤𝙥𝙚𝙙 𝙗𝙮:- <a href=https://t.me/CinemaVenoOfficial>ᶜᵛᵒ</a>\n"
+f"│✑ 𝘽𝙤𝙩 𝙍𝙪𝙣𝙩𝙞𝙢𝙚:- 🛰️{elapsed_time_formatted}\n"
+f"└───────────────┈ ⳹",
         reply_markup=keyboard
     )
 
@@ -44,11 +45,39 @@ async def check_alive(_, message):
 
 
     
-@Client.on_message(filters.
-command("help", CMD))
+@Client.on_message(filters.command("help", CMD))
 async def help(_, message):
-    await message.reply_text("Pʀᴇss 👉 /movies Fᴏʀ Hᴏᴡ Tᴏ Rᴇǫᴜᴇsᴛ Mᴏᴠɪᴇs Iɴ A Pʀᴏᴩᴇʀ Wᴀʏ 📃\n\nPʀᴇss 👉 /series Fᴏʀ Hᴏᴡ Tᴏ Rᴇǫᴜᴇsᴛ Sᴇʀɪᴇs Iɴ A Pʀᴏᴩᴇʀ Wᴀʏ 📃\n\n\nPʀᴇss 👉 /tutorial Fᴏʀ Tᴜᴛᴏʀɪᴀʟ Aʙᴏᴜᴛ Hᴏᴡ Tᴏ Gᴇᴛ Dɪʀᴇᴄᴛ Fɪʟᴇs Fʀᴏᴍ Mᴇ 🤗")
-
+    text = f"Hi, I'm the group management bot!\n\n"
+    text += f"These are the available commands:\n\n"
+    text += f"/kick - Kick a user\n"
+    text += f"/ban - Ban a user\n"
+    text += f"/unban - Unban a user\n"
+    text += f"/pin - Pin a message\n"
+    text += f"/unpin - Unpin the currently pinned message\n"
+    text += f"/purge - Delete a message\n"
+    text += f"/promote - Promote a user\n"
+    text += f"/demote - Demote a user\n"
+    text += f"/mute - Mute a user\n"
+    text += f"/unmute - Unmute a user\n"
+    text += f"/banall - Ban all members in the group\n"
+    text += f"/info - Get group information\n"
+    text += f"/id - Get the ID of a user\n"
+    text += f"/settings - Get the group settings\n"
+    text += f"/setwelcome - Set the welcome text\n"
+    text += f"/setgoodbye - Set the goodbye text\n"
+    text += f"/enablewelcome - Enable welcome messages\n"
+    text += f"/disablewelcome - Disable welcome messages\n"
+    text += f"/enablegoodbye - Enable goodbye messages\n"
+    text += f"/disablegoodbye - Disable goodbye messages\n"
+    text += f"/cleanwelcome - Clean the welcome message\n"
+    text += f"/cleangoodbye - Clean the goodbye message\n"
+    text += f"/filter - Add a message to filtered media\n"
+    text += f"/unfilter - Remove a message from filtered media\n"
+    text += f"/filtered - Get filtered media messages\n"
+    text += f"/cleanfiltered - Clean filtered media messages\n"
+    text += f"/help - Show this help message\n"
+    await message.reply_text(text)
+    
 @Client.on_message(filters.command("movies", CMD))
 async def movie(_, message):
     await message.reply_text("⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯\nᴍᴏᴠɪᴇ ʀᴇǫᴜᴇꜱᴛ ꜰᴏʀᴍᴀᴛ\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯\n\nɢᴏ ᴛᴏ ɢᴏᴏɢʟᴇ ➠ ᴛʏᴘᴇ ᴍᴏᴠɪᴇ ɴᴀᴍᴇ ➠ ᴄᴏᴘʏ ᴄᴏʀʀᴇᴄᴛ ɴᴀᴍᴇ ➠ ᴘᴀꜱᴛᴇ ᴛʜɪꜱ ɢʀᴏᴜᴘ\n\nᴇxᴀᴍᴘʟᴇ : ᴀᴠᴀᴛᴀʀ: ᴛʜᴇ ᴡᴀʏ ᴏғ ᴡᴀᴛᴇʀ\n\n🚯 ᴅᴏɴᴛ ᴜꜱᴇ ➠ ':(!,./)")
