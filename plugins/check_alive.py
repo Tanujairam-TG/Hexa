@@ -77,6 +77,23 @@ async def help(_, message):
     text += f"/cleanfiltered - Clean filtered media messages\n"
     text += f"/help - Show this help message\n"
     await message.reply_text(text)
+
+@Client.on_message(filters.command(["pin"]) & filters.group & filters.user(ADMINS) & filters.reply)
+async def pin(_, message):
+    reply_message_id = message.reply_to_message.message_id
+    try:
+        await bot.pin_chat_message(message.chat.id, reply_message_id)
+        await message.reply_text("Message pinned successfully!")
+    except ChatAdminRequired:
+        await message.reply_text("I need administrative privileges to pin messages.")
+
+@Client.on_message(filters.command(["unpin"]) & filters.group & filters.user(ADMINS))
+async def unpin(_, message):
+    try:
+        await bot.unpin_chat_message(message.chat.id)
+        await message.reply_text("Message unpinned successfully!")
+    except ChatAdminRequired:
+        await message.reply_text("I need administrative privileges to unpin messages.")
     
 @Client.on_message(filters.command("movies", CMD))
 async def movie(_, message):
