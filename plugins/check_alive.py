@@ -2,7 +2,6 @@ import time
 import random
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from pyrogram.errors import ChatAdminRequired
 
 CMD = ["/"]
 
@@ -79,7 +78,7 @@ async def help(_, message):
     text += f"/help - Show this help message\n"
     await message.reply_text(text)
 
-@Client.on_message(filters.command(["pin"]) & filters.group & filters.user(ADMINS) & filters.reply)
+@Client.on_message(filters.command("pin",CMD))
 async def pin(_, message):
     reply_message_id = message.reply_to_message.message_id
     try:
@@ -88,7 +87,7 @@ async def pin(_, message):
     except ChatAdminRequired:
         await message.reply_text("I need administrative privileges to pin messages.")
 
-@Client.on_message(filters.command(["unpin"]) & filters.group & filters.user(ADMINS))
+@Client.on_message(filters.command("unpin",CMD))
 async def unpin(_, message):
     try:
         await bot.unpin_chat_message(message.chat.id)
