@@ -1,7 +1,7 @@
 import os
 import logging
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, CallbackContext
+from telegram.ext import Updater, CommandHandler, CallbackContext, Filters
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -14,20 +14,30 @@ updater = Updater(token=TOKEN, use_context=True)
 dispatcher = updater.dispatcher
 
 # Define the command handler function for /mute
-def mute(update: Update, context: CallbackContext):
-    chat_id = update.message.chat_id
-    user_id = update.message.reply_to_message.from_user.id
-    context.bot.restrict_chat_member(chat_id, user_id, can_send_messages=False)
+def mute(bot, update, args):
+    chat = update.effective_chat
+    user = update.effective_user
+    message = update.effective_message
+
+    # Your mute function code here
 
 # Define the command handler function for /unmute
-def unmute(update: Update, context: CallbackContext):
-    chat_id = update.message.chat_id
-    user_id = update.message.reply_to_message.from_user.id
-    context.bot.restrict_chat_member(chat_id, user_id, can_send_messages=True)
+def unmute(bot, update, args):
+    chat = update.effective_chat
+    user = update.effective_user
+    message = update.effective_message
+
+    # Your unmute function code here
+
+# Define the command handler function for /tmute or /tempmute
+def temp_mute(bot, update, args):
+    chat = update.effective_chat
+    user = update.effective_user
+    message = update.effective_message
+
+    # Your temp_mute function code here
 
 # Add the command handlers to the dispatcher
-dispatcher.add_handler(CommandHandler("mute", mute))
-dispatcher.add_handler(CommandHandler("unmute", unmute))
-
-# Start the bot
-updater.start_polling()
+dispatcher.add_handler(CommandHandler("mute", mute, pass_args=True, filters=Filters.group))
+dispatcher.add_handler(CommandHandler("unmute", unmute, pass_args=True, filters=Filters.group))
+dispatcher.add_handler(CommandHandler(["tmute", "tempmute"], temp_mute, pass_args=True, filters=Filters.group))
