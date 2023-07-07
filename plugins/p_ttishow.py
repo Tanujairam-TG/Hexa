@@ -48,7 +48,7 @@ async def save_group(bot, message):
             text=f"<b>Thank you for adding me to {message.chat.title} ❣️\n\nIf you have any questions or doubts about using me, contact support.</b>",
             reply_markup=reply_markup
         )
-     else:
+    else:
         settings = await get_settings(message.chat.id)
         if settings["welcome"]:
             for u in message.new_chat_members:
