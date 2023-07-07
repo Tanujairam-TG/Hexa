@@ -1,13 +1,12 @@
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.errors import ChatAdminRequired
 from pyrogram.errors.exceptions.bad_request_400 import MessageTooLong, PeerIdInvalid
 from info import ADMINS, LOG_CHANNEL, SUPPORT_CHAT, MELCOW_NEW_USERS
 from database.users_chats_db import db
 from database.ia_filterdb import Media
 from utils import get_size, temp, get_settings
 from Script import script
-from pyrogram.errors import ChatAdminRequired
-from datetime import datetime
 
 """-----------------------------------------https://t.me/CinemaVenoOfficial --------------------------------------"""
 
@@ -21,10 +20,11 @@ async def save_group(bot, message):
             await bot.send_message(LOG_CHANNEL, script.LOG_TEXT_G.format(message.chat.title, message.chat.id, total, r_j))
             await db.add_chat(message.chat.id, message.chat.title)
         if message.chat.id in temp.BANNED_CHATS:
-            # Inspired from a boat of a banana tree
-            buttons = [[
-                InlineKeyboardButton('🚸 Support 🚸', url=f'https://t.me/+9Y0zeiIAFeczMDJl')
-            ]]
+            buttons = [
+                [
+                    InlineKeyboardButton('🚸 Support 🚸', url=f'https://t.me/+9Y0zeiIAFeczMDJl')
+                ]
+            ]
             reply_markup = InlineKeyboardMarkup(buttons)
             k = await message.reply(
                 text='<b>CHAT NOT ALLOWED 🐞\n\nMy admins have restricted me from working here! If you want to know more about it, contact support.</b>',
@@ -37,250 +37,521 @@ async def save_group(bot, message):
                 pass
             await bot.leave_chat(message.chat.id)
             return
-        buttons = [[
-            InlineKeyboardButton('🤥 Help', url=f"https://t.me/{temp.U_NAME}?start=help"),
-            InlineKeyboardButton('🔔 Updates', url='https://t.me/CinemaVenoOfficial')
-        ]]
+        buttons = [
+            [
+                InlineKeyboardButton('🤥 Help', url=f"https://t.me/{temp.U_NAME}?start=help"),
+                InlineKeyboardButton('🔔 Updates', url='https://t.me/CinemaVenoOfficial')
+            ]
+        ]
         reply_markup = InlineKeyboardMarkup(buttons)
         await message.reply_text(
             text=f"<b>Thank you for adding me to {message.chat.title} ❣️\n\nIf you have any questions or doubts about using me, contact support.</b>",
-            reply_markup=reply_markup)
+            reply_markup=reply_markup
+        )
     else:
         settings = await get_settings(message.chat.id)
         if settings["welcome"]:
             for u in message.new_chat_members:
                 if temp.MELCOW.get('welcome') is not None:
                     try:
-                        await (temp.MELCOW['welcome']).delete()
+                        await temp.MELCOW['welcome'].delete()
                     except:
                         pass
-                temp.MELCOW['welcome'] = await message.reply(f"<b>Hey, {u.mention}, Welcome to {message.chat.title}</b>")
+                custom_wishes = [
+                    "welcome aboard!",
+                ]
+                custom_wish_string = "\n".join(f"├ ❖ Dear: {wish}" for wish in custom_wishes)
+
+                temp.MELCOW['welcome'] = await message.reply(
+                    f"┌─❖\n"
+                    f"│ 「 Hi 」\n"
+                    f"└┬❖\n"
+                    f"┌┤❖  「{u.mention}」\n"
+                    f"│└────────────┈ ⳹\n"
+                    f"├❖ To {message.chat.title}!\n"
+                    f"├ ❖ Enjoy your stay!\n"
+                    f"{custom_wish_string}"
+                    f"└────────────┈ ⳹",
+                    reply_markup=InlineKeyboardMarkup(
+                        [
+                            [
+                                InlineKeyboardButton('🎉 Support 🎉', url=f"https://t.me/{SUPPORT_CHAT}"),
+                                InlineKeyboardButton('🚀 Updates', url=f"https://t.me/{LOG_CHANNEL.split('/')[1]}")
+                            ]
+                        ]
+                    )
+                )
 
 
-@Client.on_message(filters.command('leave') & filters.user(ADMINS))
-async def leave_a_chat(bot, message):
-    if len(message.command) == 1:
-        return await message.reply('Give me a chat id')
-    chat = message.command[1]
-    try:
-        chat = int(chat)
-    except:
-        chat = chat
-    try:
-        chat_info = await bot.get_chat(chat)
-        goodbye_message = (
-            "┌─❖\n"
-            "│ 「 Goodbye 」\n"
-            "└┬❖\n"
-            f"┌┤✑  {message.from_user.mention}\n"
-            "│└────────────┈ ⳹\n"
-            "│\n"
-            f"│✑  {chat_info.title}\n"
-            f"│✑  Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-            "└───────────────┈ ⳹"
+@Client.on_message(filters.left_chat_member & filters.group)
+async def goodbye(bot, message):
+    settings = await get_settings(message.chat.id)
+    if settings["goodbye"]:
+        if temp.MELCOW.get('goodbye') is not None:
+            try:
+                await temp.MELCOW['goodbye'].delete()
+            except:
+                pass
+        temp.MELCOW['goodbye'] = await message.reply(
+            f"┌─❖\n"
+            f"│ 「 Bye 」\n"
+            f"└┬❖\n"
+            f"┌┤❖  「{message.left_chat_member.mention}」\n"
+            f"│└────────────┈ ⳹\n"
+            f"├❖ Just left {message.chat.title}!\n"
+            f"├ ❖ Hope to see you soon!\n"
+            f"└────────────┈ ⳹",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton('🚑 Support 🚑', url=f"https://t.me/{SUPPORT_CHAT}"),
+                        InlineKeyboardButton('🔔 Updates', url=f"https://t.me/{LOG_CHANNEL.split('/')[1]}")
+                    ]
+                ]
+            )
         )
-        buttons = [[
-            InlineKeyboardButton('🚸 Support 🚸', url=f'https://t.me/+9Y0zeiIAFeczMDJl')
-        ]]
-        reply_markup = InlineKeyboardMarkup(buttons)
-        await bot.send_message(
-            chat_id=chat,
-            text=goodbye_message,
-            reply_markup=reply_markup,
+
+
+@Client.on_message(filters.command('setwelcome'))
+async def setwelcome(bot, message):
+    if not message.from_user.id in ADMINS:
+        return await message.reply(
+            "❌ You are not allowed to access this command!"
         )
 
-        await bot.leave_chat(chat)
-        await message.reply(f"Left the chat `{chat}`")
+    if len(message.command) < 2:
+        return await message.reply(
+            "❌ Provide the welcome message to set!"
+        )
 
-        # Remove chat from the database
-        await db.remove_chat(chat)
-    except Exception as e:
-        await message.reply(f'Error - {e}')
+    settings = await get_settings(message.chat.id)
+    settings["welcome"] = True
+    await temp.SETTINGS.update_one({"chat_id": message.chat.id}, {"$set": settings})
 
-@Client.on_message(filters.command('disable') & filters.user(ADMINS))
-async def disable_chat(bot, message):
-    if len(message.command) == 1:
-        return await message.reply('Give me a chat id')
-    r = message.text.split(None)
-    if len(r) > 2:
-        reason = message.text.split(None, 2)[2]
-        chat = message.text.split(None, 2)[1]
-    else:
-        chat = message.command[1]
-        reason = "No reason Provided"
+    welcome_message = " ".join(message.command[1:])
+    await message.reply_text(
+        f"✅ Welcome message has been set successfully!\n\nNew Welcome Message:\n{welcome_message}"
+    )
+
+
+@Client.on_message(filters.command('setgoodbye'))
+async def setgoodbye(bot, message):
+    if not message.from_user.id in ADMINS:
+        return await message.reply(
+            "❌ You are not allowed to access this command!"
+        )
+
+    if len(message.command) < 2:
+        return await message.reply(
+            "❌ Provide the goodbye message to set!"
+        )
+
+    settings = await get_settings(message.chat.id)
+    settings["goodbye"] = True
+    await temp.SETTINGS.update_one({"chat_id": message.chat.id}, {"$set": settings})
+
+    goodbye_message = " ".join(message.command[1:])
+    await message.reply_text(
+        f"✅ Goodbye message has been set successfully!\n\nNew Goodbye Message:\n{goodbye_message}"
+    )
+
+
+@Client.on_message(filters.command('welcome'))
+async def welcome(bot, message):
+    settings = await get_settings(message.chat.id)
+    if settings["welcome"]:
+        return await message.reply(
+            "✅ Welcome messages are already enabled in this chat!"
+        )
+
+    settings["welcome"] = True
+    await temp.SETTINGS.update_one({"chat_id": message.chat.id}, {"$set": settings})
+
+    await message.reply_text(
+        "✅ Welcome messages have been enabled successfully!"
+    )
+
+
+@Client.on_message(filters.command('goodbye'))
+async def goodbye(bot, message):
+    settings = await get_settings(message.chat.id)
+    if settings["goodbye"]:
+        return await message.reply(
+            "✅ Goodbye messages are already enabled in this chat!"
+        )
+
+    settings["goodbye"] = True
+    await temp.SETTINGS.update_one({"chat_id": message.chat.id}, {"$set": settings})
+
+    await message.reply_text(
+        "✅ Goodbye messages have been enabled successfully!"
+    )
+
+
+@Client.on_message(filters.command('nowelcome'))
+async def nowelcome(bot, message):
+    settings = await get_settings(message.chat.id)
+    if not settings["welcome"]:
+        return await message.reply(
+            "✅ Welcome messages are already disabled in this chat!"
+        )
+
+    settings["welcome"] = False
+    await temp.SETTINGS.update_one({"chat_id": message.chat.id}, {"$set": settings})
+
+    await message.reply_text(
+        "✅ Welcome messages have been disabled successfully!"
+    )
+
+
+@Client.on_message(filters.command('nogoodbye'))
+async def nogoodbye(bot, message):
+    settings = await get_settings(message.chat.id)
+    if not settings["goodbye"]:
+        return await message.reply(
+            "✅ Goodbye messages are already disabled in this chat!"
+        )
+
+    settings["goodbye"] = False
+    await temp.SETTINGS.update_one({"chat_id": message.chat.id}, {"$set": settings})
+
+    await message.reply_text(
+        "✅ Goodbye messages have been disabled successfully!"
+    )
+
+
+@Client.on_message(filters.command('delwelcome'))
+async def delwelcome(bot, message):
+    if not message.from_user.id in ADMINS:
+        return await message.reply(
+            "❌ You are not allowed to access this command!"
+        )
+
+    settings = await get_settings(message.chat.id)
+    if not settings["welcome"]:
+        return await message.reply(
+            "✅ Welcome messages are already disabled in this chat!"
+        )
+
+    settings["welcome"] = False
+    await temp.SETTINGS.update_one({"chat_id": message.chat.id}, {"$set": settings})
+
+    await message.reply_text(
+        "✅ Welcome messages have been disabled successfully!"
+    )
+
+
+@Client.on_message(filters.command('delgoodbye'))
+async def delgoodbye(bot, message):
+    if not message.from_user.id in ADMINS:
+        return await message.reply(
+            "❌ You are not allowed to access this command!"
+        )
+
+    settings = await get_settings(message.chat.id)
+    if not settings["goodbye"]:
+        return await message.reply(
+            "✅ Goodbye messages are already disabled in this chat!"
+        )
+
+    settings["goodbye"] = False
+    await temp.SETTINGS.update_one({"chat_id": message.chat.id}, {"$set": settings})
+
+    await message.reply_text(
+        "✅ Goodbye messages have been disabled successfully!"
+    )
+
+
+@Client.on_message(filters.command(["kick"]) & filters.group & filters.user(ADMINS) & filters.reply)
+async def kick(_, message):
+    reply_user_id = message.reply_to_message.from_user.id
+    if reply_user_id == bot.get_me().id:
+        await message.reply_text("I cannot kick myself!")
+        return
     try:
-        chat_ = int(chat)
-    except:
-        return await message.reply('Give Me A Valid Chat ID')
-    cha_t = await db.get_chat(int(chat_))
-    if not cha_t:
-        return await message.reply("Chat Not Found In DB")
-    if cha_t['is_disabled']:
-        return await message.reply(f"This chat is already disabled:\nReason-<code> {cha_t['reason']} </code>")
-    await db.disable_chat(int(chat_), reason)
-    temp.BANNED_CHATS.append(int(chat_))
-    await message.reply('Chat Successfully Disabled')
-    try:
-        buttons = [[
-            InlineKeyboardButton('🚸 Support 🚸', url=f'https://t.me/+9Y0zeiIAFeczMDJl')
-        ]]
-        reply_markup=InlineKeyboardMarkup(buttons)
-        await bot.send_message(
-            chat_id=chat_, 
-            text=f'<b>Hello Friends, \nMy admin has told me to leave from group, So im going 🤪 ! If you wanna add me again contact my support group.</b> \nReason : <code>{reason}</code>',
-            reply_markup=reply_markup)
-        await bot.leave_chat(chat_)
-    except Exception as e:
-        await message.reply(f"Error - {e}")
-
-
-@Client.on_message(filters.command('enable') & filters.user(ADMINS))
-async def re_enable_chat(bot, message):
-    if len(message.command) == 1:
-        return await message.reply('Give me a chat id')
-    chat = message.command[1]
-    try:
-        chat_ = int(chat)
-    except:
-        return await message.reply('Give Me A Valid Chat ID')
-    sts = await db.get_chat(int(chat))
-    if not sts:
-        return await message.reply("Chat Not Found In DB !")
-    if not sts.get('is_disabled'):
-        return await message.reply('This chat is not yet disabled.')
-    await db.re_enable_chat(int(chat_))
-    temp.BANNED_CHATS.remove(int(chat_))
-    await message.reply("Chat Successfully re-enabled")
-
-
-@Client.on_message(filters.command('stats') & filters.incoming)
-async def get_ststs(bot, message):
-    rju = await message.reply('Fetching stats..')
-    total_users = await db.total_users_count()
-    totl_chats = await db.total_chat_count()
-    files = await Media.count_documents()
-    size = await db.get_db_size()
-    free = 536870912 - size
-    size = get_size(size)
-    free = get_size(free)
-    await rju.edit(script.STATUS_TXT.format(files, total_users, totl_chats, size, free))
-
-
-@Client.on_message(filters.command('invite') & filters.user(ADMINS))
-async def gen_invite(bot, message):
-    if len(message.command) == 1:
-        return await message.reply('Give me a chat id')
-    chat = message.command[1]
-    try:
-        chat = int(chat)
-    except:
-        return await message.reply('Give Me A Valid Chat ID')
-    try:
-        link = await bot.create_chat_invite_link(chat)
+        await bot.kick_chat_member(message.chat.id, reply_user_id)
+        await message.reply_text("User kicked successfully!")
     except ChatAdminRequired:
-        return await message.reply("Invite Link Generation Failed, Iam Not Having Sufficient Rights")
-    except Exception as e:
-        return await message.reply(f'Error {e}')
-    await message.reply(f'Here is your Invite Link {link.invite_link}')
+        await message.reply_text("I need administrative privileges to kick users.")
 
-@Client.on_message(filters.command('ban') & filters.user(ADMINS))
-async def ban_a_user(bot, message):
-    # https://t.me/GetTGLink/4185
-    if len(message.command) == 1:
-        return await message.reply('Give me a user id / username')
-    r = message.text.split(None)
-    if len(r) > 2:
-        reason = message.text.split(None, 2)[2]
-        chat = message.text.split(None, 2)[1]
+@Client.on_message(filters.command(["ban"]) & filters.group & filters.user(ADMINS) & filters.reply)
+async def ban(_, message):
+    reply_user_id = message.reply_to_message.from_user.id
+    if reply_user_id == bot.get_me().id:
+        await message.reply_text("I cannot ban myself!")
+        return
+    try:
+        await bot.kick_chat_member(message.chat.id, reply_user_id)
+        await bot.unban_chat_member(message.chat.id, reply_user_id)
+        await message.reply_text("User banned successfully!")
+    except ChatAdminRequired:
+        await message.reply_text("I need administrative privileges to ban users.")
+
+@Client.on_message(filters.command(["unban"]) & filters.group & filters.user(ADMINS) & filters.reply)
+async def unban(_, message):
+    reply_user_id = message.reply_to_message.from_user.id
+    try:
+        await bot.unban_chat_member(message.chat.id, reply_user_id)
+        await message.reply_text("User unbanned successfully!")
+    except ChatAdminRequired:
+        await message.reply_text("I need administrative privileges to unban users.")
+
+@Client.on_message(filters.command(["pin"]) & filters.group & filters.user(ADMINS) & filters.reply)
+async def pin(_, message):
+    reply_message_id = message.reply_to_message.message_id
+    try:
+        await bot.pin_chat_message(message.chat.id, reply_message_id)
+        await message.reply_text("Message pinned successfully!")
+    except ChatAdminRequired:
+        await message.reply_text("I need administrative privileges to pin messages.")
+
+
+@Client.on_message(filters.command(["unpin"]) & filters.group & filters.user(ADMINS))
+async def unpin(_, message):
+    try:
+        await bot.unpin_chat_message(message.chat.id)
+        await message.reply_text("Message unpinned successfully!")
+    except ChatAdminRequired:
+        await message.reply_text("I need administrative privileges to unpin messages.")
+
+@Client.on_message(filters.command(["purge"]) & filters.group & filters.user(ADMINS) & filters.reply)
+async def purge(_, message):
+    reply_message_id = message.reply_to_message.message_id
+    try:
+        await bot.delete_messages(message.chat.id, reply_message_id)
+        await message.reply_text("Message deleted successfully!")
+    except ChatAdminRequired:
+        await message.reply_text("I need administrative privileges to delete messages.")
+
+@Client.on_message(filters.command(["promote"]) & filters.group & filters.user(ADMINS) & filters.reply)
+async def promote(_, message):
+    reply_user_id = message.reply_to_message.from_user.id
+    try:
+        await bot.promote_chat_member(message.chat.id, reply_user_id)
+        await message.reply_text("User promoted successfully!")
+    except ChatAdminRequired:
+        await message.reply_text("I need administrative privileges to promote users.")
+
+
+@Client.on_message(filters.command(["demote"]) & filters.group & filters.user(ADMINS) & filters.reply)
+async def demote(_, message):
+    reply_user_id = message.reply_to_message.from_user.id
+    try:
+        await bot.promote_chat_member(
+            chat_id=message.chat.id,
+            user_id=reply_user_id,
+            can_change_info=False,
+            can_delete_messages=False,
+            can_invite_users=False,
+            can_restrict_members=False,
+            can_pin_messages=False,
+            can_promote_members=False
+        )
+        await message.reply_text("User demoted successfully!")
+    except ChatAdminRequired:
+        await message.reply_text("I need administrative privileges to demote users.")
+
+
+@Client.on_message(filters.command(["mute"]) & filters.group & filters.user(ADMINS) & filters.reply)
+async def mute(_, message):
+    reply_user_id = message.reply_to_message.from_user.id
+    try:
+        await bot.restrict_chat_member(
+            chat_id=message.chat.id,
+            user_id=reply_user_id,
+            permissions=ChatPermissions(can_send_messages=False)
+        )
+        await message.reply_text("User muted successfully!")
+    except ChatAdminRequired:
+        await message.reply_text("I need administrative privileges to mute users.")
+
+
+@Client.on_message(filters.command(["unmute"]) & filters.group & filters.user(ADMINS) & filters.reply)
+async def unmute(_, message):
+    reply_user_id = message.reply_to_message.from_user.id
+    try:
+        await bot.restrict_chat_member(message.chat.id, reply_user_id, can_send_messages=True)
+        await message.reply_text("User unmuted successfully!")
+    except ChatAdminRequired:
+        await message.reply_text("I need administrative privileges to unmute users.")
+
+@Client.on_message(filters.command(["banall"]) & filters.group & filters.user(ADMINS))
+async def banall(_, message):
+    try:
+        members = await bot.get_chat_members(message.chat.id)
+        for member in members:
+            user_id = member.user.id
+            if user_id != bot.get_me().id:
+                await bot.kick_chat_member(message.chat.id, user_id)
+        await message.reply_text("All members banned successfully!")
+    except ChatAdminRequired:
+        await message.reply_text("I need administrative privileges to ban members.")
+
+@Client.on_message(filters.command(["info"]) & filters.group & filters.user(ADMINS))
+async def info(_, message):
+    chat = message.chat
+    members_count = await bot.get_chat_members_count(chat.id)
+    text = f"Group Info:\n\nTitle: {chat.title}\nID: {chat.id}\nMembers: {members_count}"
+    await message.reply_text(text)
+
+@Client.on_message(filters.command(["id"]) & filters.group & filters.user(ADMINS) & filters.reply)
+async def id(bot, message):
+    reply_user = message.reply_to_message.from_user
+    text = f"User ID: {reply_user.id}\n\n{reply_user.mention}"
+    await message.reply_text(text)
+
+@Client.on_message(filters.command(["settings"]) & filters.group & filters.user(ADMINS))
+async def settings(bot, message):
+    settings = await get_settings(message.chat.id)
+    welcome_status = "Enabled" if settings.get("welcome") else "Disabled"
+    goodbye_status = "Enabled" if settings.get("goodbye") else "Disabled"
+    welcome_text = settings.get("welcome_text", "Not set")
+    goodbye_text = settings.get("goodbye_text", "Not set")
+    text = f"Group Settings:\n\nWelcome: {welcome_status}\nWelcome Text: {welcome_text}\n\nGoodbye: {goodbye_status}\nGoodbye Text: {goodbye_text}"
+    await message.reply_text(text)
+
+
+@Client.on_message(filters.command(["setwelcome"]) & filters.group & filters.user(ADMINS) & filters.reply)
+async def setwelcome(bot, message):
+    reply_text = message.reply_to_message.text
+    if reply_text:
+        settings = await get_settings(message.chat.id)
+        settings["welcome_text"] = reply_text
+        await db.set_settings(message.chat.id, settings)
+        await message.reply_text("Welcome text set successfully!")
     else:
-        chat = message.command[1]
-        reason = "No reason Provided"
-    try:
-        chat = int(chat)
-    except:
-        pass
-    try:
-        k = await bot.get_users(chat)
-    except PeerIdInvalid:
-        return await message.reply("This is an invalid user, make sure i have met him before.")
-    except IndexError:
-        return await message.reply("This might be a channel, make sure its a user.")
-    except Exception as e:
-        return await message.reply(f'Error - {e}')
+        await message.reply_text("Please reply to a message containing the welcome text.")
+
+@Client.on_message(filters.command(["setgoodbye"]) & filters.group & filters.user(ADMINS) & filters.reply)
+async def setgoodbye(bot, message):
+    reply_message = message.reply_to_message
+    if reply_message and reply_message.text:
+        reply_text = reply_message.text
+        settings = await get_settings(message.chat.id)
+        settings["goodbye_text"] = reply_text
+        await db.set_settings(message.chat.id, settings)
+        await message.reply_text("Goodbye text set successfully!")
     else:
-        jar = await db.get_ban_status(k.id)
-        if jar['is_banned']:
-            return await message.reply(f"{k.mention} is already banned\nReason: {jar['ban_reason']}")
-        await db.ban_user(k.id, reason)
-        temp.BANNED_USERS.append(k.id)
-        await message.reply(f"Successfully banned ! get better dude {k.mention}")
+        await message.reply_text("Please reply to a text message to set it as the goodbye text.")
 
-
-    
-@Client.on_message(filters.command('unban') & filters.user(ADMINS))
-async def unban_a_user(bot, message):
-    if len(message.command) == 1:
-        return await message.reply('Give me a user id / username')
-    r = message.text.split(None)
-    if len(r) > 2:
-        reason = message.text.split(None, 2)[2]
-        chat = message.text.split(None, 2)[1]
     else:
-        chat = message.command[1]
-        reason = "No reason Provided"
-    try:
-        chat = int(chat)
-    except:
-        pass
-    try:
-        k = await bot.get_users(chat)
-    except PeerIdInvalid:
-        return await message.reply("This is an invalid user, make sure ia have met him before.")
-    except IndexError:
-        return await message.reply("This might be a channel, make sure its a user.")
-    except Exception as e:
-        return await message.reply(f'Error - {e}')
+        await message.reply_text("Please reply to a message containing the goodbye text.")
+
+@Client.on_message(filters.command(["enablewelcome"]) & filters.group & filters.user(ADMINS))
+async def enablewelcome(bot, message):
+    settings = await get_settings(message.chat.id)
+    settings["welcome"] = True
+    await db.set_settings(message.chat.id, settings)
+    await message.reply_text("Welcome messages enabled!")
+
+@Client.on_message(filters.command(["disablewelcome"]) & filters.group & filters.user(ADMINS))
+async def disablewelcome(bot, message):
+    settings = await get_settings(message.chat.id)
+    settings["welcome"] = False
+    await db.set_settings(message.chat.id, settings)
+    await message.reply_text("Welcome messages disabled!")
+
+@Client.on_message(filters.command(["enablegoodbye "]) & filters.group & filters.user(ADMINS))
+async def enablegoodbye(bot, message):
+    settings = await get_settings(message.chat.id)
+    settings["goodbye"] = True
+    await db.set_settings(message.chat.id, settings)
+    await message.reply_text("Goodbye messages enabled!")
+
+@Client.on_message(filters.command(["disablegoodbye"]) & filters.group & filters.user(ADMINS))
+async def disablegoodbye(bot, message):
+    settings = await get_settings(message.chat.id)
+    settings["goodbye"] = False
+    await db.set_settings(message.chat.id, settings)
+    await message.reply_text("Goodbye messages disabled!")
+
+@Client.on_message(filters.command(["cleanwelcome"]) & filters.group & filters.user(ADMINS))
+async def cleanwelcome(bot, message):
+    if (temp.MELCOW).get('welcome') is not None:
+        try:
+            await (temp.MELCOW['welcome']).delete()
+            await message.reply_text("Welcome message cleaned!")
+        except:
+            pass
     else:
-        jar = await db.get_ban_status(k.id)
-        if not jar['is_banned']:
-            return await message.reply(f"{k.mention} is not yet banned.")
-        await db.remove_ban(k.id)
-        temp.BANNED_USERS.remove(k.id)
-        await message.reply(f"Successfully unbanned ! get better dude {k.mention}")
+        await message.reply_text("There is no welcome message to clean.")
 
+@Client.on_message(filters.command(["cleangoodbye"]) & filters.group & filters.user(ADMINS))
+async def cleangoodbye(bot, message):
+    if (temp.MELCOW).get('goodbye') is not None:
+        try:
+            await (temp.MELCOW['goodbye']).delete()
+            await message.reply_text("Goodbye message cleaned!")
+        except:
+            pass
+    else:
+        await message.reply_text("There is no goodbye message to clean.")
 
-    
-@Client.on_message(filters.command('users') & filters.user(ADMINS))
-async def list_users(bot, message):
-    # https://t.me/GetTGLink/4184
-    raju = await message.reply('Getting List Of Users')
-    users = await db.get_all_users()
-    out = "Users Saved In DB Are:\n\n"
-    async for user in users:
-        out += f"<a href=tg://user?id={user['id']}>{user['name']}</a>"
-        if user['ban_status']['is_banned']:
-            out += '( Banned User )'
-        out += '\n'
-    try:
-        await raju.edit_text(out)
-    except MessageTooLong:
-        with open('users.txt', 'w+') as outfile:
-            outfile.write(out)
-        await message.reply_document('users.txt', caption="List Of Users")
+@Client.on_message(filters.command(["filter"]) & filters.group & filters.user(ADMINS) & filters.reply)
+async def filter(bot, message):
+    reply_message = message.reply_to_message
+    if reply_message.media:
+        media = Media(chat_id=message.chat.id, message_id=reply_message.message_id)
+        await media.save()
+        await message.reply_text("Message added to filtered media.")
+    else:
+        await message.reply_text("Please reply to a media message.")
 
-@Client.on_message(filters.command('chats') & filters.user(ADMINS))
-async def list_chats(bot, message):
-    raju = await message.reply('Getting List Of chats Dear !')
-    chats = await db.get_all_chats()
-    out = "Chats Saved In DB Are:\n\n"
-    async for chat in chats:
-        out += f"**Title:** `{chat['title']}`\n**- ID:** `{chat['id']}`"
-        if chat['chat_status']['is_disabled']:
-            out += '( Disabled Chat )'
-        out += '\n'
-    try:
-        await raju.edit_text(out)
-    except MessageTooLong:
-        with open('chats.txt', 'w+') as outfile:
-            outfile.write(out)
-        await message.reply_document('chats.txt', caption="List Of Chats")
+@Client.on_message(filters.command(["unfilter"]) & filters.group & filters.user(ADMINS) & filters.reply)
+async def unfilter(bot, message):
+    reply_message_id = message.reply_to_message.message_id
+    await Media.delete().where((Media.chat_id == message.chat.id) & (Media.message_id == reply_message_id)).gino.status()
+    await message.reply_text("Message removed from filtered media.")
+
+@Client.on_message(filters.command(["filtered"]) & filters.group & filters.user(ADMINS))
+async def filtered(bot, message):
+    filtered_media = await Media.query.where(Media.chat_id == message.chat.id).gino.all()
+    if filtered_media:
+        text = "Filtered Media:\n\n"
+        for media in filtered_media:
+            text += f"Message ID: {media.message_id}\n"
+        await message.reply_text(text)
+    else:
+        await message.reply_text("There are no filtered media messages.")
+
+@Client.on_message(filters.command(["cleanfiltered"]) & filters.group & filters.user(ADMINS))
+async def cleanfiltered(bot, message):
+    await Media.delete().where(Media.chat_id == message.chat.id).gino.status()
+    await message.reply_text("Filtered media messages cleaned!")
+
+@Client.on_message(filters.command("help", CMD))
+async def help(_, message):
+    text = f"Hi, I'm the group management bot!\n\n"
+    text += f"These are the available commands:\n\n"
+    text += f"/kick - Kick a user\n"
+    text += f"/ban - Ban a user\n"
+    text += f"/unban - Unban a user\n"
+    text += f"/pin - Pin a message\n"
+    text += f"/unpin - Unpin the currently pinned message\n"
+    text += f"/purge - Delete a message\n"
+    text += f"/promote - Promote a user\n"
+    text += f"/demote - Demote a user\n"
+    text += f"/mute - Mute a user\n"
+    text += f"/unmute - Unmute a user\n"
+    text += f"/banall - Ban all members in the group\n"
+    text += f"/info - Get group information\n"
+    text += f"/id - Get the ID of a user\n"
+    text += f"/settings - Get the group settings\n"
+    text += f"/setwelcome - Set the welcome text\n"
+    text += f"/setgoodbye - Set the goodbye text\n"
+    text += f"/enablewelcome - Enable welcome messages\n"
+    text += f"/disablewelcome - Disable welcome messages\n"
+    text += f"/enablegoodbye - Enable goodbye messages\n"
+    text += f"/disablegoodbye - Disable goodbye messages\n"
+    text += f"/cleanwelcome - Clean the welcome message\n"
+    text += f"/cleangoodbye - Clean the goodbye message\n"
+    text += f"/filter - Add a message to filtered media\n"
+    text += f"/unfilter - Remove a message from filtered media\n"
+    text += f"/filtered - Get filtered media messages\n"
+    text += f"/cleanfiltered - Clean filtered media messages\n"
+    text += f"/help - Show this help message\n"
+    await message.reply_text(text)
+
+@Client.on_message(filters.command("support", CMD))
+async def support(bot, message):
+    await message.reply_text("For any queries or support, please contact the group admins.")
