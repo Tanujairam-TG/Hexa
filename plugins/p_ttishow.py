@@ -45,15 +45,69 @@ async def save_group(bot, message):
             text=f"<b>Thankyou For Adding Me In {message.chat.title} ❣️\n\nIf you have any questions & doubts about using me contact support.</b>",
             reply_markup=reply_markup)
     else:
-        settings = await get_settings(message.chat.id)
-        if settings["welcome"]:
-            for u in message.new_chat_members:
-                if (temp.MELCOW).get('welcome') is not None:
-                    try:
-                        await (temp.MELCOW['welcome']).delete()
-                    except:
-                        pass
-                temp.MELCOW['welcome'] = await message.reply(f"<b>Hey , {u.mention}, Welcome to {message.chat.title}</b>")
+    settings = await get_settings(message.chat.id)
+    if settings.get("welcome", False):
+        for u in message.new_chat_members:
+            custom_wishes = [
+                "Welcome aboard!",
+            ]
+            custom_wish_string = "\n".join([f"│✑ Custom Wish: {wish}" for wish in custom_wishes])
+
+            welcome_message = f'''
+            ┌─❖
+            │ 「 Hi 」
+            └┬❖
+            │✑ Welcome, {u.mention}!
+            ├❖ To {message.chat.title}!
+            │✑ Enjoy your stay!
+            │
+            {custom_wish_string}
+            ├❖ Contact for any queries!
+            │❖ Type !help for commands
+            │❖ Type !support for help
+            └❖ Have a nice day!
+            '''
+
+            # Send the welcome message
+            await message.reply_text(
+                text=welcome_message,
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton('🤥 Help', url=f"https://t.me/{temp.U_NAME}?start=help")],
+                    [InlineKeyboardButton('🔔 Updates', url='https://t.me/CinemaVenoOfficial')]
+                ])
+            )
+
+        try:
+            await temp.MELCOW_NEW_USERS.delete()
+        except:
+            pass
+
+        temp.MELCOW_NEW_USERS = await message.reply(
+            text="┌─❖\n"
+                 "│ 「 Hi 」\n"
+                 "└┬❖\n"
+                 "│✑ Welcome!\n"
+                 "├❖ To the group!\n"
+                 "│✑ Enjoy your stay!\n"
+                 "├❖ Contact for any queries!\n"
+                 "│❖ Type !help for commands\n"
+                 "│❖ Type !support for help\n"
+                 "└❖ Have a nice day!",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton('🤥 Help', url=f"https://t.me/{temp.U_NAME}?start=help")],
+                [InlineKeyboardButton('🔔 Updates', url='https://t.me/CinemaVenoOfficial')]
+            ])
+        )
+
+@Client.on_message(filters.left_chat_member & filters.group)
+async def goodbye(_, message):
+    settings = await get_settings(message.chat.id)
+    if settings.get("goodbye", False):
+        user = message.left_chat_member
+        chat = message.chat
+        goodbye_text = settings.get("goodbye_text", f"Goodbye, {user.mention}!")
+        text = goodbye_text.replace("{mention}", user.mention).replace("{title}", chat.title)
+        await message.reply_text(text)
 
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
