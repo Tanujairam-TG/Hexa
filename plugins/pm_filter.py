@@ -319,7 +319,7 @@ async def advantage_spoll_choker(bot, query):
             await auto_filter(bot, query, k)
         else:
             k = await query.message.edit('😒 currently unavailable ! we are really sorry for inconvenience !\n Have patience ! our great admins will upload it as soon as possible !')
-            await asyncio.sleep(60)
+            await asyncio.sleep(10)
             await k.delete()
 
 # Born to make history @Hexa !
@@ -1058,7 +1058,12 @@ async def cb_handler(client: Client, query: CallbackQuery):
                     InlineKeyboardButton('✅ Yes' if settings["welcome"] else '❌ No',
                                          callback_data=f'setgs#welcome#{settings["welcome"]}#{str(grp_id)}')
                 ]
-            ]
+            ],
+            [
+                    InlineKeyboardButton('goodbye', callback_data=f'setgs#goodbye#{settings["goodbye"]}#{str(grp_id)}'),
+                    InlineKeyboardButton('✅ Yes' if settings["goodbye"] else '❌ No',
+                                         callback_data=f'setgs#goodbye#{settings["goodbye"]}#{str(grp_id)}')
+                ]
             else:
                 buttons = [
                 [
@@ -1094,7 +1099,12 @@ async def cb_handler(client: Client, query: CallbackQuery):
                     InlineKeyboardButton('✅ Yes' if settings["welcome"] else '❌ No',
                                          callback_data=f'setgs#welcome#{settings["welcome"]}#{str(grp_id)}')
                 ]
-            ]
+            ],
+            [
+                    InlineKeyboardButton('goodbye', callback_data=f'setgs#goodbye#{settings["goodbye"]}#{str(grp_id)}'),
+                    InlineKeyboardButton('✅ Yes' if settings["goodbye"] else '❌ No',
+                                         callback_data=f'setgs#goodbye#{settings["goodbye"]}#{str(grp_id)}')
+                ]
             reply_markup = InlineKeyboardMarkup(buttons)
             await query.message.edit_reply_markup(reply_markup)
     await query.answer('♥️ Thank You Hexa ♥️')
