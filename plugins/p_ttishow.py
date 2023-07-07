@@ -82,7 +82,7 @@ async def leave_a_chat(bot, message):
         await message.reply(f'Error - {e}')
 
 @Client.on_message(filters.command('disable') & filters.user(ADMINS))
-async def disable_chat(bot, message):
+async def disable_chat(_, message):
     if len(message.command) == 1:
         return await message.reply('Give me a chat id')
     r = message.text.split(None)
@@ -119,7 +119,7 @@ async def disable_chat(bot, message):
 
 
 @Client.on_message(filters.command('enable') & filters.user(ADMINS))
-async def re_enable_chat(bot, message):
+async def re_enable_chat(_, message):
     if len(message.command) == 1:
         return await message.reply('Give me a chat id')
     chat = message.command[1]
@@ -151,7 +151,7 @@ async def get_ststs(bot, message):
 
 
 @Client.on_message(filters.command('invite') & filters.user(ADMINS))
-async def gen_invite(bot, message):
+async def gen_invite(_, message):
     if len(message.command) == 1:
         return await message.reply('Give me a chat id')
     chat = message.command[1]
