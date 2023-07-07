@@ -113,7 +113,7 @@ async def goodbye(bot, message):
 
 
 @Client.on_message(filters.command('setwelcome'))
-async def setwelcome(bot, message):
+async def set_welcome(_, message):
     if not message.from_user.id in ADMINS:
         return await message.reply(
             "❌ You are not allowed to access this command!"
@@ -126,7 +126,7 @@ async def setwelcome(bot, message):
 
     settings = await get_settings(message.chat.id)
     settings["welcome"] = True
-    await temp.SETTINGS.update_one({"chat_id": message.chat.id}, {"$set": settings})
+    await db.set_settings(message.chat.id, settings)
 
     welcome_message = " ".join(message.command[1:])
     await message.reply_text(
@@ -135,7 +135,7 @@ async def setwelcome(bot, message):
 
 
 @Client.on_message(filters.command('setgoodbye'))
-async def setgoodbye(bot, message):
+async def set_goodbye(_, message):
     if not message.from_user.id in ADMINS:
         return await message.reply(
             "❌ You are not allowed to access this command!"
@@ -148,13 +148,12 @@ async def setgoodbye(bot, message):
 
     settings = await get_settings(message.chat.id)
     settings["goodbye"] = True
-    await temp.SETTINGS.update_one({"chat_id": message.chat.id}, {"$set": settings})
+    await db.set_settings(message.chat.id, settings)
 
     goodbye_message = " ".join(message.command[1:])
     await message.reply_text(
         f"✅ Goodbye message has been set successfully!\n\nNew Goodbye Message:\n{goodbye_message}"
     )
-
 
 @Client.on_message(filters.command('welcome'))
 async def welcome(bot, message):
@@ -434,8 +433,6 @@ async def setgoodbye(bot, message):
     else:
         await message.reply_text("Please reply to a text message to set it as the goodbye text.")
 
-    else:
-        await message.reply_text("Please reply to a message containing the goodbye text.")
 
 @Client.on_message(filters.command(["enablewelcome"]) & filters.group & filters.user(ADMINS))
 async def enablewelcome(bot, message):
