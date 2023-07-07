@@ -90,7 +90,7 @@ async def save_group(bot, message):
 @Client.on_message(filters.left_chat_member & filters.group)
 async def goodbye(bot, message):
     settings = await get_settings(message.chat.id)
-    if settings get("goodbye"):
+    if settings.get("goodbye"):
     	for u in message.left_chat_member:
         if temp.MELCOW.get('goodbye') is not None:
             try:
