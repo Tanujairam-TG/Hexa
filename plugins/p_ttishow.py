@@ -50,7 +50,7 @@ async def save_group(bot, message):
         )
     else:
         settings = await get_settings(message.chat.id)
-        if settings["welcome"]:
+        if settings.get("welcome"):
             for u in message.new_chat_members:
                 if temp.MELCOW.get('welcome') is not None:
                     try:
@@ -99,7 +99,7 @@ async def save_group(bot, message):
 @Client.on_message(filters.left_chat_member & filters.group)
 async def goodbye(bot, message):
     settings = await get_settings(message.chat.id)
-    if settings["goodbye"]:
+    if "goodbye" in settings and settings["goodbye"]:
         if temp.MELCOW.get('goodbye') is not None:
             try:
                 await temp.MELCOW['goodbye'].delete()
@@ -118,13 +118,13 @@ async def goodbye(bot, message):
                 [
                     [
                         InlineKeyboardButton('🚑 Support 🚑', url=f"https://t.me/+9Y0zeiIAFeczMDJl"),
-                        InlineKeyboardButton('🔔 Updates', url=f"https://t.me/CinemaVenoOfficial")
+                        InlineKeyboardButton('🔔 Updates',url=f"https://t.me/CinemaVenoOfficial")
                     ]
                 ]
             )
         )
-        
- 
+
+
 @Client.on_message(filters.command('setwelcome'))
 async def set_welcome(_, message):
     if not message.from_user.id in ADMINS:
