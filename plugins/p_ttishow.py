@@ -557,4 +557,4 @@ async def help(bot, message):
 
 @Client.on_message(filters.command(["support"]) & filters.group & filters.user(ADMINS))
 async def support(bot, message):
-    await message.reply_text("For any queries or support, please contact the group admins."
+    await message.reply_text("For any queries or support, please contact the group admins.")
