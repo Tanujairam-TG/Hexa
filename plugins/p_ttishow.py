@@ -1,4 +1,4 @@
-from pyrogram import Client, filters, enums
+from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.errors.exceptions.bad_request_400 import MessageTooLong, PeerIdInvalid
 from info import ADMINS, LOG_CHANNEL, SUPPORT_CHAT, MELCOW_NEW_USERS
@@ -7,6 +7,7 @@ from database.ia_filterdb import Media
 from utils import get_size, temp, get_settings
 from Script import script
 from pyrogram.errors import ChatAdminRequired
+from datetime import datetime
 
 """-----------------------------------------https://t.me/CinemaVenoOfficial --------------------------------------"""
 
@@ -15,18 +16,18 @@ async def save_group(bot, message):
     r_j_check = [u.id for u in message.new_chat_members]
     if temp.ME in r_j_check:
         if not await db.get_chat(message.chat.id):
-            total=await bot.get_chat_members_count(message.chat.id)
-            r_j = message.from_user.mention if message.from_user else "Anonymous" 
-            await bot.send_message(LOG_CHANNEL, script.LOG_TEXT_G.format(message.chat.title, message.chat.id, total, r_j))       
+            total = await bot.get_chat_members_count(message.chat.id)
+            r_j = message.from_user.mention if message.from_user else "Anonymous"
+            await bot.send_message(LOG_CHANNEL, script.LOG_TEXT_G.format(message.chat.title, message.chat.id, total, r_j))
             await db.add_chat(message.chat.id, message.chat.title)
         if message.chat.id in temp.BANNED_CHATS:
             # Inspired from a boat of a banana tree
             buttons = [[
                 InlineKeyboardButton('🚸 Support 🚸', url=f'https://t.me/+9Y0zeiIAFeczMDJl')
             ]]
-            reply_markup=InlineKeyboardMarkup(buttons)
+            reply_markup = InlineKeyboardMarkup(buttons)
             k = await message.reply(
-                text='<b>CHAT NOT ALLOWED 🐞\n\nMy admins has restricted me from working here ! If you want to know more about it contact support..</b>',
+                text='<b>CHAT NOT ALLOWED 🐞\n\nMy admins have restricted me from working here! If you want to know more about it, contact support.</b>',
                 reply_markup=reply_markup,
             )
 
@@ -40,74 +41,20 @@ async def save_group(bot, message):
             InlineKeyboardButton('🤥 Help', url=f"https://t.me/{temp.U_NAME}?start=help"),
             InlineKeyboardButton('🔔 Updates', url='https://t.me/CinemaVenoOfficial')
         ]]
-        reply_markup=InlineKeyboardMarkup(buttons)
+        reply_markup = InlineKeyboardMarkup(buttons)
         await message.reply_text(
-            text=f"<b>Thankyou For Adding Me In {message.chat.title} ❣️\n\nIf you have any questions & doubts about using me contact support.</b>",
+            text=f"<b>Thank you for adding me to {message.chat.title} ❣️\n\nIf you have any questions or doubts about using me, contact support.</b>",
             reply_markup=reply_markup)
     else:
-    settings = await get_settings(message.chat.id)
-    if settings.get("welcome", False):
-        for u in message.new_chat_members:
-            custom_wishes = [
-                "Welcome aboard!",
-            ]
-            custom_wish_string = "\n".join([f"│✑ Custom Wish: {wish}" for wish in custom_wishes])
-
-            welcome_message = f'''
-            ┌─❖
-            │ 「 Hi 」
-            └┬❖
-            │✑ Welcome, {u.mention}!
-            ├❖ To {message.chat.title}!
-            │✑ Enjoy your stay!
-            │
-            {custom_wish_string}
-            ├❖ Contact for any queries!
-            │❖ Type !help for commands
-            │❖ Type !support for help
-            └❖ Have a nice day!
-            '''
-
-            # Send the welcome message
-            await message.reply_text(
-                text=welcome_message,
-                reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton('🤥 Help', url=f"https://t.me/{temp.U_NAME}?start=help")],
-                    [InlineKeyboardButton('🔔 Updates', url='https://t.me/CinemaVenoOfficial')]
-                ])
-            )
-
-        try:
-            await temp.MELCOW_NEW_USERS.delete()
-        except:
-            pass
-
-        temp.MELCOW_NEW_USERS = await message.reply(
-            text="┌─❖\n"
-                 "│ 「 Hi 」\n"
-                 "└┬❖\n"
-                 "│✑ Welcome!\n"
-                 "├❖ To the group!\n"
-                 "│✑ Enjoy your stay!\n"
-                 "├❖ Contact for any queries!\n"
-                 "│❖ Type !help for commands\n"
-                 "│❖ Type !support for help\n"
-                 "└❖ Have a nice day!",
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton('🤥 Help', url=f"https://t.me/{temp.U_NAME}?start=help")],
-                [InlineKeyboardButton('🔔 Updates', url='https://t.me/CinemaVenoOfficial')]
-            ])
-        )
-
-@Client.on_message(filters.left_chat_member & filters.group)
-async def goodbye(_, message):
-    settings = await get_settings(message.chat.id)
-    if settings.get("goodbye", False):
-        user = message.left_chat_member
-        chat = message.chat
-        goodbye_text = settings.get("goodbye_text", f"Goodbye, {user.mention}!")
-        text = goodbye_text.replace("{mention}", user.mention).replace("{title}", chat.title)
-        await message.reply_text(text)
+        settings = await get_settings(message.chat.id)
+        if settings["welcome"]:
+            for u in message.new_chat_members:
+                if temp.MELCOW.get('welcome') is not None:
+                    try:
+                        await (temp.MELCOW['welcome']).delete()
+                    except:
+                        pass
+                temp.MELCOW['welcome'] = await message.reply(f"<b>Hey, {u.mention}, Welcome to {message.chat.title}</b>")
 
 
 @Client.on_message(filters.command('leave') & filters.user(ADMINS))
@@ -120,23 +67,38 @@ async def leave_a_chat(bot, message):
     except:
         chat = chat
     try:
+        chat_info = await bot.get_chat(chat)
+        goodbye_message = (
+            "┌─❖\n"
+            "│ 「 Goodbye 」\n"
+            "└┬❖\n"
+            f"┌┤✑  {message.from_user.mention}\n"
+            "│└────────────┈ ⳹\n"
+            "│\n"
+            f"│✑  {chat_info.title}\n"
+            f"│✑  Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+            "└───────────────┈ ⳹"
+        )
         buttons = [[
             InlineKeyboardButton('🚸 Support 🚸', url=f'https://t.me/+9Y0zeiIAFeczMDJl')
         ]]
-        reply_markup=InlineKeyboardMarkup(buttons)
+        reply_markup = InlineKeyboardMarkup(buttons)
         await bot.send_message(
             chat_id=chat,
-            text='<b>Hello Friends, \nMy admin has told me to leave from group so i go! If you wanna add me again contact my support group.</b>',
+            text=goodbye_message,
             reply_markup=reply_markup,
         )
 
         await bot.leave_chat(chat)
-        await message.reply(f"left the chat `{chat}`")
+        await message.reply(f"Left the chat `{chat}`")
+
+        # Remove chat from the database
+        await db.remove_chat(chat)
     except Exception as e:
         await message.reply(f'Error - {e}')
 
 @Client.on_message(filters.command('disable') & filters.user(ADMINS))
-async def disable_chat(_, message):
+async def disable_chat(bot, message):
     if len(message.command) == 1:
         return await message.reply('Give me a chat id')
     r = message.text.split(None)
@@ -173,7 +135,7 @@ async def disable_chat(_, message):
 
 
 @Client.on_message(filters.command('enable') & filters.user(ADMINS))
-async def re_enable_chat(_, message):
+async def re_enable_chat(bot, message):
     if len(message.command) == 1:
         return await message.reply('Give me a chat id')
     chat = message.command[1]
@@ -205,7 +167,7 @@ async def get_ststs(bot, message):
 
 
 @Client.on_message(filters.command('invite') & filters.user(ADMINS))
-async def gen_invite(_, message):
+async def gen_invite(bot, message):
     if len(message.command) == 1:
         return await message.reply('Give me a chat id')
     chat = message.command[1]
