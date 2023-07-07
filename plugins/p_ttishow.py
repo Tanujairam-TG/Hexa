@@ -75,6 +75,83 @@ async def save_group(bot, message):
                                   f"└┬❖\n" \
                                   f"┌┤❖  「{u.mention}」\n" \
                                   f"│└────────────┈ ⳹\n" \
+from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.errors import ChatAdminRequired
+from pyrogram.errors.exceptions.bad_request_400 import MessageTooLong, PeerIdInvalid
+from info import ADMINS, LOG_CHANNEL, SUPPORT_CHAT, MELCOW_NEW_USERS
+from database.users_chats_db import db
+from database.ia_filterdb import Media
+from utils import get_size, temp, get_settings
+from Script import script
+
+"""-----------------------------------------https://t.me/CinemaVenoOfficial --------------------------------------"""
+
+@Client.on_message(filters.new_chat_members & filters.group)
+async def save_group(bot, message):
+    r_j_check = [u.id for u in message.new_chat_members]
+    if temp.ME in r_j_check:
+        if not await db.get_chat(message.chat.id):
+            total = await bot.get_chat_members_count(message.chat.id)
+            r_j = message.from_user.mention if message.from_user else "Anonymous"
+            await bot.send_message(LOG_CHANNEL, script.LOG_TEXT_G.format(message.chat.title, message.chat.id, total, r_j))
+            await db.add_chat(message.chat.id, message.chat.title)
+        if message.chat.id in temp.BANNED_CHATS:
+            buttons = [
+                [
+                    InlineKeyboardButton('🚸 Support 🚸', url=f'https://t.me/+9Y0zeiIAFeczMDJl')
+                ]
+            ]
+            reply_markup = InlineKeyboardMarkup(buttons)
+            k = await message.reply(
+                text='<b>CHAT NOT ALLOWED 🐞\n\nMy admins have restricted me from working here! If you want to know more about it, contact support.</b>',
+                reply_markup=reply_markup,
+            )
+
+            try:
+                await k.pin()
+            except:
+                pass
+            await bot.leave_chat(message.chat.id)
+            return
+        buttons = [
+            [
+                InlineKeyboardButton('🤥 Help', url=f"https://t.me/{temp.U_NAME}?start=help"),
+                InlineKeyboardButton('🔔 Updates', url='https://t.me/CinemaVenoOfficial')
+            ]
+        ]
+        reply_markup = InlineKeyboardMarkup(buttons)
+        await message.reply_text(
+            text=f"<b>Thank you for adding me to {message.chat.title} ❣️\n\nIf you have any questions or doubts about using me, contact support.</b>",
+            reply_markup=reply_markup
+        )
+    else:
+        settings = await get_settings(message.chat.id)
+        if settings["welcome"]:
+            for u in message.new_chat_members:
+                if temp.MELCOW.get('welcome') is not None:
+                    try:
+                        await temp.MELCOW['welcome'].delete()
+                    except:
+                        pass
+                custom_wishes = [
+                    "welcome aboard!",
+                ]
+                custom_wish_string = "\n".join(f"├ ❖ Dear: {wish}" for wish in custom_wishes)
+
+                # Fetch user profile photos
+                photos = await bot.get_profile_photos(user_id=u.id, limit=1)
+                photo_url = None
+                if photos.total_count > 0:
+                    photo = photos.photos[0]
+                    photo_url = await photo.download()
+
+                # Prepare welcome message with profile photo
+                welcome_message = f"┌─❖\n" \
+                                  f"│ 「 Hi 」\n" \
+                                  f"└┬❖\n" \
+                                  f"┌┤❖  「{u.mention}」\n" \
+                                  f"│└────────────┈ ⳹\n" \
                                   f"├❖ To {message.chat.title}!\n" \
                                   f"├ ❖ Enjoy your stay!\n" \
                                   f"{custom_wish_string}" \
@@ -94,6 +171,7 @@ async def save_group(bot, message):
                         ]
                     )
                 )
+
 
 
 @Client.on_message(filters.left_chat_member & filters.group)
