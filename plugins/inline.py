@@ -14,11 +14,10 @@ async def inline_users(query: InlineQuery):
         if query.from_user and query.from_user.id in AUTH_USERS:
             return True
         else:
-            return True
+            return False
     if query.from_user and query.from_user.id not in temp.BANNED_USERS:
         return True
-    else:
-        return False
+    return False
 
 @Client.on_inline_query()
 async def answer(bot, query):
@@ -27,14 +26,14 @@ async def answer(bot, query):
     if not await inline_users(query):
         await query.answer(results=[],
                            cache_time=0,
-                           switch_pm_text='okDa',
+                           switch_pm_text='Results',
                            switch_pm_parameter="hehe")
         return
 
     if AUTH_CHANNEL and not await is_subscribed(bot, query):
         await query.answer(results=[],
                            cache_time=0,
-                           switch_pm_text='𝘠𝘰𝘶 𝘩𝘢𝘷𝘦 𝘵𝘰 𝘴𝘶𝘣𝘴𝘤𝘳𝘪𝘣𝘦 𝘮𝘺 𝘤𝘩𝘢𝘯𝘯𝘦𝘭 𝘵𝘰 𝘶𝘴𝘦 𝘵𝘩𝘦 𝘣𝘰𝘵',
+                           switch_pm_text='You have to subscribe my channel to use the bot',
                            switch_pm_parameter="subscribe")
         return
 
@@ -48,7 +47,6 @@ async def answer(bot, query):
         file_type = None
 
     offset = int(query.offset or 0)
-    reply_markup = get_reply_markup(query=string)
     files, next_offset, total = await get_search_results(string,
                                                   file_type=file_type,
                                                   max_results=10,
@@ -69,10 +67,11 @@ async def answer(bot, query):
         results.append(
             InlineQueryResultCachedDocument(
                 title=file.file_name,
-                document_file_id=file.file_id,
+                file_id=file.file_id,
                 caption=f_caption,
-                description=f'Size: {get_size(file.file_size)}\nType: {file.file_type}',
-                reply_markup=reply_markup))
+                description=f'Size: {get_size(file.file_size)}\nType: {file.file_type}'
+            )
+        )
 
     if results:
         switch_pm_text = f"{emoji.FILE_FOLDER} Results - {total}"
@@ -106,7 +105,5 @@ def get_reply_markup(query):
         [
             InlineKeyboardButton('Search again', switch_inline_query_current_chat=query)
         ]
-        ]
+    ]
     return InlineKeyboardMarkup(buttons)
-
-
