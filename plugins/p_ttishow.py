@@ -48,7 +48,7 @@ async def save_group(bot, message):
             text=f"<b>Thank you for adding me to {message.chat.title} ❣️\n\nIf you have any questions or doubts about using me, contact support.</b>",
             reply_markup=reply_markup
         )
-    else:
+     else:
         settings = await get_settings(message.chat.id)
         if settings["welcome"]:
             for u in message.new_chat_members:
@@ -62,21 +62,34 @@ async def save_group(bot, message):
                 ]
                 custom_wish_string = "\n".join(f"├ ❖ Dear: {wish}" for wish in custom_wishes)
 
-                temp.MELCOW['welcome'] = await message.reply(
-                    f"┌─❖\n"
-                    f"│ 「 Hi 」\n"
-                    f"└┬❖\n"
-                    f"┌┤❖  「{u.mention}」\n"
-                    f"│└────────────┈ ⳹\n"
-                    f"├❖ To {message.chat.title}!\n"
-                    f"├ ❖ Enjoy your stay!\n"
-                    f"{custom_wish_string}"
-                    f"└────────────┈ ⳹",
+                # Fetch user profile photos
+                photos = await bot.get_user_profile_photos(user_id=u.id, limit=1)
+                photo_url = None
+                if photos.total_count > 0:
+                    photo = photos.photos[0]
+                    photo_url = await photo.download()
+
+                # Prepare welcome message with profile photo
+                welcome_message = f"┌─❖\n" \
+                                  f"│ 「 Hi 」\n" \
+                                  f"└┬❖\n" \
+                                  f"┌┤❖  「{u.mention}」\n" \
+                                  f"│└────────────┈ ⳹\n" \
+                                  f"├❖ To {message.chat.title}!\n" \
+                                  f"├ ❖ Enjoy your stay!\n" \
+                                  f"{custom_wish_string}" \
+                                  f"└────────────┈ ⳹"
+
+                # Send welcome message with profile photo
+                await bot.send_photo(
+                    chat_id=message.chat.id,
+                    photo=photo_url,
+                    caption=welcome_message,
                     reply_markup=InlineKeyboardMarkup(
                         [
                             [
-                                InlineKeyboardButton('🎉 Support 🎉', url=f"https://t.me/{SUPPORT_CHAT}"),
-                                InlineKeyboardButton('🚀 Updates', url=f"https://t.me/{LOG_CHANNEL.split('/')[1]}")
+                                InlineKeyboardButton('🎉 Support 🎉', url=f"https://t.me/+9Y0zeiIAFeczMDJl"),
+                                InlineKeyboardButton('🚀 Updates', url=f"https://t.me/CinemaVenoOfficial")
                             ]
                         ]
                     )
