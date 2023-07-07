@@ -62,14 +62,7 @@ async def save_group(bot, message):
                 ]
                 custom_wish_string = "\n".join(f"├ ❖ Dear: {wish}" for wish in custom_wishes)
 
-                # Fetch user profile photos
-                photos = await bot.get_profile_photos(user_id=u.id, limit=1)
-                photo_url = None
-                if photos.total_count > 0:
-                    photo = photos.photos[0]
-                    photo_url = await photo.download()
-
-                # Prepare welcome message with profile photo
+                # Prepare welcome message
                 welcome_message = f"┌─❖\n" \
                                   f"│ 「 Hi 」\n" \
                                   f"└┬❖\n" \
@@ -80,11 +73,9 @@ async def save_group(bot, message):
                                   f"{custom_wish_string}" \
                                   f"└────────────┈ ⳹"
 
-                # Send welcome message with profile photo
-                await bot.send_photo(
+                await bot.send_message(
                     chat_id=message.chat.id,
-                    photo=photo_url,
-                    caption=welcome_message,
+                    text=welcome_message,
                     reply_markup=InlineKeyboardMarkup(
                         [
                             [
@@ -99,7 +90,8 @@ async def save_group(bot, message):
 @Client.on_message(filters.left_chat_member & filters.group)
 async def goodbye(bot, message):
     settings = await get_settings(message.chat.id)
-    if "goodbye" in settings and settings["goodbye"]:
+    if settings get("goodbye"):
+    	for u in message.left_chat_member:
         if temp.MELCOW.get('goodbye') is not None:
             try:
                 await temp.MELCOW['goodbye'].delete()
