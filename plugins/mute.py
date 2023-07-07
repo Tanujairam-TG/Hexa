@@ -3,10 +3,10 @@ from pyrogram import filters
 from pyrogram.types import ChatPermissions
 
 
-@app.on_message(filters.command("muteall") & filters.user(SUDO))
+@app.on_message(filters.command("muteall") & filters.user(ADMINS))
 async def mute_all(_,msg):
     chat_id=msg.chat.id    
-    bot=await app.get_chat_member(chat_id,BOT_ID)
+    bot=await app.get_chat_member(chat_id,AUTH_USERS)
     bot_permission=bot.privileges.can_restrict_members==True    
     if bot_permission:
         async for member in app.get_chat_members(chat_id):       
