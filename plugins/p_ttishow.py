@@ -88,9 +88,9 @@ async def save_group(bot, message):
                     reply_markup=InlineKeyboardMarkup(
                         [
                             [
-                                InlineKeyboardButton('🎉 Support 🎉', url=f"https://t.me/+9Y0zeiIAFeczMDJl"),
-                                InlineKeyboardButton('🚀 Updates', url=f"https://t.me/CinemaVenoOfficial")
-                            ]
+                              InlineKeyboardButton('🤥 Help', url=f"https://t.me/{temp.U_NAME}?start=help"),
+                              InlineKeyboardButton('🔔 Updates', url='https://t.me/CinemaVenoOfficial')
+                           ]
                         ]
                     )
                 )
@@ -117,14 +117,14 @@ async def goodbye(bot, message):
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton('🚑 Support 🚑', url=f"https://t.me/{SUPPORT_CHAT}"),
-                        InlineKeyboardButton('🔔 Updates', url=f"https://t.me/{LOG_CHANNEL.split('/')[1]}")
+                        InlineKeyboardButton('🚑 Support 🚑', url=f"https://t.me/+9Y0zeiIAFeczMDJl"),
+                        InlineKeyboardButton('🔔 Updates', url=f"https://t.me/CinemaVenoOfficial")
                     ]
                 ]
             )
         )
-
-
+        
+ 
 @Client.on_message(filters.command('setwelcome'))
 async def set_welcome(_, message):
     if not message.from_user.id in ADMINS:
