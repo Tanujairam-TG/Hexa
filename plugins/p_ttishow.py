@@ -88,9 +88,9 @@ async def save_group(bot, message):
                     reply_markup=InlineKeyboardMarkup(
                         [
                             [
-                              InlineKeyboardButton('🤥 Help', url=f"https://t.me/{temp.U_NAME}?start=help"),
-                              InlineKeyboardButton('🔔 Updates', url='https://t.me/CinemaVenoOfficial')
-                           ]
+                                InlineKeyboardButton('🎉 Support 🎉', url=f"https://t.me/+9Y0zeiIAFeczMDJl"),
+                                InlineKeyboardButton('🚀 Updates', url=f"https://t.me/CinemaVenoOfficial")
+                            ]
                         ]
                     )
                 )
