@@ -516,8 +516,8 @@ async def cleanfiltered(bot, message):
     await Media.delete().where(Media.chat_id == message.chat.id).gino.status()
     await message.reply_text("Filtered media messages cleaned!")
 
-@Client.on_message(filters.command("help", CMD))
-async def help(_, message):
+@Client.on_message(filters.command(["help"]) & filters.group & filters.user(ADMINS))
+async def help(bot, message):
     text = f"Hi, I'm the group management bot!\n\n"
     text += f"These are the available commands:\n\n"
     text += f"/kick - Kick a user\n"
@@ -549,6 +549,6 @@ async def help(_, message):
     text += f"/help - Show this help message\n"
     await message.reply_text(text)
 
-@Client.on_message(filters.command("support", CMD))
+@Client.on_message(filters.command(["support"]) & filters.group & filters.user(ADMINS))
 async def support(bot, message):
     await message.reply_text("For any queries or support, please contact the group admins.")
