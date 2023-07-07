@@ -1,4 +1,4 @@
-from plugins import app,AUTH_USERS,ADMINS
+from info import,AUTH_USERS,ADMINS
 from pyrogram import filters
 from pyrogram.types import ChatPermissions
 
