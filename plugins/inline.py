@@ -19,10 +19,15 @@ async def inline_users(query: InlineQuery):
         return True
     return False
 
+async def is_admin_or_authorized_user(query: InlineQuery):
+    if query.from_user and query.from_user.id in AUTH_USERS:
+        return True
+    return False
+
 @Client.on_inline_query()
 async def answer(bot, query):
     """Show search results for given inline query"""
-    
+
     if not await inline_users(query):
         await query.answer(results=[],
                            cache_time=0,
@@ -47,23 +52,32 @@ async def answer(bot, query):
         file_type = None
 
     offset = int(query.offset or 0)
+    reply_markup = get_reply_markup(query=string)
     files, next_offset, total = await get_search_results(string,
                                                   file_type=file_type,
                                                   max_results=10,
                                                   offset=offset)
 
     for file in files:
-        title=file.file_name
-        size=get_size(file.file_size)
-        f_caption=file.caption
-        if CUSTOM_FILE_CAPTION:
-            try:
-                f_caption=CUSTOM_FILE_CAPTION.format(file_name= '' if title is None else title, file_size='' if size is None else size, file_caption='' if f_caption is None else f_caption)
-            except Exception as e:
-                logger.exception(e)
-                f_caption=f_caption
+        title = file.file_name
+        size = get_size(file.file_size)
+        f_caption = file.caption
+
+        if await is_admin_or_authorized_user(query):
+            if CUSTOM_FILE_CAPTION:
+                try:
+                    f_caption = CUSTOM_FILE_CAPTION.format(
+                        file_name='' if title is None else title,
+                        file_size='' if size is None else size,
+                        file_caption='' if f_caption is None else f_caption
+                    )
+                except Exception as e:
+                    logger.exception(e)
+                    f_caption = f_caption
+
         if f_caption is None:
             f_caption = f"{file.file_name}"
+        
         results.append(
             InlineQueryResultCachedDocument(
                 title=file.file_name,
@@ -78,12 +92,14 @@ async def answer(bot, query):
         if string:
             switch_pm_text += f" for {string}"
         try:
-            await query.answer(results=results,
-                           is_personal = True,
-                           cache_time=cache_time,
-                           switch_pm_text=switch_pm_text,
-                           switch_pm_parameter="start",
-                           next_offset=str(next_offset))
+            await query.answer(
+                results=results,
+                is_personal=True,
+                cache_time=cache_time,
+                switch_pm_text=switch_pm_text,
+                switch_pm_parameter="start",
+                next_offset=str(next_offset)
+            )
         except QueryIdInvalid:
             pass
         except Exception as e:
@@ -93,12 +109,13 @@ async def answer(bot, query):
         if string:
             switch_pm_text += f' for "{string}"'
 
-        await query.answer(results=[],
-                           is_personal = True,
-                           cache_time=cache_time,
-                           switch_pm_text=switch_pm_text,
-                           switch_pm_parameter="okay")
-
+        await query.answer(
+            results=[],
+            is_personal=True,
+            cache_time=cache_time,
+            switch_pm_text=switch_pm_text,
+            switch_pm_parameter="okay"
+        )
 
 def get_reply_markup(query):
     buttons = [
