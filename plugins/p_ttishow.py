@@ -1,3 +1,4 @@
+import os
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.errors import ChatAdminRequired
@@ -5,7 +6,7 @@ from pyrogram.errors.exceptions.bad_request_400 import MessageTooLong, PeerIdInv
 from info import ADMINS, LOG_CHANNEL, SUPPORT_CHAT, MELCOW_NEW_USERS
 from database.users_chats_db import db
 from database.ia_filterdb import Media
-from utils import get_size, temp, get_settings
+from utils import get_size, temp, get_settings, extract_user, last_online
 from Script import script
 
 """-----------------------------------------https://t.me/CinemaVenoOfficial --------------------------------------"""
@@ -62,17 +63,11 @@ async def save_group(bot, message):
                 ]
                 custom_wish_string = "\n".join(f"├ ❖ Dear: {wish}" for wish in custom_wishes)
 
-                # Retrieve user photos
-                photos = await bot.get_user_profile_photos(u.id, limit=1)
-                photo_id = None
-                if photos.total_count > 0:
-                    photo_id = photos.photos[0].file_id
-
-                # Retrieve chat photo
-                chat_photo = message.from_user.photo
+                # Retrieve user photo
+                user_photo = u.photo
                 local_user_photo = None
-                if chat_photo:
-                    local_user_photo = await bot.download_media(chat_photo.big_file_id)
+                if user_photo:
+                    local_user_photo = await bot.download_media(user_photo.big_file_id)
 
                 # Prepare welcome message
                 welcome_message = f"┌─❖\n" \
@@ -100,6 +95,7 @@ async def save_group(bot, message):
                             ]
                         )
                     )
+                    os.remove(local_user_photo)
                 else:
                     await bot.send_message(
                         chat_id=message.chat.id,
@@ -114,8 +110,7 @@ async def save_group(bot, message):
                         )
                     )
 
-    
-@Client.on_message(filters.left_chat_member & filters.group)
+@app.on_message(filters.left_chat_member & filters.group)
 async def goodbye(_, message):
     settings = await get_settings(message.chat.id)
     if settings.get("goodbye"):
