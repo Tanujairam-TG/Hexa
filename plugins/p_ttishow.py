@@ -110,6 +110,72 @@ async def save_group(bot, message):
                         )
                     )
 
+@Client.on_message(filters.left_chat_member & filters.group)
+async def goodbye(bot, message):
+    settings = await get_settings(message.chat.id)
+    if settings.get("goodbye"):
+        for u in message.left_chat_member:
+            if temp.MELCOW.get('goodbye') is not None:
+                try:
+                    await temp.MELCOW['goodbye'].delete()
+                except:
+                    pass
+
+            custom_messages = [
+                "Goodbye!",
+                "Farewell!",
+                "We'll miss you!",
+            ]
+            custom_message_string = "\n".join(f"├ ❖ {message}" for message in custom_messages)
+
+            # Retrieve user photo
+            user_photo = u.photo
+            local_user_photo = None
+            if user_photo:
+                local_user_photo = await bot.download_media(user_photo.big_file_id)
+
+            # Prepare goodbye message
+            goodbye_message = f"┌─❖\n" \
+                              f"│ 「 Bye 」\n" \
+                              f"└┬❖\n" \
+                              f"┌┤❖  「{message.left_chat_member.mention}」\n" \
+                              f"│└────────────┈ ⳹\n" \
+                              f"├❖ Just left {message.chat.title}!\n" \
+                              f"├ ❖ Hope to see you soon!\n" \
+                              f"{custom_message_string}" \
+                              f"└────────────┈ ⳹"
+
+            # Send goodbye message with user photo if available
+            if local_user_photo:
+                await bot.send_photo(
+                    chat_id=message.chat.id,
+                    photo=local_user_photo,
+                    caption=goodbye_message,
+                    reply_markup=InlineKeyboardMarkup(
+                        [
+                            [
+                                InlineKeyboardButton('🚑 Support 🚑', url=f"https://t.me/+9Y0zeiIAFeczMDJl"),
+                                InlineKeyboardButton('🔔 Updates', url=f"https://t.me/CinemaVenoOfficial")
+                            ]
+                        ]
+                    )
+                )
+                os.remove(local_user_photo)
+            else:
+                await bot.send_message(
+                    chat_id=message.chat.id,
+                    text=goodbye_message,
+                    reply_markup=InlineKeyboardMarkup(
+                        [
+                            [
+                                InlineKeyboardButton('🚑 Support 🚑', url=f"https://t.me/+9Y0zeiIAFeczMDJl"),
+                                InlineKeyboardButton('🔔 Updates', url=f"https://t.me/CinemaVenoOfficial")
+                            ]
+                        ]
+                    )
+                )
+
+
 
 @Client.on_message(filters.command('setwelcome'))
 async def set_welcome(_, message):
