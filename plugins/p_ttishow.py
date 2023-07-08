@@ -12,7 +12,7 @@ from Script import script
 """-----------------------------------------https://t.me/CinemaVenoOfficial --------------------------------------"""
 
 @Client.on_message(filters.new_chat_members & filters.group)
-async def save_group(bot, message):
+async def save_group_new_members(bot, message):
     r_j_check = [u.id for u in message.new_chat_members]
     if temp.ME in r_j_check:
         if not await db.get_chat(message.chat.id):
@@ -111,7 +111,7 @@ async def save_group(bot, message):
                     )
 
 @Client.on_message(filters.left_chat_member & filters.group)
-async def save_group(bot, message):
+async def save_group_left_member(bot, message):
     r_j_check = [message.left_chat_member.id]
     if temp.ME in r_j_check:
         if not await db.get_chat(message.chat.id):
