@@ -112,7 +112,7 @@ async def save_group(bot, message):
 
 @Client.on_message(filters.left_chat_member & filters.group)
 async def save_group(bot, message):
-    r_j_check = [u.id for u in message.left_chat_member]
+    r_j_check = [message.left_chat_member.id]
     if temp.ME in r_j_check:
         if not await db.get_chat(message.chat.id):
             total = await bot.get_chat_members_count(message.chat.id)
@@ -122,7 +122,7 @@ async def save_group(bot, message):
     else:
         settings = await get_settings(message.chat.id)
         if settings.get("goodbye"):
-            for u in message.left_chat_member:
+            for u in [message.left_chat_member]:
                 if temp.MELCOW.get('goodbye') is not None:
                     try:
                         await temp.MELCOW['goodbye'].delete()
@@ -182,8 +182,6 @@ async def save_group(bot, message):
                             ]
                         )
                     )
-
-
 
 
 @Client.on_message(filters.command('setwelcome'))
