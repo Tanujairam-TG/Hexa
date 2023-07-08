@@ -110,11 +110,11 @@ async def save_group(bot, message):
                         )
                     )
 
-@app.on_message(filters.left_chat_member & filters.group)
+@Client.on_message(filters.left_the_group & filters.group)
 async def goodbye(_, message):
     settings = await get_settings(message.chat.id)
     if settings.get("goodbye"):
-        for u in message.left_chat_member:
+        for u in message.left_the_group:
             if temp.MELCOW.get('goodbye') is not None:
                 try:
                     await temp.MELCOW['goodbye'].delete()
