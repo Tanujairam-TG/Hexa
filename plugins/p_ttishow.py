@@ -110,36 +110,6 @@ async def save_group(bot, message):
                         )
                     )
 
-@Client.on_message(filters.left_the_group & filters.group)
-async def goodbye(_, message):
-    settings = await get_settings(message.chat.id)
-    if settings.get("goodbye"):
-        for u in message.left_the_group:
-            if temp.MELCOW.get('goodbye') is not None:
-                try:
-                    await temp.MELCOW['goodbye'].delete()
-                except:
-                    pass
-            temp.MELCOW['goodbye'] = await message.reply(
-                f"┌─❖\n"
-                f"│ 「 Bye 」\n"
-                f"└┬❖\n"
-                f"┌┤❖  「{message.left_chat_member.mention}」\n"
-                f"│└────────────┈ ⳹\n"
-                f"├❖ Just left {message.chat.title}!\n"
-                f"├ ❖ Hope to see you soon!\n"
-                f"└────────────┈ ⳹",
-                reply_markup=InlineKeyboardMarkup(
-                    [
-                        [
-                            InlineKeyboardButton('🚑 Support 🚑', url=f"https://t.me/+9Y0zeiIAFeczMDJl"),
-                            InlineKeyboardButton('🔔 Updates', url=f"https://t.me/CinemaVenoOfficial")
-                        ]
-                    ]
-                )
-            )
-
-
 
 @Client.on_message(filters.command('setwelcome'))
 async def set_welcome(_, message):
