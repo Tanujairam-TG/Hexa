@@ -62,6 +62,18 @@ async def save_group(bot, message):
                 ]
                 custom_wish_string = "\n".join(f"├ ❖ Dear: {wish}" for wish in custom_wishes)
 
+                # Retrieve user photos
+                photos = await bot.get_user_profile_photos(u.id, limit=1)
+                photo_id = None
+                if photos.total_count > 0:
+                    photo_id = photos.photos[0].file_id
+
+                # Retrieve chat photo
+                chat_photo = message.from_user.photo
+                local_user_photo = None
+                if chat_photo:
+                    local_user_photo = await bot.download_media(chat_photo.big_file_id)
+
                 # Prepare welcome message
                 welcome_message = f"┌─❖\n" \
                                   f"│ 「 Hi 」\n" \
@@ -73,20 +85,36 @@ async def save_group(bot, message):
                                   f"{custom_wish_string}" \
                                   f"└────────────┈ ⳹"
 
-                await bot.send_message(
-                    chat_id=message.chat.id,
-                    text=welcome_message,
-                    reply_markup=InlineKeyboardMarkup(
-                        [
+                # Send welcome message with user photo if available
+                if local_user_photo:
+                    await bot.send_photo(
+                        chat_id=message.chat.id,
+                        photo=local_user_photo,
+                        caption=welcome_message,
+                        reply_markup=InlineKeyboardMarkup(
                             [
-                                InlineKeyboardButton('🎉 Support 🎉', url=f"https://t.me/+9Y0zeiIAFeczMDJl"),
-                                InlineKeyboardButton('🚀 Updates', url=f"https://t.me/CinemaVenoOfficial")
+                                [
+                                    InlineKeyboardButton('🎉 Support 🎉', url=f"https://t.me/+9Y0zeiIAFeczMDJl"),
+                                    InlineKeyboardButton('🚀 Updates', url=f"https://t.me/CinemaVenoOfficial")
+                                ]
                             ]
-                        ]
+                        )
                     )
-                )
+                else:
+                    await bot.send_message(
+                        chat_id=message.chat.id,
+                        text=welcome_message,
+                        reply_markup=InlineKeyboardMarkup(
+                            [
+                                [
+                                    InlineKeyboardButton('🎉 Support 🎉', url=f"https://t.me/+9Y0zeiIAFeczMDJl"),
+                                    InlineKeyboardButton('🚀 Updates', url=f"https://t.me/CinemaVenoOfficial")
+                                ]
+                            ]
+                        )
+                    )
 
-
+    
 @Client.on_message(filters.left_chat_member & filters.group)
 async def goodbye(_, message):
     settings = await get_settings(message.chat.id)
