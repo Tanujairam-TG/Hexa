@@ -14,7 +14,7 @@ async def inline_users(query: InlineQuery):
         if query.from_user and query.from_user.id in AUTH_USERS:
             return True
         else:
-            return False
+            return True
     if query.from_user and query.from_user.id not in temp.BANNED_USERS:
         return True
     return False
