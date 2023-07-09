@@ -417,8 +417,8 @@ async def settings(client, message):
     settings = await get_settings(grp_id)
 
     if settings is not None:
-        if message.from_user.id in ADMINS:
-            buttons = [
+    if message.from_user.id in ADMINS:
+        buttons = [
             [
                 InlineKeyboardButton(
                     'Filter Button',
@@ -477,11 +477,21 @@ async def settings(client, message):
                 InlineKeyboardButton(
                     '✅ Yes' if settings["welcome"] else '❌ No',
                     callback_data=f'setgs#welcome#{settings["welcome"]}#{grp_id}',
+                ),
+            ],
+            [
+                InlineKeyboardButton(
+                    'Goodbye',
+                    callback_data=f'setgs#goodbye#{settings["goodbye"]}#{grp_id}',
+                ),
+                InlineKeyboardButton(
+                    '✅ Yes' if settings["goodbye"] else '❌ No',
+                    callback_data=f'setgs#goodbye#{settings["goodbye"]}#{grp_id}',
                 ),
             ],
         ]
-        else:
-            buttons = [
+    else:
+        buttons = [
             [
                 InlineKeyboardButton(
                     'Filter Button',
@@ -540,6 +550,16 @@ async def settings(client, message):
                 InlineKeyboardButton(
                     '✅ Yes' if settings["welcome"] else '❌ No',
                     callback_data=f'setgs#welcome#{settings["welcome"]}#{grp_id}',
+                ),
+            ],
+            [
+                InlineKeyboardButton(
+                    'Goodbye',
+                    callback_data=f'setgs#goodbye#{settings["goodbye"]}#{grp_id}',
+                ),
+                InlineKeyboardButton(
+                    '✅ Yes' if settings["goodbye"] else '❌ No',
+                    callback_data=f'setgs#goodbye#{settings["goodbye"]}#{grp_id}',
                 ),
             ],
         ]
