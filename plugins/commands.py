@@ -417,8 +417,8 @@ async def settings(client, message):
     settings = await get_settings(grp_id)
 
     if settings is not None:
-    if message.from_user.id in ADMINS:
-        buttons = [
+        if message.from_user.id in ADMINS:
+            buttons = [
             [
                 InlineKeyboardButton(
                     'Filter Button',
@@ -490,8 +490,8 @@ async def settings(client, message):
                 ),
             ],
         ]
-    else:
-        buttons = [
+        else:
+            buttons = [
             [
                 InlineKeyboardButton(
                     'Filter Button',
@@ -618,3 +618,4 @@ async def save_template(client, message):
     template = message.text.split(" ", 1)[1]
     await save_group_settings(grp_id, 'template', template)
     await sts.edit(f"Successfully changed template for {title} to\n\n{template}")
+    
