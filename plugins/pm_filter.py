@@ -142,7 +142,6 @@ async def doc(bot, update):
     if ph_path:
        os.remove(ph_path) 
 
-# # Born to make history @LazyDeveloper !
 @Client.on_callback_query(filters.regex(r"^next"))
 async def next_page(bot, query):
 
@@ -167,16 +166,7 @@ async def next_page(bot, query):
     if not files:
         return
     settings = await get_settings(query.message.chat.id)
-        # if query.from_user.id in download_counts and download_counts[query.from_user.id]['date'] == current_date:
-        #     if download_counts[query.from_user.id]['count'] >= DOWNLOAD_LIMIT:
-        #         # set URL_MODE to False to disable the URL shortener button
-        #         URL_MODE = False
-        #     else:
-        #         # increment the download count for the user
-        #         download_counts[query.from_user.id]['count'] += 1
-        # else:
-        #     # create a new entry for the user in the download counts dictionary
-        #     download_counts[query.from_user.id] = {'date': current_date, 'count': 1}d
+      
     if settings['button']:
             if URL_MODE is True:
                 if query.from_user.id in ADMINS:
@@ -861,42 +851,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
         )
-    # elif query.data == "gethexathumbnail":
-    #     buttons = [
-    #         [
-    #         InlineKeyboardButton("Donate Hexa", callback_data="thdonatehexa"),
-    #         ],
-    #         [ InlineKeyboardButton("<- G̳O̳ ̳B̳A̳C̳K̳  ⨳", callback_data="hexahome") ]
-    #         ]
-    #     reply_markup = InlineKeyboardMarkup(buttons)
-    #     await query.message.edit_text(
-    #         text=script.LZTHMB_TEXT.format(query.from_user.mention),
-    #         reply_markup=reply_markup,
-    #         parse_mode=enums.ParseMode.HTML
-    #     )
-    # elif query.data == "thdonatehexa":
-    #     buttons = [
-    #         [ InlineKeyboardButton("<- G̳O̳ ̳B̳A̳C̳K̳  ⨳", callback_data="gethexathumbnail") ]
-    #         ]
-    #     reply_markup = InlineKeyboardMarkup(buttons)
-    #     await query.message.edit_text(
-    #         text=script.DNT_TEXT.format(query.from_user.mention),
-    #         reply_markup=reply_markup,
-    #         parse_mode=enums.ParseMode.HTML
-    #     )
-    # elif query.data == "gethexalink":
-    #     buttons = [
-    #         [
-    #         InlineKeyboardButton("Donate Hexa", callback_data="linkdonatehexa"),
-    #         ],
-    #         [ InlineKeyboardButton("<- G̳O̳ ̳B̳A̳C̳K̳  ⨳", callback_data="hexahome") ]
-    #         ]
-    #     reply_markup = InlineKeyboardMarkup(buttons)
-    #     await query.message.edit_text(
-    #         text=script.LZLINK_TEXT.format(query.from_user.mention),
-    #         reply_markup=reply_markup,
-    #         parse_mode=enums.ParseMode.HTML
-    #     )
+    
     elif query.data == "donatehexa":
         buttons = [
             [ InlineKeyboardButton("⨳   Close   ⨳", callback_data="close_data") ]
@@ -926,63 +881,14 @@ async def cb_handler(client: Client, query: CallbackQuery):
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
         )
-    # elif query.data == "reqauthgethexathumbnail":
-    #     buttons = [
-    #         [
-    #         InlineKeyboardButton("Donate hexa", callback_data="thdonatehexa"),
-    #         ],
-    #         [ InlineKeyboardButton("<- G̳O̳ ̳B̳A̳C̳K̳  ⨳", callback_data="reqauthhexahome") ]
-    #         ]
-    #     reply_markup = InlineKeyboardMarkup(buttons)
-    #     await query.message.edit_text(
-    #         text=script.LZTHMB_TEXT.format(query.from_user.mention),
-    #         reply_markup=reply_markup,
-    #         parse_mode=enums.ParseMode.HTML
-    #     )
-    # elif query.data == "reqauthhexahome":
-    #     text = f"""\n⨳ *•.¸♡ Ⓗⓔ𝕏Δ Ｍ๏𝔡𝓔 ♡¸.•* ⨳\n\n**Please tell, what should i do with this file.?**\n"""
-    #     buttons = [[ InlineKeyboardButton("📝✧✧ S𝚝ar𝚝 re𝚗aᗰi𝚗g ✧✧📝", callback_data="requireauth") ],
-    #                        [ InlineKeyboardButton("⨳  C L Ф S Ξ  ⨳", callback_data="cancel") ]]
-    #     reply_markup = InlineKeyboardMarkup(buttons)
-    #     await query.message.edit_text(
-    #                 text=text,
-    #                 reply_markup=reply_markup,
-    #                 parse_mode=enums.ParseMode.HTML
-    #             )
-    # elif query.data == "reqauthgethexalink":
-    #     buttons = [
-    #         [
-    #         InlineKeyboardButton("Donate Hexa", callback_data="linkdonatehexa"),
-    #         ],
-    #         [ InlineKeyboardButton("<- G̳O̳ ̳B̳A̳C̳K̳  ⨳", callback_data="reqauthhexahome") ]
-    #         ]
-    #     reply_markup = InlineKeyboardMarkup(buttons)
-    #     await query.message.edit_text(
-    #         text=script.LZLINK_TEXT.format(query.from_user.mention),
-    #         reply_markup=reply_markup,
-    #         parse_mode=enums.ParseMode.HTML
-    #     )
+  
     elif query.data == "exit":
         await query.answer("Sorry Darling! You can't make any changes...\n\nOnly my Admin can change this setting...", show_alert = True)
         return
     elif query.data == "invalid_index_process":
         await query.answer("Hey sweetie, please send me the last media with quote from your group.\nAnd also make sure that i am admin in your beloved group...")
         return
-    # elif query.data == "already_uploaded":
-    #     if query.from_user.id not in ADMINS:
-    #         await query.answer("Sorry Darling! You can't make any changes...\n\nOnly my Admin can change this setting...", show_alert = True)
-    #         return
-    #     else:
-    #         message = message.text
-    #         chat_id = message.chat_id
-    #         extracted_line = re.search(pattern, message, re.MULTILINE)
-    #         if extracted_line:
-    #           # Send the extracted line to the other group chat
-    #             buttons = [
-    #             [ InlineKeyboardButton("⨳ ok ⨳", callback_data="cancel") ]
-    #             ]
-    #             reply_markup = InlineKeyboardMarkup(buttons)
-    #             await client.send_message(MOVIE_GROUP_ID, text=extracted_line.group(1))
+
     elif query.data == "cancel":
         try:
             await query.message.delete()
@@ -994,6 +900,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
             InlineKeyboardButton('👩‍🦯 Back', callback_data='help'),
             InlineKeyboardButton('refresh', callback_data='rfrsh')
         ]]
+        async def handle_query(query):
+    if query.data.startswith("status"):
         reply_markup = InlineKeyboardMarkup(buttons)
         total = await Media.count_documents()
         users = await db.total_users_count()
@@ -1012,7 +920,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         grpid = await active_connection(str(query.from_user.id))
 
         if str(grp_id) != str(grpid):
-            await query.message.edit("Your Active Connection Has Been Changed. Go To /settings.")
+            await query.message.edit_text("Your Active Connection Has Been Changed. Go To /settings.")
             return await query.answer('♥️ Thank You Hexa ♥️')
 
         if status == "True":
@@ -1023,8 +931,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         settings = await get_settings(grpid)
 
         if settings is not None:
-            if query.from_user.id in ADMINS:
-                buttons = [
+            buttons = [
                 [
                     InlineKeyboardButton('Filter Button',
                                          callback_data=f'setgs#button#{settings["button"]}#{str(grp_id)}'),
@@ -1068,48 +975,49 @@ async def cb_handler(client: Client, query: CallbackQuery):
             buttons = [
                 [
                     InlineKeyboardButton('Filter Button',
-                                         callback_data=f'setgs#button#{settings["button"]}#{str(grp_id)}'),
-                    InlineKeyboardButton('Single' if settings["button"] else 'Double',
-                                         callback_data=f'setgs#button#{settings["button"]}#{str(grp_id)}')
+                                         callback_data=f'setgs#button#False#{str(grp_id)}'),
+                    InlineKeyboardButton('Double',
+                                         callback_data=f'setgs#button#False#{str(grp_id)}')
                 ],
                 [
-                    InlineKeyboardButton('Bot PM', callback_data=f'setgs#botpm#{settings["botpm"]}#{str(grp_id)}'),
-                    InlineKeyboardButton('✅ Yes' if settings["botpm"] else '❌ No',
-                                         callback_data=f'setgs#botpm#{settings["botpm"]}#{str(grp_id)}')
+                    InlineKeyboardButton('Bot PM', callback_data=f'setgs#botpm#True#{str(grp_id)}'),
+                    InlineKeyboardButton('✅ Yes',
+                                         callback_data=f'setgs#botpm#True#{str(grp_id)}')
                 ],
                 [
                     InlineKeyboardButton('File Secure',
-                                         callback_data=f'exit'),
-                    InlineKeyboardButton('✅ Yes' if settings["file_secure"] else '❌ No',
-                                         callback_data=f'exit')
+                                         callback_data=f'setgs#file_secure#False#{str(grp_id)}'),
+                    InlineKeyboardButton('❌ No',
+                                         callback_data=f'setgs#file_secure#False#{str(grp_id)}')
                 ],
                 [
-                    InlineKeyboardButton('IMDB', callback_data=f'setgs#imdb#{settings["imdb"]}#{str(grp_id)}'),
-                    InlineKeyboardButton('✅ Yes' if settings["imdb"] else '❌ No',
-                                         callback_data=f'setgs#imdb#{settings["imdb"]}#{str(grp_id)}')
+                    InlineKeyboardButton('IMDB', callback_data=f'setgs#imdb#True#{str(grp_id)}'),
+                    InlineKeyboardButton('✅ Yes',
+                                         callback_data=f'setgs#imdb#True#{str(grp_id)}')
                 ],
                 [
                     InlineKeyboardButton('Spell Check',
-                                         callback_data=f'setgs#spell_check#{settings["spell_check"]}#{str(grp_id)}'),
-                    InlineKeyboardButton('✅ Yes' if settings["spell_check"] else '❌ No',
-                                         callback_data=f'setgs#spell_check#{settings["spell_check"]}#{str(grp_id)}')
+                                         callback_data=f'setgs#spell_check#True#{str(grp_id)}'),
+                    InlineKeyboardButton('✅ Yes',
+                                         callback_data=f'setgs#spell_check#True#{str(grp_id)}')
                 ],
                 [
-                    InlineKeyboardButton('Welcome', callback_data=f'setgs#welcome#{settings["welcome"]}#{str(grp_id)}'),
+                    InlineKeyboardButton('Welcome', callback_data=f'setgs#welcome#True#{str(grp_id)}'),
                     InlineKeyboardButton('✅ Yes' if settings["welcome"] else '❌ No',
                                          callback_data=f'setgs#welcome#{settings["welcome"]}#{str(grp_id)}')
                 ],
                 [
-                    InlineKeyboardButton('Goodbye', callback_data=f'setgs#goodbye#{settings["goodbye"]}#{str(grp_id)}'),
+                    InlineKeyboardButton('Goodbye', callback_data=f'setgs#goodbye#True#{str(grp_id)}'),
                     InlineKeyboardButton('✅ Yes' if settings["goodbye"] else '❌ No',
                                          callback_data=f'setgs#goodbye#{settings["goodbye"]}#{str(grp_id)}')
                 ]
             ]
 
-            reply_markup = InlineKeyboardMarkup(buttons)
-            await query.message.edit_reply_markup(reply_markup)
-    await query.answer('♥️ Thank You Hexa ♥️')
-	
+        reply_markup = InlineKeyboardMarkup(buttons)
+        await query.message.edit_reply_markup(reply_markup)
+  await query.answer('♥️ Thank You Hexa ♥️')
+
+
 async def auto_filter(client, msg, spoll=False):
     if not spoll:
         message = msg
@@ -1412,4 +1320,4 @@ async def manual_filters(client, message, text=False):
                     logger.exception(e)
                 break
     else:
-        return False
+        return Fals
