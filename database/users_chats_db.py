@@ -112,6 +112,7 @@ class Database:
             'imdb': IMDB,
             'spell_check': SPELL_CHECK_REPLY,
             'welcome': MELCOW_NEW_USERS,
+            'goodbye': MELCOW_LEFT_USERS,
             'template': IMDB_TEMPLATE
         }
         chat = await self.grp.find_one({'id':int(id)})
@@ -140,11 +141,11 @@ class Database:
     async def get_db_size(self):
         return (await self.db.command("dbstats"))['dataSize']
     
-    # Credit @LazyDeveloper.
+    # Credit @Hexa.
     # Please Don't remove credit.
-        # Born to make history @LazyDeveloper ! => Remember this name forever <=
+        # Born to make history @Hexa ! => Remember this name forever <=
 
-    # Thank you LazyDeveloper for helping us in this Journey
+    # Thank you Hexa for helping us in this Journey
 
     async def set_thumbnail(self, id, file_id):
         await self.col.update_one({'id': int(id)}, {'$set': {'file_id': file_id}})
@@ -158,7 +159,7 @@ class Database:
                 return None
         except Exception as e:
             print(e)
-    # Born to make history @LazyDeveloper ! => Remember this name forever <=
+    # Born to make history @Hexa ! => Remember this name forever <=
 
     async def set_caption(self, id, caption):
         await self.col.update_one({'id': int(id)}, {'$set': {'caption': caption}})
