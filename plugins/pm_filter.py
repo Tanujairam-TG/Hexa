@@ -926,14 +926,63 @@ async def cb_handler(client: Client, query: CallbackQuery):
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
         )
-    
+    # elif query.data == "reqauthgethexathumbnail":
+    #     buttons = [
+    #         [
+    #         InlineKeyboardButton("Donate hexa", callback_data="thdonatehexa"),
+    #         ],
+    #         [ InlineKeyboardButton("<- G̳O̳ ̳B̳A̳C̳K̳  ⨳", callback_data="reqauthhexahome") ]
+    #         ]
+    #     reply_markup = InlineKeyboardMarkup(buttons)
+    #     await query.message.edit_text(
+    #         text=script.LZTHMB_TEXT.format(query.from_user.mention),
+    #         reply_markup=reply_markup,
+    #         parse_mode=enums.ParseMode.HTML
+    #     )
+    # elif query.data == "reqauthhexahome":
+    #     text = f"""\n⨳ *•.¸♡ Ⓗⓔ𝕏Δ Ｍ๏𝔡𝓔 ♡¸.•* ⨳\n\n**Please tell, what should i do with this file.?**\n"""
+    #     buttons = [[ InlineKeyboardButton("📝✧✧ S𝚝ar𝚝 re𝚗aᗰi𝚗g ✧✧📝", callback_data="requireauth") ],
+    #                        [ InlineKeyboardButton("⨳  C L Ф S Ξ  ⨳", callback_data="cancel") ]]
+    #     reply_markup = InlineKeyboardMarkup(buttons)
+    #     await query.message.edit_text(
+    #                 text=text,
+    #                 reply_markup=reply_markup,
+    #                 parse_mode=enums.ParseMode.HTML
+    #             )
+    # elif query.data == "reqauthgethexalink":
+    #     buttons = [
+    #         [
+    #         InlineKeyboardButton("Donate Hexa", callback_data="linkdonatehexa"),
+    #         ],
+    #         [ InlineKeyboardButton("<- G̳O̳ ̳B̳A̳C̳K̳  ⨳", callback_data="reqauthhexahome") ]
+    #         ]
+    #     reply_markup = InlineKeyboardMarkup(buttons)
+    #     await query.message.edit_text(
+    #         text=script.LZLINK_TEXT.format(query.from_user.mention),
+    #         reply_markup=reply_markup,
+    #         parse_mode=enums.ParseMode.HTML
+    #     )
     elif query.data == "exit":
         await query.answer("Sorry Darling! You can't make any changes...\n\nOnly my Admin can change this setting...", show_alert = True)
         return
     elif query.data == "invalid_index_process":
         await query.answer("Hey sweetie, please send me the last media with quote from your group.\nAnd also make sure that i am admin in your beloved group...")
         return
-    
+    # elif query.data == "already_uploaded":
+    #     if query.from_user.id not in ADMINS:
+    #         await query.answer("Sorry Darling! You can't make any changes...\n\nOnly my Admin can change this setting...", show_alert = True)
+    #         return
+    #     else:
+    #         message = message.text
+    #         chat_id = message.chat_id
+    #         extracted_line = re.search(pattern, message, re.MULTILINE)
+    #         if extracted_line:
+    #           # Send the extracted line to the other group chat
+    #             buttons = [
+    #             [ InlineKeyboardButton("⨳ ok ⨳", callback_data="cancel") ]
+    #             ]
+    #             reply_markup = InlineKeyboardMarkup(buttons)
+    #             await client.send_message(MOVIE_GROUP_ID, text=extracted_line.group(1))
     elif query.data == "cancel":
         try:
             await query.message.delete()
@@ -946,38 +995,36 @@ async def cb_handler(client: Client, query: CallbackQuery):
             InlineKeyboardButton('refresh', callback_data='rfrsh')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
-total = await Media.count_documents()
-users = await db.total_users_count()
-chats = await db.total_chat_count()
-monsize = await db.get_db_size()
-free = 536870912 - monsize
-monsize = get_size(monsize)
-free = get_size(free)
-await query.message.edit_text(
-    text=script.STATUS_TXT.format(total, users, chats, monsize, free),
-    reply_markup=reply_markup,
-    parse_mode=enums.ParseMode.HTML
-)
-elif query.data.startswith("setgs"):
-    ident, set_type, status, grp_id = query.data.split("#")
-    grpid = await active_connection(str(query.from_user.id))
+        total = await Media.count_documents()
+        users = await db.total_users_count()
+        chats = await db.total_chat_count()
+        monsize = await db.get_db_size()
+        free = 536870912 - monsize
+        monsize = get_size(monsize)
+        free = get_size(free)
+        await query.message.edit_text(
+            text=script.STATUS_TXT.format(total, users, chats, monsize, free),
+            reply_markup=reply_markup,
+            parse_mode=enums.ParseMode.HTML
+        )
+    elif query.data.startswith("setgs"):
+        ident, set_type, status, grp_id = query.data.split("#")
+        grpid = await active_connection(str(query.from_user.id))
 
-    if str(grp_id) != str(grpid):
-        await query.message.edit("Your Active Connection Has Been Changed. Go To /settings.")
-        return await query.answer('♥️ Thank You Hexa ♥️')
+        if str(grp_id) != str(grpid):
+            await query.message.edit("Your Active Connection Has Been Changed. Go To /settings.")
+            return await query.answer('♥️ Thank You Hexa ♥️')
 
-    if status == "True":
-        await save_group_settings(grpid, set_type, False)
-    else:
-        await save_group_settings(grpid, set_type, True)
+        if status == "True":
+            await save_group_settings(grpid, set_type, False)
+        else:
+            await save_group_settings(grpid, set_type, True)
 
-    settings = await get_settings(grpid)
+        settings = await get_settings(grpid)
 
-    if settings is not None:
-        if query.from_user.id in ADMINS:
-            settings["goodbye"] = True  # or False, depending on the default value
-
-            buttons = [
+        if settings is not None:
+            if query.from_user.id in ADMINS:
+                buttons = [
                 [
                     InlineKeyboardButton('Filter Button',
                                          callback_data=f'setgs#button#{settings["button"]}#{str(grp_id)}'),
@@ -1017,10 +1064,8 @@ elif query.data.startswith("setgs"):
                                          callback_data=f'setgs#goodbye#{settings["goodbye"]}#{str(grp_id)}')
                 ]
             ]
-        else:
-            settings["goodbye"] = True  # or False, depending on the default value
-
-            buttons = [
+            else:
+                buttons = [
                 [
                     InlineKeyboardButton('Filter Button',
                                          callback_data=f'setgs#button#{settings["button"]}#{str(grp_id)}'),
@@ -1060,12 +1105,9 @@ elif query.data.startswith("setgs"):
                                          callback_data=f'setgs#goodbye#{settings["goodbye"]}#{str(grp_id)}')
                 ]
             ]
-
-    reply_markup = InlineKeyboardMarkup(buttons)
-    await query.message.edit_reply_markup(reply_markup)
-await query.answer('♥️ Thank You Hexa ♥️')
-
-
+            reply_markup = InlineKeyboardMarkup(buttons)
+            await query.message.edit_reply_markup(reply_markup)
+    await query.answer('♥️ Thank You Hexa ♥️')
 
 async def auto_filter(client, msg, spoll=False):
     if not spoll:
@@ -1087,9 +1129,9 @@ async def auto_filter(client, msg, spoll=False):
                                                                                                                                         [InlineKeyboardButton(text=f"😒Not Available", callback_data=f"notify_user_not_avail:{user_id}:{requested_movie}"),InlineKeyboardButton("❌Reject Req", callback_data=f"notify_user_req_rejected:{user_id}:{requested_movie}")],
                                                                                                                                         ]))
                 
-                l = await message.reply_text(text=f"△ ʜᴇʏ ᴅᴇᴀʀ `{message.from_user.first_name}` 😎,\n\nʏᴏᴜʀ ʀᴇQᴜᴇꜱᴛ ʜᴀꜱ ʙᴇᴇɴ ꜱᴇɴᴛ ᴛᴏ ᴏᴜʀ **ᴀᴅᴍɪɴ'ꜱ ᴅᴀꜱʜʙᴏᴀʀᴅ** !\nᴘʟᴇᴀꜱᴇ ᴋᴇᴇᴘ ꜱᴏᴍᴇ ᴘᴀᴛɪᴇɴᴄᴇ !\nᴛʜᴇʏ ᴡɪʟʟ ᴜᴘʟᴏᴀᴅ ɪᴛ ᴀꜱ ꜱᴏᴏɴ ᴀꜱ ᴘᴏꜱꜱɪʙʟᴇ.\n\n➟ 📝𝘾𝙤𝙣𝙩𝙚𝙣𝙩 𝙣𝙖𝙢𝙚 : `{search}`\n➟ 👮𝙍𝙚𝙦𝙪𝙚𝙨𝙩𝙚𝙙 𝘽𝙮 : `{message.from_user.first_name}`\n\n༺ @CinemaVenoOfficial ༻\n\n🦋・‥☆𝘼𝘿𝙈𝙞𝙉 𝙨𝙪𝙥𝙥𝙤𝙧𝙩☆‥・🦋\n╰┈➤・☆ @CinemaVenoOfficial\n╰┈➤・☆ @Vishal_dml",
+                l = await message.reply_text(text=f"△ ʜᴇʏ ᴅᴇᴀʀ `{message.from_user.first_name}` 😎,\n\nʏᴏᴜʀ ʀᴇQᴜᴇꜱᴛ ʜᴀꜱ ʙᴇᴇɴ ꜱᴇɴᴛ ᴛᴏ ᴏᴜʀ **ᴀᴅᴍɪɴ'ꜱ ᴅᴀꜱʜʙᴏᴀʀᴅ** !\nᴘʟᴇᴀꜱᴇ ᴋᴇᴇᴘ ꜱᴏᴍᴇ ᴘᴀᴛɪᴇɴᴄᴇ !\nᴛʜᴇʏ ᴡɪʟʟ ᴜᴘʟᴏᴀᴅ ɪᴛ ᴀꜱ ꜱᴏᴏɴ ᴀꜱ ᴘᴏꜱꜱɪʙʟᴇ.\n\n➟ 📝𝘾𝙤𝙣𝙩𝙚𝙣𝙩 𝙣𝙖𝙢𝙚 : `{search}`\n➟ 👮𝙍𝙚𝙦𝙪𝙚𝙨𝙩𝙚𝙙 𝘽𝙮 : `{message.from_user.first_name}`\n\n༺ @CinemaVenoOfficial ༻\n\n🦋・‥☆𝘼𝘿𝙈𝙞𝙉 𝙨𝙪𝙥𝙥𝙤𝙧𝙩☆‥・🦋\n╰┈➤・☆ @CinemaVenoOfficial",
                                                                                                        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("━ • │▌║  ᗩᗪᗪ ʍɛ 2 ᑌᖇ Ǥᖇᗝᑌᑭ  ║▌│ • ━", url=f'http://t.me/{temp.U_NAME}?startgroup=true')],[InlineKeyboardButton("✪ ᴍᴀɪɴ ✪", url=f"https://t.me/CinemaVenoOfficial"), InlineKeyboardButton("✪ I G ✪", url=f"hhttps://bit.ly/3FJVSPA"), InlineKeyboardButton("✪ ɢʀᴏᴜᴘ ✪", url=f"https://t.me/+H2kjULfnIWIyNDhl")],[InlineKeyboardButton("╚»♥️ Thank You ♥️«╝", callback_data="close_data")]]))
-                await asyncio.sleep(20)
+                await asyncio.sleep(40)
                 await l.delete()    
                 if settings["spell_check"]:
                     return await advantage_spell_chok(msg)
@@ -1279,7 +1321,7 @@ async def advantage_spell_chok(msg):
     gs_parsed = []
     if not g_s:
         k = await msg.reply("I couldn't find any movie in that name.")
-        await asyncio.sleep(10)
+        await asyncio.sleep(40)
         await k.delete()
         return
     regex = re.compile(r".*(imdb|wikipedia).*", re.IGNORECASE)  # look for imdb / wiki results
@@ -1308,7 +1350,7 @@ async def advantage_spell_chok(msg):
     movielist = list(dict.fromkeys(movielist))  # removing duplicates
     if not movielist:
         k = await msg.reply("Hey Dear! The requested content is currently unavailable in our database, have some patience 🙂 - our great admin will upload it as soon as possible \n             **or**\nDiscuss issue with admin here 👉  <a href='https://t.me/+H2kjULfnIWIyNDhl'>Discuss Here</a>♥️ ")
-        await asyncio.sleep(10)
+        await asyncio.sleep(60)
         await k.delete()
         return
     SPELL_CHECK[msg.id] = movielist
