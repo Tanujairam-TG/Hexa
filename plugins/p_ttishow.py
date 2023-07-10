@@ -1,4 +1,5 @@
 import os
+import random
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.errors import ChatAdminRequired
@@ -57,10 +58,17 @@ async def save_group_new_members(bot, message):
                         await temp.MELCOW['welcome'].delete()
                     except:
                         pass
+                # List of custom wishes
                 custom_wishes = [
-                    "welcome aboard!",
+                    "Welcome aboard!",
+                    "Glad to have you here!",
+                    "Hope you enjoy your time!",
+                    "Make yourself at home!",
+                    "Happy to see you join us!",
                 ]
-                custom_wish_string = "\n".join(f"├ ❖ Dear: {wish}" for wish in custom_wishes)
+
+                # Randomly select a custom wish
+                selected_wish = random.choice(custom_wishes)
 
                 # Retrieve chat photo
                 chat_photo = message.chat.photo
@@ -72,11 +80,11 @@ async def save_group_new_members(bot, message):
                 welcome_message = f"┌─❖\n" \
                                   f"│ 「 Hi 」\n" \
                                   f"└┬❖\n" \
-                                  f"┌┤❖  「{message.chat.title}」\n" \
+                                  f"┌┤❖  「{message.from_user.first_name}」\n" \
                                   f"│└────────────┈ ⳹\n" \
                                   f"├❖ To {message.chat.title}!\n" \
                                   f"├ ❖ Enjoy your stay!\n" \
-                                  f"{custom_wish_string}" \
+                                  f"├ ❖ {selected_wish}\n" \
                                   f"└────────────┈ ⳹"
 
                 # Send welcome message with chat photo if available
