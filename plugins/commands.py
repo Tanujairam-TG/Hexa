@@ -478,7 +478,7 @@ async def settings(client, message):
                     '✅ Yes' if settings["welcome"] else '❌ No',
                     callback_data=f'setgs#welcome#{settings["welcome"]}#{grp_id}',
                 ),
-            ],
+            ]
         ]
         else:
             buttons = [
@@ -541,7 +541,7 @@ async def settings(client, message):
                     '✅ Yes' if settings["welcome"] else '❌ No',
                     callback_data=f'setgs#welcome#{settings["welcome"]}#{grp_id}',
                 ),
-            ],
+            ]
         ]
 
         reply_markup = InlineKeyboardMarkup(buttons)
