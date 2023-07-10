@@ -112,7 +112,6 @@ class Database:
             'imdb': IMDB,
             'spell_check': SPELL_CHECK_REPLY,
             'welcome': MELCOW_NEW_USERS,
-            'goodbye': GOODEYB_LEFT_USERS,
             'template': IMDB_TEMPLATE
         }
         chat = await self.grp.find_one({'id':int(id)})
