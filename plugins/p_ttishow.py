@@ -123,9 +123,9 @@ async def save_group_left_member(bot, message):
         settings = await get_settings(message.chat.id)
         if settings.get("goodbye"):
             for u in [message.left_chat_member]:
-                if temp.MELCOW.get('goodbye') is not None:
+                if temp.GOODEYB.get('goodbye') is not None:
                     try:
-                        await temp.MELCOW['goodbye'].delete()
+                        await temp.GOODEYB['goodbye'].delete()
                     except:
                         pass
 
