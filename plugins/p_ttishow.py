@@ -11,6 +11,19 @@ from Script import script
 
 """-----------------------------------------https://t.me/CinemaVenoOfficial --------------------------------------"""
 
+import os
+from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.errors import ChatAdminRequired
+from pyrogram.errors.exceptions.bad_request_400 import MessageTooLong, PeerIdInvalid
+from info import ADMINS, LOG_CHANNEL, SUPPORT_CHAT, MELCOW_NEW_USERS, GOODEYB_LEFT_USERS
+from database.users_chats_db import db
+from database.ia_filterdb import Media
+from utils import get_size, temp, get_settings, extract_user, last_online
+from Script import script
+
+"""-----------------------------------------https://t.me/CinemaVenoOfficial --------------------------------------"""
+
 @Client.on_message(filters.new_chat_members & filters.group)
 async def save_group_new_members(bot, message):
     r_j_check = [u.id for u in message.new_chat_members]
@@ -63,28 +76,28 @@ async def save_group_new_members(bot, message):
                 ]
                 custom_wish_string = "\n".join(f"├ ❖ Dear: {wish}" for wish in custom_wishes)
 
-                # Retrieve user photo
-                user_photo = u.photo
-                local_user_photo = None
-                if user_photo:
-                    local_user_photo = await bot.download_media(user_photo.big_file_id)
+                # Retrieve chat photo
+                chat_photo = message.chat.photo
+                local_chat_photo = None
+                if chat_photo:
+                    local_chat_photo = await bot.download_media(chat_photo.big_file_id)
 
                 # Prepare welcome message
                 welcome_message = f"┌─❖\n" \
                                   f"│ 「 Hi 」\n" \
                                   f"└┬❖\n" \
-                                  f"┌┤❖  「{u.mention}」\n" \
+                                  f"┌┤❖  「{message.chat.title}」\n" \
                                   f"│└────────────┈ ⳹\n" \
                                   f"├❖ To {message.chat.title}!\n" \
                                   f"├ ❖ Enjoy your stay!\n" \
                                   f"{custom_wish_string}" \
                                   f"└────────────┈ ⳹"
 
-                # Send welcome message with user photo if available
-                if local_user_photo:
+                # Send welcome message with chat photo if available
+                if local_chat_photo:
                     await bot.send_photo(
                         chat_id=message.chat.id,
-                        photo=local_user_photo,
+                        photo=local_chat_photo,
                         caption=welcome_message,
                         reply_markup=InlineKeyboardMarkup(
                             [
@@ -95,7 +108,7 @@ async def save_group_new_members(bot, message):
                             ]
                         )
                     )
-                    os.remove(local_user_photo)
+                    os.remove(local_chat_photo)
                 else:
                     await bot.send_message(
                         chat_id=message.chat.id,
@@ -109,6 +122,7 @@ async def save_group_new_members(bot, message):
                             ]
                         )
                     )
+
 
 @Client.on_message(filters.left_chat_member & filters.group)
 async def save_group_left_member(bot, message):
