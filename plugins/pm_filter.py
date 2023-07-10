@@ -861,42 +861,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
         )
-    # elif query.data == "gethexathumbnail":
-    #     buttons = [
-    #         [
-    #         InlineKeyboardButton("Donate Hexa", callback_data="thdonatehexa"),
-    #         ],
-    #         [ InlineKeyboardButton("<- G̳O̳ ̳B̳A̳C̳K̳  ⨳", callback_data="hexahome") ]
-    #         ]
-    #     reply_markup = InlineKeyboardMarkup(buttons)
-    #     await query.message.edit_text(
-    #         text=script.LZTHMB_TEXT.format(query.from_user.mention),
-    #         reply_markup=reply_markup,
-    #         parse_mode=enums.ParseMode.HTML
-    #     )
-    # elif query.data == "thdonatehexa":
-    #     buttons = [
-    #         [ InlineKeyboardButton("<- G̳O̳ ̳B̳A̳C̳K̳  ⨳", callback_data="gethexathumbnail") ]
-    #         ]
-    #     reply_markup = InlineKeyboardMarkup(buttons)
-    #     await query.message.edit_text(
-    #         text=script.DNT_TEXT.format(query.from_user.mention),
-    #         reply_markup=reply_markup,
-    #         parse_mode=enums.ParseMode.HTML
-    #     )
-    # elif query.data == "gethexalink":
-    #     buttons = [
-    #         [
-    #         InlineKeyboardButton("Donate Hexa", callback_data="linkdonatehexa"),
-    #         ],
-    #         [ InlineKeyboardButton("<- G̳O̳ ̳B̳A̳C̳K̳  ⨳", callback_data="hexahome") ]
-    #         ]
-    #     reply_markup = InlineKeyboardMarkup(buttons)
-    #     await query.message.edit_text(
-    #         text=script.LZLINK_TEXT.format(query.from_user.mention),
-    #         reply_markup=reply_markup,
-    #         parse_mode=enums.ParseMode.HTML
-    #     )
+    
     elif query.data == "donatehexa":
         buttons = [
             [ InlineKeyboardButton("⨳   Close   ⨳", callback_data="close_data") ]
@@ -1119,20 +1084,10 @@ async def auto_filter(client, msg, spoll=False):
                                                                                                                                         [InlineKeyboardButton(text=f"😒Not Available", callback_data=f"notify_user_not_avail:{user_id}:{requested_movie}"),InlineKeyboardButton("❌Reject Req", callback_data=f"notify_user_req_rejected:{user_id}:{requested_movie}")],
                                                                                                                                         ]))
                 
-                l = await message.reply_photo(
-    photo="https://i.imgur.com/6Pi9UIz.png",
-    caption=f"△ ʜᴇʏ ᴅᴇᴀʀ `{message.from_user.first_name}` 😎,\n\nʏᴏᴜʀ ʀᴇQᴜᴇꜱᴛ ʜᴀꜱ ʙᴇᴇɴ ꜱᴇɴᴛ ᴛᴏ ᴏᴜʀ **ᴀᴅᴍɪɴ'ꜱ ᴅᴀꜱʜʙᴏᴀʀᴅ** !\nᴘʟᴇᴀꜱᴇ ᴋᴇᴇᴘ ꜱᴏᴍᴇ ᴘᴀᴛɪᴇɴᴄᴇ !\nᴛʜᴇʏ ᴡɪʟʟ ᴜᴘʟᴏᴀᴅ ɪᴛ ᴀꜱ ꜱᴏᴏɴ ᴀꜱ ᴘᴏꜱꜱɪʙʟᴇ.\n\n➟ 📝𝘾𝙤𝙣𝙩𝙚𝙣𝙩 𝙣𝙖𝙢𝙚 : `{search}`\n➟ 👮𝙍𝙚𝙦𝙪𝙚𝙨𝙩𝙚𝙙 𝘽𝙮 : `{message.from_user.first_name}`\n\n༺ @CinemaVenoOfficial ༻\n\n🦋・‥☆𝘼𝘿𝙈𝙞𝙉 𝙨𝙪𝙥𝙥𝙤𝙧𝙩☆‥・🦋\n╰┈➤・☆ @CinemaVenoOfficial",
-    reply_markup=InlineKeyboardMarkup([
-        [InlineKeyboardButton("━ • │▌║  ᗩᗪᗪ ʍɛ 2 ᑌᖇ Ǥᖇᗝᑌᑭ  ║▌│ • ━", url=f"http://t.me/{temp.U_NAME}?startgroup=true")],
-        [InlineKeyboardButton("✪ ᴍᴀɪɴ ✪", url="https://t.me/CinemaVenoOfficial"),
-         InlineKeyboardButton("✪ I G ✪", url="https://bit.ly/3FJVSPA"),
-         InlineKeyboardButton("✪ ɢʀᴏᴜᴘ ✪", url="https://t.me/+H2kjULfnIWIyNDhl")],
-        [InlineKeyboardButton("╚»♥️ Thank You ♥️«╝", callback_data="close_data")]
-    ])
-)
-await asyncio.sleep(40)
-await l.delete()
-    
+                l = await message.reply_text(text=f"△ ʜᴇʏ ᴅᴇᴀʀ `{message.from_user.first_name}` 😎,\n\nʏᴏᴜʀ ʀᴇQᴜᴇꜱᴛ ʜᴀꜱ ʙᴇᴇɴ ꜱᴇɴᴛ ᴛᴏ ᴏᴜʀ **ᴀᴅᴍɪɴ'ꜱ ᴅᴀꜱʜʙᴏᴀʀᴅ** !\nᴘʟᴇᴀꜱᴇ ᴋᴇᴇᴘ ꜱᴏᴍᴇ ᴘᴀᴛɪᴇɴᴄᴇ !\nᴛʜᴇʏ ᴡɪʟʟ ᴜᴘʟᴏᴀᴅ ɪᴛ ᴀꜱ ꜱᴏᴏɴ ᴀꜱ ᴘᴏꜱꜱɪʙʟᴇ.\n\n➟ 📝𝘾𝙤𝙣𝙩𝙚𝙣𝙩 𝙣𝙖𝙢𝙚 : `{search}`\n➟ 👮𝙍𝙚𝙦𝙪𝙚𝙨𝙩𝙚𝙙 𝘽𝙮 : `{message.from_user.first_name}`\n\n༺ @CinemaVenoOfficial ༻\n\n🦋・‥☆𝘼𝘿𝙈𝙞𝙉 𝙨𝙪𝙥𝙥𝙤𝙧𝙩☆‥・🦋\n╰┈➤・☆ @CinemaVenoOfficial",
+                                                                                                       reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("━ • │▌║  ᗩᗪᗪ ʍɛ 2 ᑌᖇ Ǥᖇᗝᑌᑭ  ║▌│ • ━", url=f'http://t.me/{temp.U_NAME}?startgroup=true')],[InlineKeyboardButton("✪ ᴍᴀɪɴ ✪", url=f"https://t.me/CinemaVenoOfficial"), InlineKeyboardButton("✪ I G ✪", url=f"https://bit.ly/3FJVSPA"), InlineKeyboardButton("✪ ɢʀᴏᴜᴘ ✪", url=f"https://t.me/+H2kjULfnIWIyNDhl")],[InlineKeyboardButton("╚»♥️ Thank You ♥️«╝", callback_data="close_data")]]))
+                await asyncio.sleep(60)
+                await l.delete()    
                 if settings["spell_check"]:
                     return await advantage_spell_chok(msg)
                 else:
@@ -1310,7 +1265,6 @@ await l.delete()
     if spoll:
         await msg.message.delete()
 
-# Born to make history @LazyDeveloper !
 async def advantage_spell_chok(msg):
     query = re.sub(
         r"\b(pl(i|e)*?(s|z+|ease|se|ese|(e+)s(e)?)|((send|snd|giv(e)?|gib)(\sme)?)|movie(s)?|new|latest|br((o|u)h?)*|^h(e|a)?(l)*(o)*|mal(ayalam)?|t(h)?amil|file|that|find|und(o)*|kit(t(i|y)?)?o(w)?|thar(u)?(o)*w?|kittum(o)*|aya(k)*(um(o)*)?|full\smovie|any(one)|with\ssubtitle(s)?)",
@@ -1321,7 +1275,7 @@ async def advantage_spell_chok(msg):
     gs_parsed = []
     if not g_s:
         k = await msg.reply("I couldn't find any movie in that name.")
-        await asyncio.sleep(40)
+        await asyncio.sleep(10)
         await k.delete()
         return
     regex = re.compile(r".*(imdb|wikipedia).*", re.IGNORECASE)  # look for imdb / wiki results
@@ -1350,7 +1304,7 @@ async def advantage_spell_chok(msg):
     movielist = list(dict.fromkeys(movielist))  # removing duplicates
     if not movielist:
         k = await msg.reply("Hey Dear! The requested content is currently unavailable in our database, have some patience 🙂 - our great admin will upload it as soon as possible \n             **or**\nDiscuss issue with admin here 👉  <a href='https://t.me/+H2kjULfnIWIyNDhl'>Discuss Here</a>♥️ ")
-        await asyncio.sleep(60)
+        await asyncio.sleep(40)
         await k.delete()
         return
     SPELL_CHECK[msg.id] = movielist
