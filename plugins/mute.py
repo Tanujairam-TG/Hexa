@@ -4,6 +4,13 @@ import string
 import os
 from pyrogram import Client, filters
 from pyrogram.types import ChatPermissions
+from pyrogram.errors import PeerIdInvalid
+from database.connections_mdb import add_connection, all_connections, if_active, delete_connection
+from info import ADMINS
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
 
 # Retrieve the bot token from the environment variable
 TOKEN = os.environ.get('BOT_TOKEN')
@@ -11,13 +18,11 @@ TOKEN = os.environ.get('BOT_TOKEN')
 # Create a dictionary to store group information
 groups = {}
 
-
 class User:
     def __init__(self, user_id):
         self.user_id = user_id
         self.muted = False
         self.mute_expiry = None
-
 
 class Group:
     def __init__(self, group_id):
@@ -73,18 +78,15 @@ class Group:
                 return user
         return None
 
-
 # Function to create a group
 def create_group(group_id):
     group = Group(group_id)
     groups[group_id] = group
     return group
 
-
 # Function to get a group by ID
 def get_group(group_id):
     return groups.get(group_id)
-
 
 # Function to add an admin to a group
 def add_group_admin(group_id, user_id):
@@ -92,13 +94,11 @@ def add_group_admin(group_id, user_id):
     if group:
         group.add_admin(user_id)
 
-
 # Function to remove an admin from a group
 def remove_group_admin(group_id, user_id):
     group = get_group(group_id)
     if group:
         group.remove_admin(user_id)
-
 
 # Function to mute a user in a group
 def mute_group_user(group_id, user_id, duration):
@@ -113,7 +113,6 @@ def mute_group_user(group_id, user_id, duration):
                 "Invalid duration format. Please use 'X minutes', 'X hours', or 'X days'.",
                 reply_to_message_id=user_id
             )
-
 
 # Function to parse the mute duration string and return a timedelta object
 def parse_duration(duration):
@@ -136,13 +135,11 @@ def parse_duration(duration):
     except ValueError:
         return None
 
-
 # Function to unmute a user in a group
 def unmute_group_user(group_id, user_id):
     group = get_group(group_id)
     if group:
         group.unmute_user(user_id)
-
 
 # Function to check if a user is an admin in the group
 def is_group_admin(group_id, user_id):
@@ -151,21 +148,33 @@ def is_group_admin(group_id, user_id):
         return group.is_admin(user_id)
     return False
 
-
 # Register command handlers
-@app.on_message(filters.command(["mute"]) & filters.group)
+@Client.on_message(filters.command(["mute"]) & filters.group)
 def mute_command(client, message):
-    group_id = message.chat.id
+    group_id = get_group_id(message.from_user.id)
+    if not group_id:
+        app.send_message(
+            message.chat.id,
+            "You are not connected to any group.",
+            reply_to_message_id=message.message_id
+        )
+        return
     user_id = message.from_user.id
     duration = '60 minutes'  # Default duration if not specified in the command
     if len(message.command) > 1:
         duration = ' '.join(message.command[1:])
     mute_group_user(group_id, user_id, duration)
 
-
-@app.on_message(filters.command(["unmute"]) & filters.group)
+@Client.on_message(filters.command(["unmute"]) & filters.group)
 def unmute_command(client, message):
-    group_id = message.chat.id
+    group_id = get_group_id(message.from_user.id)
+    if not group_id:
+        app.send_message(
+            message.chat.id,
+            "You are not connected to any group.",
+            reply_to_message_id=message.message_id
+        )
+        return
     user_id = message.from_user.id
     if is_group_admin(group_id, user_id):
         unmute_group_user(group_id, user_id)
@@ -176,37 +185,17 @@ def unmute_command(client, message):
             reply_to_message_id=message.message_id
         )
 
-
-# Example usage
-group_id = "YOUR_GROUP_ID"
-group = create_group(group_id)
-group.add_admin(123456789)  # Add admin ID
-user1 = User(987654321)  # Create user instance
-group.add_user(user1)  # Add user to the group
-
-
 # Function to get the group ID from the connection
-def get_group_id(connection):
-    # Implement your logic to retrieve the group ID from the connection
-    return connection['group_id']
-
+def get_group_id(user_id):
+    connections = all_connections(str(user_id))
+    if connections:
+        connection = connections[0]  # Assuming there is only one connection
+        return connection['group_id']
+    return None
 
 # Function to get the connections for a user
 def get_connections(user_id):
-    # Implement your logic to retrieve the connections for the user
-    connections = [
-        {
-            'group_id': 'GROUP_ID_1',
-            'other_data': '...'
-        },
-        {
-            'group_id': 'GROUP_ID_2',
-            'other_data': '...'
-        }
-        # ...
-    ]
-    return connections
-
+    return all_connections(str(user_id))
 
 # Get connections for a specific user
 user_id = 123456789
@@ -214,8 +203,7 @@ connections = get_connections(user_id)
 
 # Iterate over the connections and add them to the groups dictionary
 for connection in connections:
-    group_id = get_group_id(connection)
+    group_id = connection['group_id']
     group = create_group(group_id)
     group.add_admin(user_id)
     # Add other information to the group if needed
-
