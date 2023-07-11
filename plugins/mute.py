@@ -52,8 +52,8 @@ class Group:
             mute_expiry = datetime.datetime.now() + duration
             user.mute_expiry = mute_expiry
             permissions = ChatPermissions(can_send_messages=False)
-            app.restrict_chat_member(self.group_id, user.user_id, permissions)
-            app.send_message(
+            client.restrict_chat_member(self.group_id, user.user_id, permissions)
+            client.send_message(
                 self.group_id,
                 f"{user.user_id} has been muted for {duration}.",
                 reply_to_message_id=user_id
@@ -65,8 +65,8 @@ class Group:
             user.muted = False
             user.mute_expiry = None
             permissions = ChatPermissions(can_send_messages=True)
-            app.restrict_chat_member(self.group_id, user.user_id, permissions)
-            app.send_message(
+            client.restrict_chat_member(self.group_id, user.user_id, permissions)
+            client.send_message(
                 self.group_id,
                 f"{user.user_id} has been unmuted.",
                 reply_to_message_id=user_id
@@ -108,7 +108,7 @@ def mute_group_user(group_id, user_id, duration):
         if mute_duration:
             group.mute_user(user_id, mute_duration)
         else:
-            app.send_message(
+            client.send_message(
                 group_id,
                 "Invalid duration format. Please use 'X minutes', 'X hours', or 'X days'.",
                 reply_to_message_id=user_id
@@ -148,13 +148,13 @@ def is_group_admin(group_id, user_id):
         return group.is_admin(user_id)
     return False
 
+
 # Register command handlers
-@Client.on_message(filters.command(["mute"]) & filters.group)
-async def mute_command(client, message):
-    group_id = get_group_id(message.from_user.id)
+@client.on_message(filters.command(["mute"]) & filters.group)
+async def mute_command(_, message):
+    group_id = await get_group_id(message.from_user.id)
     if not group_id:
-        await client.send_message(
-            message.chat.id,
+        await message.reply_text(
             "You are not connected to any group.",
             reply_to_message_id=message.message_id
         )
@@ -165,12 +165,11 @@ async def mute_command(client, message):
         duration = ' '.join(message.command[1:])
     mute_group_user(group_id, user_id, duration)
 
-@Client.on_message(filters.command(["unmute"]) & filters.group)
-async def unmute_command(client, message):
-    group_id = get_group_id(message.from_user.id)
+@client.on_message(filters.command(["unmute"]) & filters.group)
+async def unmute_command(_, message):
+    group_id = await get_group_id(message.from_user.id)
     if not group_id:
-        await client.send_message(
-            message.chat.id,
+        await message.reply_text(
             "You are not connected to any group.",
             reply_to_message_id=message.message_id
         )
@@ -187,7 +186,7 @@ async def unmute_command(client, message):
 
 # Function to get the group ID from the connection
 async def get_group_id(user_id):
-    connections = await all_connections(str(user_id))
+    connections = await get_connections(user_id)
     if connections:
         connection = connections[0]  # Assuming there is only one connection
         return connection['group_id']
@@ -196,14 +195,3 @@ async def get_group_id(user_id):
 # Function to get the connections for a user
 async def get_connections(user_id):
     return await all_connections(str(user_id))
-
-# Get connections for a specific user
-user_id = 123456789
-connections = await get_connections(user_id)
-
-# Iterate over the connections and add them to the groups dictionary
-for connection in connections:
-    group_id = connection['group_id']
-    group = create_group(group_id)
-    group.add_admin(user_id)
-    # Add other information to the group if needed
