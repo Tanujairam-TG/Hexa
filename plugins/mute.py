@@ -150,7 +150,7 @@ def is_group_admin(group_id, user_id):
 
 
 # Register command handlers
-@client.on_message(filters.command(["mute"]) & filters.group)
+@Client.on_message(filters.command(["mute"]) & filters.group)
 async def mute_command(_, message):
     group_id = await get_group_id(message.from_user.id)
     if not group_id:
@@ -165,7 +165,7 @@ async def mute_command(_, message):
         duration = ' '.join(message.command[1:])
     mute_group_user(group_id, user_id, duration)
 
-@client.on_message(filters.command(["unmute"]) & filters.group)
+@Client.on_message(filters.command(["unmute"]) & filters.group)
 async def unmute_command(_, message):
     group_id = await get_group_id(message.from_user.id)
     if not group_id:
