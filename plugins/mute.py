@@ -1,38 +1,35 @@
 import datetime
 import random
 import string
+import os
 from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.types import ChatPermissions
+
+# Retrieve the bot token from the environment variable
+TOKEN = os.environ.get('BOT_TOKEN')
+
+# Create a dictionary to store group information
+groups = {}
+
 
 class User:
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, user_id):
+        self.user_id = user_id
         self.muted = False
         self.mute_expiry = None
-        self.unmute_time = None
-        self.id = None
-        self.authorization_code = None
+
 
 class Group:
-    def __init__(self):
+    def __init__(self, group_id):
+        self.group_id = group_id
         self.users = []
         self.admin_ids = set()
 
-    def mute_user(self, user, duration_minutes):
-        if user in self.users:
-            user.muted = True
-            mute_duration = datetime.timedelta(minutes=duration_minutes)
-            user.mute_expiry = datetime.datetime.now() + mute_duration
-            unmute_time = user.mute_expiry + datetime.timedelta(days=2)
-            user.unmute_time = unmute_time
-            user.authorization_code = self.generate_authorization_code()
+    def add_user(self, user):
+        self.users.append(user)
 
-    def unmute_user(self, user):
-        if user in self.users:
-            user.muted = False
-            user.mute_expiry = None
-            user.unmute_time = None
-            user.authorization_code = None
+    def remove_user(self, user):
+        self.users.remove(user)
 
     def add_admin(self, user_id):
         self.admin_ids.add(user_id)
@@ -43,117 +40,182 @@ class Group:
     def is_admin(self, user_id):
         return user_id in self.admin_ids
 
-    def generate_authorization_code(self, length=8):
-        characters = string.ascii_letters + string.digits
-        return ''.join(random.choice(characters) for _ in range(length))
+    def mute_user(self, user_id, duration):
+        user = self.get_user(user_id)
+        if user:
+            user.muted = True
+            mute_expiry = datetime.datetime.now() + duration
+            user.mute_expiry = mute_expiry
+            permissions = ChatPermissions(can_send_messages=False)
+            app.restrict_chat_member(self.group_id, user.user_id, permissions)
+            app.send_message(
+                self.group_id,
+                f"{user.user_id} has been muted for {duration}.",
+                reply_to_message_id=user_id
+            )
 
-    def send_message(self, user, message, authorization_code=None):
-        if user in self.users:
-            if user.muted and user.authorization_code != authorization_code:
-                if datetime.datetime.now() < user.mute_expiry:
-                    print(f"{user.name} [{user.id}] is muted. Message not sent.")
-                    return
-                else:
-                    self.unmute_user(user)
+    def unmute_user(self, user_id):
+        user = self.get_user(user_id)
+        if user:
+            user.muted = False
+            user.mute_expiry = None
+            permissions = ChatPermissions(can_send_messages=True)
+            app.restrict_chat_member(self.group_id, user.user_id, permissions)
+            app.send_message(
+                self.group_id,
+                f"{user.user_id} has been unmuted.",
+                reply_to_message_id=user_id
+            )
 
-            print(f"{user.name} [{user.id}]: {message}")
+    def get_user(self, user_id):
+        for user in self.users:
+            if user.user_id == user_id:
+                return user
+        return None
 
-# Create groups
-groups = {}
 
+# Function to create a group
 def create_group(group_id):
-    group = Group()
-    group.id = group_id
-    group.users = []
-    group.admin_ids = set()
+    group = Group(group_id)
     groups[group_id] = group
     return group
 
+
+# Function to get a group by ID
 def get_group(group_id):
     return groups.get(group_id)
 
+
+# Function to add an admin to a group
 def add_group_admin(group_id, user_id):
     group = get_group(group_id)
     if group:
         group.add_admin(user_id)
 
+
+# Function to remove an admin from a group
 def remove_group_admin(group_id, user_id):
     group = get_group(group_id)
     if group:
         group.remove_admin(user_id)
 
-def mute_group_user(group_id, user_id, duration_minutes):
+
+# Function to mute a user in a group
+def mute_group_user(group_id, user_id, duration):
     group = get_group(group_id)
     if group:
-        user = get_user(group, user_id)
-        if user:
-            group.mute_user(user, duration_minutes)
+        mute_duration = parse_duration(duration)
+        if mute_duration:
+            group.mute_user(user_id, mute_duration)
+        else:
+            app.send_message(
+                group_id,
+                "Invalid duration format. Please use 'X minutes', 'X hours', or 'X days'.",
+                reply_to_message_id=user_id
+            )
 
+
+# Function to parse the mute duration string and return a timedelta object
+def parse_duration(duration):
+    duration = duration.lower().split()
+    if len(duration) != 2:
+        return None
+    try:
+        value = int(duration[0])
+        unit = duration[1]
+        if unit.endswith('s'):
+            unit = unit[:-1]
+        if unit == 'minute':
+            return datetime.timedelta(minutes=value)
+        elif unit == 'hour':
+            return datetime.timedelta(hours=value)
+        elif unit == 'day':
+            return datetime.timedelta(days=value)
+        else:
+            return None
+    except ValueError:
+        return None
+
+
+# Function to unmute a user in a group
 def unmute_group_user(group_id, user_id):
     group = get_group(group_id)
     if group:
-        user = get_user(group, user_id)
-        if user:
-            group.unmute_user(user)
+        group.unmute_user(user_id)
 
-def get_user(group, user_id):
-    for user in group.users:
-        if user.id == user_id:
-            return user
-    return None
 
-# Register command handlers
-@Client.on_message(filters.command(["mute"]))
-def mute_command(client, message):
-    group_id = message.chat.id
-    user_id = message.from_user.id
-    duration_minutes = 60
-    mute_group_user(group_id, user_id, duration_minutes)
-    message.reply_text("You have been muted for 60 minutes.")
-
-@Client.on_message(filters.command(["unmute"]))
-def unmute_command(client, message):
-    group_id = message.chat.id
-    user_id = message.from_user.id
-    if is_group_admin(group_id, user_id):
-        unmute_group_user(group_id, user_id)
-        message.reply_text("You have been unmuted.")
-    else:
-        message.reply_text("Only admins can unmute users.")
-
-@Client.on_callback_query()
-def handle_button(client, callback_query):
-    group_id = callback_query.message.chat.id
-    user_id = callback_query.from_user.id
-    user = get_user(get_group(group_id), user_id)
-    if user and user.muted:
-        if is_group_admin(group_id, user_id):
-            unmute_group_user(group_id, user_id)
-            callback_query.answer("User has been unmuted.")
-        else:
-            callback_query.answer("Only admins can unmute the user.")
-
+# Function to check if a user is an admin in the group
 def is_group_admin(group_id, user_id):
     group = get_group(group_id)
     if group:
         return group.is_admin(user_id)
     return False
 
-# Example usage
-# Create group 1
-group1 = create_group(123456789)
-group1.users = [
-    User("User1"),
-    User("User2"),
-    User("User3")
-]
-group1.add_admin(987654321)
 
-# Create group 2
-group2 = create_group(987654321)
-group2.users = [
-    User("User4"),
-    User("User5"),
-    User("User6")
-]
-group2.add_admin(123456789)
+# Register command handlers
+@app.on_message(filters.command(["mute"]) & filters.group)
+def mute_command(client, message):
+    group_id = message.chat.id
+    user_id = message.from_user.id
+    duration = '60 minutes'  # Default duration if not specified in the command
+    if len(message.command) > 1:
+        duration = ' '.join(message.command[1:])
+    mute_group_user(group_id, user_id, duration)
+
+
+@app.on_message(filters.command(["unmute"]) & filters.group)
+def unmute_command(client, message):
+    group_id = message.chat.id
+    user_id = message.from_user.id
+    if is_group_admin(group_id, user_id):
+        unmute_group_user(group_id, user_id)
+    else:
+        app.send_message(
+            group_id,
+            "Only admins can unmute users.",
+            reply_to_message_id=message.message_id
+        )
+
+
+# Example usage
+group_id = "YOUR_GROUP_ID"
+group = create_group(group_id)
+group.add_admin(123456789)  # Add admin ID
+user1 = User(987654321)  # Create user instance
+group.add_user(user1)  # Add user to the group
+
+
+# Function to get the group ID from the connection
+def get_group_id(connection):
+    # Implement your logic to retrieve the group ID from the connection
+    return connection['group_id']
+
+
+# Function to get the connections for a user
+def get_connections(user_id):
+    # Implement your logic to retrieve the connections for the user
+    connections = [
+        {
+            'group_id': 'GROUP_ID_1',
+            'other_data': '...'
+        },
+        {
+            'group_id': 'GROUP_ID_2',
+            'other_data': '...'
+        }
+        # ...
+    ]
+    return connections
+
+
+# Get connections for a specific user
+user_id = 123456789
+connections = get_connections(user_id)
+
+# Iterate over the connections and add them to the groups dictionary
+for connection in connections:
+    group_id = get_group_id(connection)
+    group = create_group(group_id)
+    group.add_admin(user_id)
+    # Add other information to the group if needed
+
