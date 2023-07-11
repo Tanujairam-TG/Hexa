@@ -150,10 +150,10 @@ def is_group_admin(group_id, user_id):
 
 # Register command handlers
 @Client.on_message(filters.command(["mute"]) & filters.group)
-def mute_command(client, message):
+async def mute_command(client, message):
     group_id = get_group_id(message.from_user.id)
     if not group_id:
-        app.send_message(
+        await client.send_message(
             message.chat.id,
             "You are not connected to any group.",
             reply_to_message_id=message.message_id
@@ -166,10 +166,10 @@ def mute_command(client, message):
     mute_group_user(group_id, user_id, duration)
 
 @Client.on_message(filters.command(["unmute"]) & filters.group)
-def unmute_command(client, message):
+async def unmute_command(client, message):
     group_id = get_group_id(message.from_user.id)
     if not group_id:
-        app.send_message(
+        await client.send_message(
             message.chat.id,
             "You are not connected to any group.",
             reply_to_message_id=message.message_id
@@ -179,27 +179,27 @@ def unmute_command(client, message):
     if is_group_admin(group_id, user_id):
         unmute_group_user(group_id, user_id)
     else:
-        app.send_message(
+        await client.send_message(
             group_id,
             "Only admins can unmute users.",
             reply_to_message_id=message.message_id
         )
 
 # Function to get the group ID from the connection
-def get_group_id(user_id):
-    connections = all_connections(str(user_id))
+async def get_group_id(user_id):
+    connections = await all_connections(str(user_id))
     if connections:
         connection = connections[0]  # Assuming there is only one connection
         return connection['group_id']
     return None
 
 # Function to get the connections for a user
-def get_connections(user_id):
-    return all_connections(str(user_id))
+async def get_connections(user_id):
+    return await all_connections(str(user_id))
 
 # Get connections for a specific user
 user_id = 123456789
-connections = get_connections(user_id)
+connections = await get_connections(user_id)
 
 # Iterate over the connections and add them to the groups dictionary
 for connection in connections:
