@@ -147,12 +147,11 @@ async def connections(client, message):
         )
 
 
-# Pin a message in a group
 @Client.on_message(filters.command('pin') & filters.group)
 async def pin_message(client, message):
     if message.reply_to_message:
         chat_id = message.chat.id
-        message_id = message.reply_to_message.message_id
+        message_id = message.message_id  # Corrected attribute access
 
         try:
             await client.pin_chat_message(chat_id, message_id)
@@ -164,7 +163,6 @@ async def pin_message(client, message):
         await message.reply_text("Reply to a message to pin it.")
 
 
-# Unpin a message in a group
 @Client.on_message(filters.command('unpin') & filters.group)
 async def unpin_message(client, message):
     chat_id = message.chat.id
@@ -175,4 +173,7 @@ async def unpin_message(client, message):
     except Exception as e:
         logger.exception(e)
         await message.reply_text("Failed to unpin the message. Please try again later.")
+
+
+
 
