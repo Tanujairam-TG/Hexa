@@ -599,3 +599,75 @@ async def save_template(client, message):
     await save_group_settings(grp_id, 'template', template)
     await sts.edit(f"Successfully changed template for {title} to\n\n{template}")
     
+
+
+@Client.on_message(filters.command('delete_template'))
+async def delete_template(client, message):
+    sts = await message.reply("Deleting template")
+    userid = message.from_user.id if message.from_user else None
+    if not userid:
+        return await message.reply(f"You are an anonymous admin. Use /connect {message.chat.id} in PM")
+    chat_type = message.chat.type
+
+    if chat_type == enums.ChatType.PRIVATE:
+        grpid = await active_connection(str(userid))
+        if grpid is not None:
+            grp_id = grpid
+        else:
+            await message.reply_text("I'm not connected to any groups!", quote=True)
+            return
+
+    elif chat_type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
+        grp_id = message.chat.id
+
+    else:
+        return
+
+    st = await client.get_chat_member(grp_id, userid)
+    if (
+            st.status != enums.ChatMemberStatus.ADMINISTRATOR
+            and st.status != enums.ChatMemberStatus.OWNER
+            and str(userid) not in ADMINS
+    ):
+        return
+
+    await delete_group_settings(grp_id, 'template')
+    await sts.edit("Template deleted successfully ✅")
+
+
+
+@Client.on_message(filters.command('view_template'))
+async def view_template(client, message):
+    sts = await message.reply("Fetching template")
+    userid = message.from_user.id if message.from_user else None
+    if not userid:
+        return await message.reply(f"You are an anonymous admin. Use /connect {message.chat.id} in PM")
+    chat_type = message.chat.type
+
+    if chat_type == enums.ChatType.PRIVATE:
+        grpid = await active_connection(str(userid))
+        if grpid is not None:
+            grp_id = grpid
+        else:
+            await message.reply_text("I'm not connected to any groups!", quote=True)
+            return
+
+    elif chat_type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
+        grp_id = message.chat.id
+
+    else:
+        return
+
+    st = await client.get_chat_member(grp_id, userid)
+    if (
+            st.status != enums.ChatMemberStatus.ADMINISTRATOR
+            and st.status != enums.ChatMemberStatus.OWNER
+            and str(userid) not in ADMINS
+    ):
+        return
+
+    template = await get_group_settings(grp_id, 'template')
+    if template:
+        await sts.edit(f"Current template for this group:\n\n{template}")
+    else:
+        await sts.edit("No template found for this group")
