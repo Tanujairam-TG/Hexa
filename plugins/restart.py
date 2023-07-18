@@ -5,7 +5,7 @@ import os
 import requests
 
 # Generating a random restart time between 2 and 16 minutes, and 0 to 59 seconds
-restart_time_minutes = random.randint(2, 16)
+restart_time_minutes = random.randint(2, 6)
 restart_time_seconds = random.randint(0, 59)
 restart_time = datetime.timedelta(minutes=restart_time_minutes, seconds=restart_time_seconds)
 
