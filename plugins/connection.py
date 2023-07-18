@@ -12,7 +12,7 @@ logger.setLevel(logging.ERROR)
 async def addconnection(client, message):
     userid = message.from_user.id if message.from_user else None
     if not userid:
-        return await message.reply(f"You are an anonymous admin. Use /connect {message.chat.id} in PM")
+        return await message.reply(f"You are anonymous admin. Use /connect {message.chat.id} in PM")
     chat_type = message.chat.type
 
     if chat_type == enums.ChatType.PRIVATE:
@@ -37,12 +37,12 @@ async def addconnection(client, message):
                 and st.status != enums.ChatMemberStatus.OWNER
                 and userid not in ADMINS
         ):
-            await message.reply_text("You should be an admin in the given group!", quote=True)
+            await message.reply_text("You should be an admin in Given group!", quote=True)
             return
     except Exception as e:
         logger.exception(e)
         await message.reply_text(
-            "Invalid Group ID!\n\nIf correct, make sure I'm present in your group!!",
+            "Invalid Group ID!\n\nIf correct, Make sure I'm present in your group!!",
             quote=True,
         )
 
@@ -56,14 +56,14 @@ async def addconnection(client, message):
             addcon = await add_connection(str(group_id), str(userid))
             if addcon:
                 await message.reply_text(
-                    f"Successfully connected to **{title}**\nNow manage your group from my PM!",
+                    f"Successfully connected to **{title}**\nNow manage your group from my pm !",
                     quote=True,
                     parse_mode=enums.ParseMode.MARKDOWN
                 )
                 if chat_type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
                     await client.send_message(
                         userid,
-                        f"Connected to **{title}**!",
+                        f"Connected to **{title}** !",
                         parse_mode=enums.ParseMode.MARKDOWN
                     )
             else:
@@ -72,7 +72,7 @@ async def addconnection(client, message):
                     quote=True
                 )
         else:
-            await message.reply_text("Add me as an admin in the group", quote=True)
+            await message.reply_text("Add me as an admin in group", quote=True)
     except Exception as e:
         logger.exception(e)
         await message.reply_text('Some error occurred! Try again later.', quote=True)
@@ -83,7 +83,7 @@ async def addconnection(client, message):
 async def deleteconnection(client, message):
     userid = message.from_user.id if message.from_user else None
     if not userid:
-        return await message.reply(f"You are an anonymous admin. Use /connect {message.chat.id} in PM")
+        return await message.reply(f"You are anonymous admin. Use /connect {message.chat.id} in PM")
     chat_type = message.chat.type
 
     if chat_type == enums.ChatType.PRIVATE:
@@ -136,7 +136,7 @@ async def connections(client, message):
             pass
     if buttons:
         await message.reply_text(
-            "Your connected group details:\n\n",
+            "Your connected group details ;\n\n",
             reply_markup=InlineKeyboardMarkup(buttons),
             quote=True
         )
@@ -145,35 +145,3 @@ async def connections(client, message):
             "There are no active connections!! Connect to some groups first.",
             quote=True
         )
-
-
-@Client.on_message(filters.command('pin') & filters.group)
-async def pin_message(client, message):
-    if message.reply_to_message:
-        chat_id = message.chat.id
-        message_id = message.message_id  # Corrected attribute access
-
-        try:
-            await client.pin_chat_message(chat_id, message_id)
-            await message.reply_text("Message pinned successfully!")
-        except Exception as e:
-            logger.exception(e)
-            await message.reply_text("Failed to pin the message. Please try again later.")
-    else:
-        await message.reply_text("Reply to a message to pin it.")
-
-
-@Client.on_message(filters.command('unpin') & filters.group)
-async def unpin_message(client, message):
-    chat_id = message.chat.id
-
-    try:
-        await client.unpin_chat_message(chat_id)
-        await message.reply_text("Message unpinned successfully!")
-    except Exception as e:
-        logger.exception(e)
-        await message.reply_text("Failed to unpin the message. Please try again later.")
-
-
-
-
