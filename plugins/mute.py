@@ -79,13 +79,11 @@ async def temp_mute_user(_, message):
                 f" muted for {message.command[1]}!"
             )
         else:
-    await message.reply_text(
-        "Be quiet for a while! 😠"
-        f"<a href='tg://user?id={user_id}'>"
-        "Of lavender"
-        "</a>"
-        " Mouth "
-        f" muted for {message.command[1]}!"
-    )
-
-            
+            await message.reply_text(
+                "Be quiet for a while! 😠"
+                f"<a href='tg://user?id={user_id}'>"
+                "Of lavender"
+                "</a>"
+                " Mouth "
+                f" muted for {message.command[1]}!"
+            )
