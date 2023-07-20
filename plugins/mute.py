@@ -102,23 +102,23 @@ async def promote_user(_, message):
         await message.reply_text(not_admin_message())
         return
 
-    if not message.from_user.is_chat_owner():
-        await message.reply_text(no_permission_message())
-        return
+    chat_member = await message.chat.get_member(message.from_user.id)
+    if chat_member.status == "creator":
+        user_id, user_first_name = extract_user(message)
 
-    user_id, user_first_name = extract_user(message)
-
-    try:
-        await message.chat.promote_member(user_id)
-    except Exception as error:
-        if "not enough rights to restrict/unrestrict chat members" in str(error):
-            await message.reply_text(no_permission_message())
+        try:
+            await message.chat.promote_member(user_id)
+        except Exception as error:
+            if "not enough rights to restrict/unrestrict chat members" in str(error):
+                await message.reply_text(no_permission_message())
+            else:
+                await message.reply_text(str(error))
         else:
-            await message.reply_text(str(error))
+            await message.reply_text(
+                f"👑 Promoted {user_first_name} to admin! 🎉"
+            )
     else:
-        await message.reply_text(
-            f"👑 Promoted {user_first_name} to admin! 🎉"
-        )
+        await message.reply_text(no_permission_message())
 
 
 @Client.on_message(filters.command("demote"))
@@ -128,32 +128,32 @@ async def demote_user(_, message):
         await message.reply_text(not_admin_message())
         return
 
-    if not message.from_user.is_chat_owner():
-        await message.reply_text(no_permission_message())
-        return
+    chat_member = await message.chat.get_member(message.from_user.id)
+    if chat_member.status == "creator":
+        user_id, user_first_name = extract_user(message)
 
-    user_id, user_first_name = extract_user(message)
-
-    try:
-        await message.chat.restrict_member(
-            user_id=user_id,
-            permissions=ChatPermissions(
-                can_send_messages=False,
-                can_send_media_messages=False,
-                can_send_polls=False,
-                can_send_other_messages=False,
-                can_add_web_page_previews=False,
-                can_change_info=False,
-                can_invite_users=False,
-                can_pin_messages=False
+        try:
+            await message.chat.restrict_member(
+                user_id=user_id,
+                permissions=ChatPermissions(
+                    can_send_messages=False,
+                    can_send_media_messages=False,
+                    can_send_polls=False,
+                    can_send_other_messages=False,
+                    can_add_web_page_previews=False,
+                    can_change_info=False,
+                    can_invite_users=False,
+                    can_pin_messages=False
+                )
             )
-        )
-    except Exception as error:
-        if "not enough rights to restrict/unrestrict chat members" in str(error):
-            await message.reply_text(no_permission_message())
+        except Exception as error:
+            if "not enough rights to restrict/unrestrict chat members" in str(error):
+                await message.reply_text(no_permission_message())
+            else:
+                await message.reply_text(str(error))
         else:
-            await message.reply_text(str(error))
+            await message.reply_text(
+                f"🔇 Demoted {user_first_name} from admin! 😔"
+            )
     else:
-        await message.reply_text(
-            f"🔇 Demoted {user_first_name} from admin! 😔"
-        )
+        await message.reply_text(no_permission_message())
