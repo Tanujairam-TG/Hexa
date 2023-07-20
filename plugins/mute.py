@@ -1,14 +1,25 @@
 from pyrogram import Client, filters
 from pyrogram.types import ChatPermissions
 from plugins.helper.admin_check import admin_check
-from plugins.helper.extract import extract_time, extract_user                               
+from plugins.helper.extract import extract_time, extract_user
+
+
+def not_admin_message():
+    return (
+        "Attention: Admin Privileges Required\n\n"
+        "Dear members,\n\n"
+        "We are thrilled to announce that we have a special treat in store for you! "
+        "However, to access this, we kindly request that you ensure you have admin privileges within our group."
+    )
 
 
 @Client.on_message(filters.command("mute"))
 async def mute_user(_, message):
     is_admin = await admin_check(message)
     if not is_admin:
+        await message.reply_text(not_admin_message())
         return
+
     user_id, user_first_name = extract_user(message)
     try:
         await message.chat.restrict_member(
@@ -16,30 +27,18 @@ async def mute_user(_, message):
             permissions=ChatPermissions()
         )
     except Exception as error:
-        await message.reply_text(
-            str(error)
-        )
+        await message.reply_text(str(error))
     else:
-        if str(user_id).lower().startswith("@"):
-            await message.reply_text(
-                "👍🏻 "
-                f"{user_first_name}"
-                " Rose's mouth is shut! 🤐"
-            )
-        else:
-            await message.reply_text(
-                "👍🏻 "
-                f"<a href='tg://user?id={user_id}'>"
-                "Of Rose"
-                "</a>"
-                " The mouth is closed! 🤐"
-            )
+        await message.reply_text(
+            f"🤐 Muted {user_first_name}'s mouth. Shhh! 🤫"
+        )
 
 
 @Client.on_message(filters.command("tmute"))
 async def temp_mute_user(_, message):
     is_admin = await admin_check(message)
     if not is_admin:
+        await message.reply_text(not_admin_message())
         return
 
     if not len(message.command) > 1:
@@ -66,31 +65,18 @@ async def temp_mute_user(_, message):
             until_date=until_date_val
         )
     except Exception as error:
-        await message.reply_text(
-            str(error)
-        )
+        await message.reply_text(str(error))
     else:
-        if str(user_id).lower().startswith("@"):
-            await message.reply_text(
-                "Be quiet for a while! 😠"
-                f"{user_first_name}"
-                f" muted for {message.command[1]}!"
-            )
-        else:
-            await message.reply_text(
-                "Be quiet for a while! 😠"
-                f"<a href='tg://user?id={user_id}'>"
-                "Of Rose"
-                "</a>"
-                " Mouth "
-                f" muted for {message.command[1]}!"
-            )
+        await message.reply_text(
+            f"😡 Temporarily muted {user_first_name} for {message.command[1]}! 😠"
+        )
 
 
 @Client.on_message(filters.command("unmute"))
 async def unmute_user(_, message):
     is_admin = await admin_check(message)
     if not is_admin:
+        await message.reply_text(not_admin_message())
         return
 
     user_id, user_first_name = extract_user(message)
@@ -100,11 +86,8 @@ async def unmute_user(_, message):
     except Exception as error:
         await message.reply_text(str(error))
     else:
-        if str(user_id).lower().startswith("@"):
-            await message.reply_text(
-                f"🎉 {user_first_name} Rose is free to speak now! 🗣️"
-            )
-        else:
-            await message.reply_text(
-                f"🎉 <a href='tg://user?id={user_id}'>Of Rose</a> is free to speak now! 🗣️"
-            )
+        await message.reply_text(
+            f"🎉 Unmuted {user_first_name}. They can speak again! 🗣️"
+        )
+
+
