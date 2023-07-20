@@ -96,13 +96,13 @@ async def unmute_user(_, message):
     user_id, user_first_name = extract_user(message)
 
     try:
-        await message.chat.unrestrict_member(user_id=user_id)
+        await message.chat.unban_member(user_id)
     except Exception as error:
         await message.reply_text(str(error))
     else:
         if str(user_id).lower().startswith("@"):
             await message.reply_text(
-                f"🎉 {user_first_name} is free to speak now! 🗣️"
+                f"🎉 {user_first_name} Rose is free to speak now! 🗣️"
             )
         else:
             await message.reply_text(
