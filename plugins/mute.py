@@ -158,11 +158,6 @@ async def purge_messages(_, message):
     except Exception as e:
         await message.reply_text("Failed to purge the message.")
 
-@Client.on_chat_member_leave()
-async def farewell_member(_, message):
-    left_member_name = message.left_chat_member.first_name
-    farewell_message = f"Goodbye, {left_member_name}! We'll miss you!"
-    await message.reply_text(farewell_message)
 
 @Client.on_message(filters.command("kick"))
 async def kick_user(_, message):
