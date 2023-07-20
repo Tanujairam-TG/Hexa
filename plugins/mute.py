@@ -151,7 +151,7 @@ async def demote_user(_, message):
             f"🔥 {user_first_name} has been demoted to a regular member!"
         )
 
-@client.on_message(filters.command("purge"))
+@Client.on_message(filters.command("purge"))
 async def purge_messages(_, message):
     if not message.reply_to_message:
         await message.reply_text("Please reply to the message you want to purge.")
@@ -167,7 +167,7 @@ async def purge_messages(_, message):
         await message.reply_text("Failed to purge the message.")
 
 
-@client.on_message(filters.command("kick"))
+@Client.on_message(filters.command("kick"))
 async def kick_user(_, message):
     is_admin = await admin_check(message)
     if not is_admin:
