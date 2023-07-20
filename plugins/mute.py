@@ -11,8 +11,7 @@ async def mute_user(_, message):
         await message.reply_text(
             "Attention: Admin Privileges Required\n\n"
             "Dear member,\n\n"
-            "We are thrilled to announce that we have a special treat in store for you! "
-            "However, to access this, we kindly request that you ensure you have admin privileges within our group."
+            "To access this, we kindly request that you ensure you have admin privileges within our group."
         )
         return
 
@@ -39,8 +38,7 @@ async def temp_mute_user(_, message):
         await message.reply_text(
             "Attention: Admin Privileges Required\n\n"
             "Dear member,\n\n"
-            "We are thrilled to announce that we have a special treat in store for you! "
-            "However, to access this, we kindly request that you ensure you have admin privileges within our group."
+            "To access this, we kindly request that you ensure you have admin privileges within our group."
         )
         return
 
@@ -84,8 +82,7 @@ async def unmute_user(_, message):
         await message.reply_text(
             "Attention: Admin Privileges Required\n\n"
             "Dear member,\n\n"
-            "We are thrilled to announce that we have a special treat in store for you! "
-            "However, to access this, we kindly request that you ensure you have admin privileges within our group."
+            "To access this, we kindly request that you ensure you have admin privileges within our group."
         )
         return
 
@@ -108,8 +105,7 @@ async def promote_user(_, message):
         await message.reply_text(
             "Attention: Admin Privileges Required\n\n"
             "Dear member,\n\n"
-            "We are thrilled to announce that we have a special treat in store for you! "
-            "However, to access this, we kindly request that you ensure you have admin privileges within our group."
+            "To access this, we kindly request that you ensure you have admin privileges within our group."
         )
         return
 
@@ -132,8 +128,7 @@ async def demote_user(_, message):
         await message.reply_text(
             "Attention: Admin Privileges Required\n\n"
             "Dear member,\n\n"
-            "We are thrilled to announce that we have a special treat in store for you! "
-            "However, to access this, we kindly request that you ensure you have admin privileges within our group."
+            "To access this, we kindly request that you ensure you have admin privileges within our group."
         )
         return
 
@@ -147,3 +142,40 @@ async def demote_user(_, message):
         await message.reply_text(
             f"🔥 {user_first_name} has been demoted to a regular member!"
         )
+
+@Client.on_message(filters.command("purge"))
+async def purge_messages(_, message):
+    if not message.reply_to_message:
+        await message.reply_text("Please reply to the message you want to purge.")
+        return
+
+    message_id = message.reply_to_message.message_id
+    chat_id = message.chat.id
+
+    try:
+        await Client.delete_messages(chat_id, message_id)
+        await message.reply_text("Message purged.")
+    except Exception as e:
+        await message.reply_text("Failed to purge the message.")
+
+@Client.on_chat_member_leave()
+async def farewell_member(_, message):
+    left_member_name = message.left_chat_member.first_name
+    farewell_message = f"Goodbye, {left_member_name}! We'll miss you!"
+    await message.reply_text(farewell_message)
+
+@Client.on_message(filters.command("kick"))
+async def kick_user(_, message):
+    is_admin = await admin_check(message)
+    if not is_admin:
+        await message.reply_text("You must be an admin to use this command.")
+        return
+
+    user_id, user_first_name = extract_user(message)
+
+    try:
+        await message.chat.kick_member(user_id)
+    except Exception as error:
+        await message.reply_text(str(error))
+    else:
+        await message.reply_text(f"{user_first_name} has been kicked from the group.")
