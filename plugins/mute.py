@@ -102,11 +102,7 @@ async def unmute_user(_, message):
 async def promote_user(_, message):
     is_admin = await admin_check(message)
     if not is_admin:
-        await message.reply_text(
-            "Attention: Admin Privileges Required\n\n"
-            "Dear member,\n\n"
-            "To access this, we kindly request that you ensure you have admin privileges within our group."
-        )
+        await message.reply_text("You must be an admin to use this command.")
         return
 
     user_id, user_first_name = extract_user(message)
@@ -116,13 +112,13 @@ async def promote_user(_, message):
         admin_permissions = ChatPermissions(
             can_send_messages=True,
             can_send_media_messages=True,
-            can_ban_users=True,
+            can_send_polls=True,
             can_change_info=True,
             can_invite_users=True,
             can_pin_messages=True
         )
 
-        await message.chat.promote_member(user_id, can_change_info=True, can_delete_messages=True, can_invite_users=True, can_restrict_members=True)
+        await message.chat.promote_member(user_id, permissions=admin_permissions)
         await message.chat.set_administrator_custom_title(user_id, "Admin")
     except Exception as error:
         await message.reply_text(str(error))
@@ -155,7 +151,7 @@ async def demote_user(_, message):
             f"🔥 {user_first_name} has been demoted to a regular member!"
         )
 
-@Client.on_message(filters.command("purge"))
+@client.on_message(filters.command("purge"))
 async def purge_messages(_, message):
     if not message.reply_to_message:
         await message.reply_text("Please reply to the message you want to purge.")
@@ -171,7 +167,7 @@ async def purge_messages(_, message):
         await message.reply_text("Failed to purge the message.")
 
 
-@Client.on_message(filters.command("kick"))
+@client.on_message(filters.command("kick"))
 async def kick_user(_, message):
     is_admin = await admin_check(message)
     if not is_admin:
