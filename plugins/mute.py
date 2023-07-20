@@ -116,8 +116,7 @@ async def promote_user(_, message):
         admin_permissions = ChatPermissions(
             can_send_messages=True,
             can_send_media_messages=True,
-            can_send_stickers=True,
-            can_send_polls=True,
+            can_ban_users=True,
             can_change_info=True,
             can_invite_users=True,
             can_pin_messages=True
