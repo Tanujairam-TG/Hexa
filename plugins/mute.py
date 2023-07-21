@@ -38,7 +38,8 @@ async def temp_mute_user(_, message):
         await message.reply_text(
             "Attention: Admin Privileges Required\n\n"
             "Dear member,\n\n"
-            "To access this, we kindly request that you ensure you have admin privileges within our group."
+            "We are thrilled to announce that we have a special treat in store for you! "
+            "However, to access this, we kindly request that you ensure you have admin privileges within our group."
         )
         return
 
@@ -82,7 +83,8 @@ async def unmute_user(_, message):
         await message.reply_text(
             "Attention: Admin Privileges Required\n\n"
             "Dear member,\n\n"
-            "To access this, we kindly request that you ensure you have admin privileges within our group."
+            "We are thrilled to announce that we have a special treat in store for you! "
+            "However, to access this, we kindly request that you ensure you have admin privileges within our group."
         )
         return
 
@@ -102,24 +104,18 @@ async def unmute_user(_, message):
 async def promote_user(_, message):
     is_admin = await admin_check(message)
     if not is_admin:
-        await message.reply_text("You must be an admin to use this command.")
+        await message.reply_text(
+            "Attention: Admin Privileges Required\n\n"
+            "Dear member,\n\n"
+            "We are thrilled to announce that we have a special treat in store for you! "
+            "However, to access this, we kindly request that you ensure you have admin privileges within our group."
+        )
         return
 
     user_id, user_first_name = extract_user(message)
 
     try:
-        # Set the admin permissions using ChatPermissions class
-        admin_permissions = ChatPermissions(
-            can_change_info=True,
-            can_delete_messages=True,
-            can_invite_users=True,
-            can_restrict_members=True,
-            can_pin_messages=True,
-            can_promote_members=False  # This permission is for promoting other members to admin (use with caution)
-        )
-
-        await message.chat.promote_member(user_id, permissions=admin_permissions)
-        await message.chat.set_administrator_custom_title(user_id, "Admin")
+        await message.chat.promote_member(user_id)
     except Exception as error:
         await message.reply_text(str(error))
     else:
@@ -135,7 +131,8 @@ async def demote_user(_, message):
         await message.reply_text(
             "Attention: Admin Privileges Required\n\n"
             "Dear member,\n\n"
-            "To access this, we kindly request that you ensure you have admin privileges within our group."
+            "We are thrilled to announce that we have a special treat in store for you! "
+            "However, to access this, we kindly request that you ensure you have admin privileges within our group."
         )
         return
 
@@ -150,34 +147,24 @@ async def demote_user(_, message):
             f"🔥 {user_first_name} has been demoted to a regular member!"
         )
 
-@client.on_message(filters.command("purge"))
-async def purge_messages(_, message):
-    if not message.reply_to_message:
-        await message.reply_text("Please reply to the message you want to purge.")
-        return
-
-    message_id = message.reply_to_message.message_id
-    chat_id = message.chat.id
-
-    try:
-        await client.delete_messages(chat_id, message_id)
-        await message.reply_text("Message purged.")
-    except Exception as e:
-        await message.reply_text("Failed to purge the message.")
-
-
-@client.on_message(filters.command("kick"))
+@Client.on_message(filters.command("kick"))
 async def kick_user(_, message):
     is_admin = await admin_check(message)
     if not is_admin:
-        await message.reply_text("You must be an admin to use this command.")
+        await message.reply_text(
+            "Attention: Admin Privileges Required\n\n"
+            "Dear member,\n\n"
+            "To access this, we kindly request that you ensure you have admin privileges within our group."
+        )
         return
 
     user_id, user_first_name = extract_user(message)
 
     try:
-        await client.kick_chat_member(message.chat.id, user_id)
+        await message.chat.kick_member(user_id)
     except Exception as error:
         await message.reply_text(str(error))
     else:
-        await message.reply_text(f"{user_first_name} has been kicked from the group.")
+        await message.reply_text(
+            f"👋 {user_first_name} has been kicked from the group!"
+        )
