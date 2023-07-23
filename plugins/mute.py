@@ -159,16 +159,13 @@ async def kick_user(_, message):
         return
 
     user_id, user_first_name = extract_user(message)
-
     try:
-        await message.chat.restrict_member(
-            user_id=user_id,
-            permissions=ChatPermissions(),
-            until_date=None  # No restriction time, effectively a kick
-        )
+        await message.chat.kick_member(user_id)
     except Exception as error:
-        await message.reply_text(str(error))
+        await message.reply_text(
+            f"Failed to kick {user_first_name}: {error}"
+        )
     else:
         await message.reply_text(
-            f"👋 {user_first_name} has been kicked from the group!"
+            f"{user_first_name} has been kicked from the group!"
         )
