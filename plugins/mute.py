@@ -38,7 +38,6 @@ async def temp_mute_user(_, message):
         await message.reply_text(
             "Attention: Admin Privileges Required\n\n"
             "Dear member,\n\n"
-            "We are thrilled to announce that we have a special treat in store for you! "
             "However, to access this, we kindly request that you ensure you have admin privileges within our group."
         )
         return
@@ -83,7 +82,6 @@ async def unmute_user(_, message):
         await message.reply_text(
             "Attention: Admin Privileges Required\n\n"
             "Dear member,\n\n"
-            "We are thrilled to announce that we have a special treat in store for you! "
             "However, to access this, we kindly request that you ensure you have admin privileges within our group."
         )
         return
@@ -107,7 +105,6 @@ async def promote_user(_, message):
         await message.reply_text(
             "Attention: Admin Privileges Required\n\n"
             "Dear member,\n\n"
-            "We are thrilled to announce that we have a special treat in store for you! "
             "However, to access this, we kindly request that you ensure you have admin privileges within our group."
         )
         return
@@ -131,8 +128,7 @@ async def demote_user(_, message):
         await message.reply_text(
             "Attention: Admin Privileges Required\n\n"
             "Dear member,\n\n"
-            "We are thrilled to announce that we have a special treat in store for you! "
-            "However, to access this, we kindly request that you ensure you have admin privileges within our group."
+            "To access this, we kindly request that you ensure you have admin privileges within our group."
         )
         return
 
@@ -146,6 +142,10 @@ async def demote_user(_, message):
         await message.reply_text(
             f"🔥 {user_first_name} has been demoted to a regular member!"
         )
+
+from pyrogram import Client, filters
+from plugins.helper.admin_check import admin_check
+from plugins.helper.extract import extract_user
 
 @Client.on_message(filters.command("kick"))
 async def kick_user(_, message):
