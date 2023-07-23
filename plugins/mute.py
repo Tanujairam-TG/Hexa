@@ -37,16 +37,10 @@ async def temp_mute_user(_, message):
     if not is_admin:
         return
 
-    # Check if the command is a reply to another message
-    if message.reply_to_message:
-        user_id = message.reply_to_message.from_user.id
-        user_first_name = message.reply_to_message.from_user.first_name
-    else:
-        # If the command is not a reply, extract user info from the command text
-        if not len(message.command) > 1:
-            return
+    if not len(message.command) > 1:
+        return
 
-        user_id, user_first_name = extract_user(message)
+    user_id, user_first_name = extract_user(message)
 
     until_date_val = extract_time(message.command[1])
     if until_date_val is None:
@@ -63,7 +57,8 @@ async def temp_mute_user(_, message):
     try:
         await message.chat.restrict_member(
             user_id=user_id,
-            permissions=ChatPermissions(),
+            permissions=ChatPermissions(
+            ),
             until_date=until_date_val
         )
     except Exception as error:
@@ -73,18 +68,19 @@ async def temp_mute_user(_, message):
     else:
         if str(user_id).lower().startswith("@"):
             await message.reply_text(
-                "Be quiet for a while!  "
-                f"{user_first_name}'s"
+                "Be quiet for a while! 😠"
+                f"{user_first_name}"
                 f" muted for {message.command[1]}!"
             )
         else:
             await message.reply_text(
-                "Be quiet for a while!  "
-                f"{user_first_name}'s"
+                "Be quiet for a while! 😠"
+                f"<a href='tg://user?id={user_id}'>"
+                "Of lavender"
+                "</a>"
                 " Mouth "
                 f" muted for {message.command[1]}!"
             )
-
 
 
 @Client.on_message(filters.command("unmute"))
