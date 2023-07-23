@@ -35,17 +35,18 @@ async def mute_user(_, message):
 async def temp_mute_user(_, message):
     is_admin = await admin_check(message)
     if not is_admin:
-        await message.reply_text(
-            "Attention: Admin Privileges Required\n\n"
-            "Dear member,\n\n"
-            "However, to access this, we kindly request that you ensure you have admin privileges within our group."
-        )
         return
 
-    if not len(message.command) > 1:
-        return
+    # Check if the command is a reply to another message
+    if message.reply_to_message:
+        user_id = message.reply_to_message.from_user.id
+        user_first_name = message.reply_to_message.from_user.first_name
+    else:
+        # If the command is not a reply, extract user info from the command text
+        if not len(message.command) > 1:
+            return
 
-    user_id, user_first_name = extract_user(message)
+        user_id, user_first_name = extract_user(message)
 
     until_date_val = extract_time(message.command[1])
     if until_date_val is None:
@@ -70,9 +71,20 @@ async def temp_mute_user(_, message):
             str(error)
         )
     else:
-        await message.reply_text(
-            f"Be quiet for a while! 😠 {user_first_name} muted for {message.command[1]}!"
-        )
+        if str(user_id).lower().startswith("@"):
+            await message.reply_text(
+                "Be quiet for a while! 😠 "
+                f"{user_first_name}'s"
+                f" muted for {message.command[1]}!"
+            )
+        else:
+            await message.reply_text(
+                "Be quiet for a while! 😠 "
+                f"{user_first_name}'s"
+                " Mouth "
+                f" muted for {message.command[1]}!"
+            )
+
 
 
 @Client.on_message(filters.command("unmute"))
@@ -141,31 +153,4 @@ async def demote_user(_, message):
     else:
         await message.reply_text(
             f"🔥 {user_first_name} has been demoted to a regular member!"
-        )
-
-from pyrogram import Client, filters
-from plugins.helper.admin_check import admin_check
-from plugins.helper.extract import extract_user
-
-@Client.on_message(filters.command("kick"))
-async def kick_user(_, message):
-    is_admin = await admin_check(message)
-    if not is_admin:
-        await message.reply_text(
-            "Attention: Admin Privileges Required\n\n"
-            "Dear member,\n\n"
-            "To access this, we kindly request that you ensure you have admin privileges within our group."
-        )
-        return
-
-    user_id, user_first_name = extract_user(message)
-    try:
-        await message.chat.kick_member(user_id)
-    except Exception as error:
-        await message.reply_text(
-            f"Failed to kick {user_first_name}: {error}"
-        )
-    else:
-        await message.reply_text(
-            f"{user_first_name} has been kicked from the group!"
-        )
+    )
