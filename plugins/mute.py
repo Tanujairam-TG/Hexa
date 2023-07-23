@@ -73,13 +73,13 @@ async def temp_mute_user(_, message):
     else:
         if str(user_id).lower().startswith("@"):
             await message.reply_text(
-                "Be quiet for a while! 😠 "
+                "Be quiet for a while!  "
                 f"{user_first_name}'s"
                 f" muted for {message.command[1]}!"
             )
         else:
             await message.reply_text(
-                "Be quiet for a while! 😠 "
+                "Be quiet for a while!  "
                 f"{user_first_name}'s"
                 " Mouth "
                 f" muted for {message.command[1]}!"
@@ -153,4 +153,4 @@ async def demote_user(_, message):
     else:
         await message.reply_text(
             f"🔥 {user_first_name} has been demoted to a regular member!"
-    )
+        )
