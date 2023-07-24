@@ -1135,82 +1135,10 @@ async def auto_filter(client, msg, spoll=False):
                 ]
 
     btn.insert(0,
-        def button_info(update: Update, context: CallbackContext):
-    current_time = datetime.now().strftime('%H:%M:%S')
-    info_message = f"""📢⚠️📂 File Deletion Notice 📂⚠️📢
-
-    📎🗂️ Attention: [Name/Group/Users] 🗂️📎
-
-    🚨🔒 Files will be automatically deleted after 10 minutes for security and privacy purposes. 🔒🚨
-
-    ⏳🕒 Deletion Countdown: [{current_time} onwards] 🕒⏳
-
-    🔐 Your data security is our priority. Please make sure to retrieve the files within the specified time. 🔐
-
-    🔑📥 Download and save the files before they vanish! 📥🔑
-
-    🚀 Powered by CinemaVenoOfficial 🚀"""
-    update.callback_query.answer(info_message, show_alert=True)
-
-def button_movies(update: Update, context: CallbackContext):
-    movie_request_message = """🎬🍿 Movie Request 🍿🎬
-
-    🎥 Movie Title: [Name of the Movie]
-    🗓 Release Year: [Year of Release, if known]
-    🎞 Genre: [Genre of the Movie, if known]
-
-    🎟️ Let's gather for an amazing movie night! 🎟️
-
-    🍿 Get the popcorn ready, it's movie time! 🎉
-
-    🎬 Powered by CinemaVenoOfficial 🎬"""
-    update.callback_query.answer(movie_request_message, show_alert=True)
-
-def button_series(update: Update, context: CallbackContext):
-    series_request_message = """📺🍿 TV Series Request 🍿📺
-
-    🔥 TV Series: [Name of the TV Series]
-    📅 Release Year: [Year of Release, if known]
-    🎭 Genre: [Genre of the TV Series, if known]
-
-    🎉 Calling all binge-watchers! Let's dive into this series together! 🎉
-
-    🍿 Grab your snacks, it's time for some TV series awesomeness! 📺🍿
-
-    🚀 Powered by CinemaVenoOfficial 🚀"""
-    update.callback_query.answer(series_request_message, show_alert=True)
-
-def button_tips(update: Update, context: CallbackContext):
-    tips_message = """📌 Tips for a Great Movie/TV Series Experience 📌
-
-    1. Find a comfortable and cozy spot to watch your favorite movie or TV series.
-    2. Prepare some snacks like popcorn, chips, or your favorite treat.
-    3. Dim the lights to create a theater-like atmosphere.
-    4. Turn off distractions, like your phone or notifications.
-    5. Adjust the volume to your liking for an immersive experience.
-    6. Invite friends or family to join the movie/series night for added fun!
-
-    Enjoy the show! 🍿🎉"""
-    update.callback_query.answer(tips_message, show_alert=True)
-
-# Define the command handler for the /start command
-def start(update: Update, context: CallbackContext):
-    buttons = [
-        [
-            InlineKeyboardButton(text="🦋 FOLLOW US 🦋", url='https://t.me/CinemaVenoOfficial')
-        ],
-        [
-            InlineKeyboardButton(text="info", callback_data="info"),
-            InlineKeyboardButton(text="movies", callback_data="movies"),
-            InlineKeyboardButton(text="series", callback_data="series"),
-            InlineKeyboardButton(text="tips", callback_data="tips")
-        ]
-    ]
-    reply_markup = InlineKeyboardMarkup(buttons)
-    dispatcher.add_handler(CallbackQueryHandler(button_info, pattern="info"))
-    dispatcher.add_handler(CallbackQueryHandler(button_movies, pattern="movies"))
-    dispatcher.add_handler(CallbackQueryHandler(button_series, pattern="series"))
-    dispatcher.add_handler(CallbackQueryHandler(button_tips, pattern="tips"))
+        [ 
+	    InlineKeyboardButton(text="🦋 FOLLOW US 🦋", url='https://t.me/CinemaVenoOfficial'),
+        ] 
+    )
     if offset != "":
         key = f"{message.chat.id}-{message.id}"
         BUTTONS[key] = search
@@ -1389,3 +1317,4 @@ async def manual_filters(client, message, text=False):
                 break
     else:
         return False
+
