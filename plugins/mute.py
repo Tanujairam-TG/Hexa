@@ -150,3 +150,8 @@ async def demote_user(_, message):
         await message.reply_text(
             f"🔥 {user_first_name} has been demoted to a regular member!"
         )
+
+@Client.on_message(filters.left_chat_member)
+async def goodbye_message(_, message):
+    goodbye_text = f"Goodbye, {message.from_user.first_name}! We'll miss you."
+    await message.reply_text(goodbye_text)
