@@ -1,6 +1,7 @@
-from pyrogram.types import Message, ChatMember
-from pyrogram import filters, enums
+from pyrogram.types import Message
+from pyrogram import Client, filters, enums
 
+# Helper function to check for admin and owner privileges
 async def admin_check(message: Message) -> bool:
     if not message.from_user:
         return False
@@ -18,11 +19,17 @@ async def admin_check(message: Message) -> bool:
     chat_id = message.chat.id
     user_id = message.from_user.id
 
-    # Get information about the chat member (user)
-    chat_member = await client.get_chat_member(
+    check_status = await client.get_chat_member(
         chat_id=chat_id,
         user_id=user_id
     )
-
-    # Check if the user is either the owner or an administrator of the chat
-    return chat_member.status in [ChatMember.OWNER, ChatMember.ADMINISTRATOR]
+    
+    admin_strings = [
+        enums.ChatMemberStatus.CREATOR,
+        enums.ChatMemberStatus.ADMINISTRATOR,
+    ]
+    
+    if check_status.status not in admin_strings:
+        return False
+    else:
+        return True
