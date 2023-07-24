@@ -35,6 +35,11 @@ async def mute_user(_, message):
 async def temp_mute_user(_, message):
     is_admin = await admin_check(message)
     if not is_admin:
+        await message.reply_text(
+            "Attention: Admin Privileges Required\n\n"
+            "Dear member,\n\n"
+            "However, to access this, we kindly request that you ensure you have admin privileges within our group."
+        )
         return
 
     if not len(message.command) > 1:
@@ -57,8 +62,7 @@ async def temp_mute_user(_, message):
     try:
         await message.chat.restrict_member(
             user_id=user_id,
-            permissions=ChatPermissions(
-            ),
+            permissions=ChatPermissions(),
             until_date=until_date_val
         )
     except Exception as error:
@@ -66,21 +70,9 @@ async def temp_mute_user(_, message):
             str(error)
         )
     else:
-        if str(user_id).lower().startswith("@"):
-            await message.reply_text(
-                "Be quiet for a while! 😠"
-                f"{user_first_name}"
-                f" muted for {message.command[1]}!"
-            )
-        else:
-            await message.reply_text(
-                "Be quiet for a while! 😠"
-                f"<a href='tg://user?id={user_id}'>"
-                "Of lavender"
-                "</a>"
-                " Mouth "
-                f" muted for {message.command[1]}!"
-            )
+        await message.reply_text(
+            f"Be quiet for a while! 😠 {user_first_name} muted for {message.command[1]}!"
+        )
 
 
 @Client.on_message(filters.command("unmute"))
@@ -150,8 +142,3 @@ async def demote_user(_, message):
         await message.reply_text(
             f"🔥 {user_first_name} has been demoted to a regular member!"
         )
-
-@Client.on_message(filters.left_chat_member)
-async def goodbye_message(_, message):
-    goodbye_text = f"Goodbye, {message.from_user.first_name}! We'll miss you."
-    await message.reply_text(goodbye_text)
