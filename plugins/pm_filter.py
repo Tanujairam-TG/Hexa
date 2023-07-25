@@ -9,7 +9,6 @@ from database.connections_mdb import active_connection, all_connections, delete_
     make_inactive
 from info import *
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, ForceReply
-from telegram.ext import CallbackQueryHandler, CommandHandler, Updater
 from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait, UserIsBlocked, MessageNotModified, PeerIdInvalid
 from utils import get_size, is_subscribed, get_poster, search_gagala, temp, get_settings, save_group_settings
@@ -1136,38 +1135,9 @@ async def auto_filter(client, msg, spoll=False):
                 ]
 
     btn.insert(0,
-        [InlineKeyboardButton(text="🦋 FOLLOW US 🦋", url='https://t.me/CinemaVenoOfficial')],
-        [
-            InlineKeyboardButton(text="info", callback_data="info"),
-            InlineKeyboardButton(text="movies", callback_data="movies"),
-            InlineKeyboardButton(text="series", callback_data="series"),
-            InlineKeyboardButton(text="tips", callback_data="tips"),
-        ]
-    ]
-
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text("Welcome! Choose an option:", reply_markup=reply_markup)
-
-# Handler function for the callback data from the buttons
-def button_callback(update: Update, context):
-    query = update.callback_query
-    data = query.data
-
-    if data == "info":
-        query.answer("📢⚠️📂 File Deletion Notice 📂⚠️📢\n\nThe rest of the message ...\n\n🚀 Powered by CinemaVenoOfficial 🚀", show_alert=True)
-    elif data == "movies":
-        query.answer("🎬🍿 Movie Request 🍿🎬\n\n🎥 Movie Title: [Name of the Movie]\n\n🗓 Release Year: [Year of Release, if known]\n\n🎞 Genre: [Genre of the Movie, if known]\n\n🎟️ Let's gather for an amazing movie night! 🎟️\n\n🍿 Get the popcorn ready, it's movie time! 🎉\n\n🎬 Powered by CinemaVenoOfficial 🎬", show_alert=True)
-    elif data == "series":
-        query.answer("📺🍿 TV Series Request 🍿📺\n\n🔥 TV Series: [Name of the TV Series]\n\n📅 Release Year: [Year of Release, if known]\n\n🎭 Genre: [Genre of the TV Series, if known]\n\n🎉 Calling all binge-watchers! Let's dive into this series together! 🎉\n\n🍿 Grab your snacks, it's time for some TV series awesomeness! 📺🍿\n\n🚀 Powered by CinemaVenoOfficial 🚀", show_alert=True)
-    elif data == "tips":
-        query.answer("tips", show_alert=True)
-
-def main():
-    # Initialize the bot
-    dispatcher = updater.dispatcher
-
-    # Add handlers
-    dispatcher.add_handler(CallbackQueryHandler(button_callback))
+        [ 
+	    InlineKeyboardButton(text="🦋 FOLLOW US 🦋", url='https://t.me/CinemaVenoOfficial'),
+        ] 
     )
     if offset != "":
         key = f"{message.chat.id}-{message.id}"
