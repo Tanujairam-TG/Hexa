@@ -142,25 +142,3 @@ async def demote_user(_, message):
         await message.reply_text(
             f"🔥 {user_first_name} has been demoted to a regular member!"
         )
-
-@Client.on_message(filters.command("purge") & filters.group & filters.me)
-async def purge_messages(_, message):
-    if len(message.command) != 2 or not message.command[1].isdigit():
-        await message.reply_text("Usage: /purge <number of messages>")
-        return
-
-    count = int(message.command[1])
-    messages = await message.client.get_chat_history(message.chat.id, limit=count + 1)
-    for msg in messages:
-        await msg.delete()
-
-# Feature 4: Group Info
-@Client.on_message(filters.command("groupinfo"))
-async def group_info(_, message):
-    chat = await message.client.get_chat(message.chat.id)
-    members_count = await message.client.get_chat_members_count(message.chat.id)
-    group_info_text = (
-        f"Group Name: {chat.title}\n"
-        f"Members Count: {members_count}"
-    )
-    await message.reply_text(group_info_text)
