@@ -1,4 +1,4 @@
-import time
+import datetime
 import random
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
@@ -14,7 +14,6 @@ async def check_alive(_, message):
     # Convert elapsed_time to a human-readable format
     elapsed_time_formatted = time.strftime("%H:%M:%S", time.gmtime(elapsed_time))
 
-    ping_value = await ping(_, message)
 
     # Create the inline keyboard with two buttons
     keyboard = InlineKeyboardMarkup(
@@ -45,38 +44,118 @@ f"└───────────────┈ ⳹",
 
 
     
-@Client.on_message(filters.command("help", CMD))
+@Client.on_message(filters.command("menu", CMD))
 async def help(_, message):
-    text = f"Hi, I'm the group management bot!\n\n"
-    text += f"These are the available commands:\n\n"
-    text += f"/kick - Kick a user\n"
-    text += f"/ban - Ban a user\n"
-    text += f"/unban - Unban a user\n"
-    text += f"/pin - Pin a message\n"
-    text += f"/unpin - Unpin the currently pinned message\n"
-    text += f"/purge - Delete a message\n"
-    text += f"/promote - Promote a user\n"
-    text += f"/demote - Demote a user\n"
-    text += f"/mute - Mute a user\n"
-    text += f"/unmute - Unmute a user\n"
-    text += f"/banall - Ban all members in the group\n"
-    text += f"/info - Get group information\n"
-    text += f"/id - Get the ID of a user\n"
-    text += f"/settings - Get the group settings\n"
-    text += f"/setwelcome - Set the welcome text\n"
-    text += f"/setgoodbye - Set the goodbye text\n"
-    text += f"/enablewelcome - Enable welcome messages\n"
-    text += f"/disablewelcome - Disable welcome messages\n"
-    text += f"/enablegoodbye - Enable goodbye messages\n"
-    text += f"/disablegoodbye - Disable goodbye messages\n"
-    text += f"/cleanwelcome - Clean the welcome message\n"
-    text += f"/cleangoodbye - Clean the goodbye message\n"
-    text += f"/filter - Add a message to filtered media\n"
-    text += f"/unfilter - Remove a message from filtered media\n"
-    text += f"/filtered - Get filtered media messages\n"
-    text += f"/cleanfiltered - Clean filtered media messages\n"
-    text += f"/help - Show this help message\n"
-    await message.reply_text(text)
+    # Get user's first name and bot version
+    user_first_name = message.from_user.first_name
+    bot_version = get_bot_version()
+
+    # Get the current date, month, and year
+    current_date = datetime.datetime.now().strftime("%Y-%m-%d")
+    current_month = datetime.datetime.now().strftime("%B")
+    current_year = datetime.datetime.now().strftime("%Y")
+
+    # Get the current time
+    current_time = datetime.datetime.now().strftime("%H:%M:%S")
+
+    text = (
+        "╭━〔 HEXA 〕━◉\n"
+        f"┃╭━━━━━━━━━━━━━━◉\n"
+        f"┃┃ User: {message.from_user.first_name}\n"
+        "┃┃ Owner: \n"
+        f"┃┃ Version: {get_bot_version()}\n"
+        "┃┃ Prefix: /\n"
+        f"┃┃ MOD: Public\n"
+        f"┃┃ Date: {current_date} ({current_month} {current_year})\n"
+        f"┃┃ Time: {current_time}\n"
+        "┃╰━━━━━━━━━━━━━◉\n"
+        "┃╭────────────···\n"
+        "┃┠─═❮   FILTER   ❯═─⋆\n"
+        "┃┴╭────────···\n"
+        "┃┬╯\n"
+        "┃╏  /filter\n"
+        "┃╏  /filters\n"
+        "┃╏  /del\n"
+        "┃╏  /delall\n"
+        "┃┴╮\n"
+        "┃┬╰────────···\n"
+        "┃╰─────═┅═─────\n"
+        "┃╭────────────···\n"
+        "┃┠─═❮  GROUP  ❯═─⋆\n"
+        "┃┴╭────────···\n"
+        "┃┬╯\n"
+        "┃╏  /connect\n"
+        "┃╏  /disconnect\n"
+        "┃╏  /connections\n"
+        "┃╏  /settings\n"
+        "┃┴╮\n"
+        "┃┬╰────────···\n"
+        "┃╰─────═┅═─────\n"
+        "┃╭────────────···\n"
+        "┃┠─═❮  ADMIN  ❯═─⋆\n"
+        "┃┴╭────────···\n"
+        "┃┬╯\n"
+        "┃╏  /mute\n"
+        "┃╏  /tmute\n"
+        "┃╏  /unmute\n"
+        "┃╏  /pin\n"
+        "┃╏  /unpin\n"
+        "┃╏  /promote\n"
+        "┃╏  /demote\n"
+        "┃┴╮\n"
+        "┃┬╰────────···\n"
+        "┃╰─────═┅═─────\n"
+        "┃╭────────────···\n"
+        "┃┠─═❮ INFO ❯═─⋆\n"
+        "┃┴╭────────···\n"
+        "┃┬╯\n"
+        "┃╏  /alive\n"
+        "┃╏  /ping\n"
+        "┃╏  /id\n"
+        "┃╏  /info\n"
+        "┃┴╮\n"
+        "┃┬╰────────···\n"
+        "┃╰─────═┅═─────\n"
+        "┃╭────────────···\n"
+        "┃┠─═❮    OWNER    ❯═─⋆\n"
+        "┃┴╭────────···\n"
+        "┃┬╯\n"
+        "┃╏  /leave\n"
+        "┃╏  /enable\n"
+        "┃╏  /disable\n"
+        "┃╏  /invite\n"
+        "┃╏  /ban\n"
+        "┃╏  /unban\n"
+        "┃╏  /broadcast\n"
+        "┃╏  /users\n"
+        "┃╏  /chats\n"
+        "┃┴╮\n"
+        "┃┬╰────────···\n"
+        "┃╰─────═┅═─────\n"
+        "┃╭────────────···\n"
+        "┃┠─═❮ 𝗦𝗘𝗔𝗥𝗖𝗛 ❯═─⋆\n"
+        "┃┴╭────────···\n"
+        "┃┬╯\n"
+        "┃╏  /imdb\n"
+        "┃┴╮\n"
+        "┃┬╰────────···\n"
+        "┃╰─────═┅═─────\n"
+        "┃╭────────────···\n"
+        "┃┠─═❮    DATABASE    ❯═─⋆\n"
+        "┃┴╭────────···\n"
+        "┃┬╯\n"
+        "┃╏  /logs\n"
+        "┃╏  /delete\n"
+        "┃╏  /deleteall\n"
+        "┃┴╮\n"
+        "┃┬╰────────···\n"
+        "┃╰─────═┅═─────\n"
+        "╰━━━━━━━━━━━━━◉"
+    )
+
+    # Create the inline keyboard with the cancel button
+    keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Cancel", callback_data="cancel")]])
+    await message.reply_text(text, reply_markup=keyboard)
 
 
 @Client.on_message(filters.command("movies", CMD))
@@ -89,7 +168,7 @@ async def series(_, message):
 
 def get_bot_version():
     # Replace with the code to fetch the bot version from wherever it's stored
-    return "2.4.3"
+    return "2.4.8"
     
     
 # Start time of the bot
