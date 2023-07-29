@@ -53,11 +53,11 @@ async def help(_, message):
 
     # Get the current date, month, and year
     current_date = datetime.datetime.now().strftime("%Y-%m-%d")
-
+    
     # Get the current time
     current_time = datetime.datetime.now().strftime("%H:%M:%S")
 
-    caption = (
+    text = (
         "╭━〔 HEXA 〕━◉\n"
         f"┃╭━━━━━━━━━━━━━━◉\n"
         f"┃┃ User:- {message.from_user.first_name}\n"
@@ -151,18 +151,11 @@ async def help(_, message):
         "┃╰─────═┅═─────\n"
         "╰━━━━━━━━━━━━━◉"
     )
-    
-photo_url = "https://example.com/your_photo.jpg"
 
     # Create the inline keyboard with the cancel button
     keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("☞ Cancel ☜", callback_data="cancel")]])
+    await message.reply_text(text, reply_markup=keyboard)
 
-    # Send the menu with the photo and caption
-    await message.reply_photo(
-        photo=photo_url,
-        caption=caption,
-        reply_markup=keyboard
-    )
 
 @Client.on_message(filters.command("movies", CMD))
 async def movie(_, message):
