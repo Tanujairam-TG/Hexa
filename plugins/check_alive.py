@@ -59,16 +59,18 @@ async def help(_, message):
     # Get the current time
     current_time = datetime.datetime.now().strftime("%H:%M:%S")
 
-    text = (
+    await message.reply_photo(
+        photo="https://i.imgur.com/QiqadrP.jpeg",
+        text = (
         "╭━〔 HEXA 〕━◉\n"
         f"┃╭━━━━━━━━━━━━━━◉\n"
-        f"┃┃ User: {message.from_user.first_name}\n"
-        "┃┃ Owner: \n"
-        f"┃┃ Version: {get_bot_version()}\n"
+        f"┃┃ User:- {message.from_user.first_name}\n"
+        "┃┃ Owner:- <a href=https://t.me/CinemaVenoOfficial>CinemaVenoOfficial</a>\n"
+        f"┃┃ Version:- {get_bot_version()}\n"
         "┃┃ Prefix: /\n"
-        f"┃┃ MOD: Public\n"
-        f"┃┃ Date: {current_date} ({current_month} {current_year})\n"
-        f"┃┃ Time: {current_time}\n"
+        f"┃┃ Mode:- Public\n"
+        f"┃┃ Date:- {current_date}\n"
+        f"┃┃ Time:- {current_time}\n"
         "┃╰━━━━━━━━━━━━━◉\n"
         "┃╭────────────···\n"
         "┃┠─═❮   FILTER   ❯═─⋆\n"
