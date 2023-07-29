@@ -61,8 +61,7 @@ async def help(_, message):
 
     await message.reply_photo(
         photo="https://i.imgur.com/QiqadrP.jpeg",
-        text = (
-        "╭━〔 HEXA 〕━◉\n"
+        text ="╭━〔 HEXA 〕━◉\n"
         f"┃╭━━━━━━━━━━━━━━◉\n"
         f"┃┃ User:- {message.from_user.first_name}\n"
         "┃┃ Owner:- <a href=https://t.me/CinemaVenoOfficial>CinemaVenoOfficial</a>\n"
