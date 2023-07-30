@@ -1,21 +1,16 @@
 class script(object):
-    START_TXT = """Hello {},
-Myself <a href=https://t.me/{}>{}</a>,\n\nTrust me ! I can't even imagine how super-fast i can drive your Database channel \n\nAre you ready for Long Drive Baby...🤪"""
-    LZTHMB_TEXT = """Hello {},
-Glad to see you here. It seems that you really love <a href=https://t.me/CinemaVenoOfficial >CinemaVenoOfficial</a> work.\n\n<b>Thumbnail extracting</b> feature will be available soon, please join <a href=https://t.me/HexaSupportOfficial>Hexa Support Channel</a> and stay tuned for next <a href=https://t.me/HexaSupportOfficial>update</a>.\n\n  🐞 Report Bug here: <a href=https://t.me/HexaSupportOfficial>Hexa Support</a>
-    """
-    LZLINK_TEXT = """Hey {},
-Glad to see you here. It seems that you really love <a href=https://t.me/CinemaVenoOfficial >CinemaVenoOfficial</a> work.\n\n<b>File to LiNK converting</b> feature will be available soon, please join <a href=https://t.me/HexaSupportOfficial>Hexa Support Channel</a> and stay tuned for next <a href=https://t.me/HexaSupportOfficial>update</a>.\n\n  🐞 Report Bug here: <a href=https://t.me/HexaSupportOfficial>Hexa Support</a>
-    """
+    START_TXT = """ʜᴇʟʟᴏ {},
+ᴍʏꜱᴇʟꜰ <a href=https://t.me/{}>{}</a>,\n\ᴛʀᴜꜱᴛ ᴍᴇ! ɪ ᴄᴀɴ ꜱᴘᴇᴇᴅ ᴜᴘ ʏᴏᴜʀ ᴅᴀᴛᴀʙᴀꜱᴇ ᴄʜᴀɴɴᴇʟ ʙᴇʏᴏɴᴅ ɪᴍᴀɢɪɴᴀᴛɪᴏɴ. \n\nᴀʀᴇ ʏᴏᴜ ʀᴇᴀᴅʏ ꜰᴏʀ ᴀɴ ᴇxʜɪʟᴀʀᴀᴛɪɴɢ ʀɪᴅᴇ, ʙᴀʙʏ? 🚀"""
+    
     DNT_TEXT = """Hey sweetie {},
 Thanks for thinking about us.\nIt seems that you really love <a href=https://t.me/CinemaVenoOfficial >CinemaVenoOfficial</a> work.\n\n<b>For your kind information, we do not ask or force anyone for any kind of payment</b>. But if you really want to donate us then you can send money to us from below links...\n\n💵 Reach Donation Page : <a href=https://t.me/HexaSupportOfficial>Click here...</a>\n\nT❤️ hank you so much..
     """
-    REQ_AUTH_TEXT = """Hello {},
-\nSorry sweetie.. You must have to be the Authentic User to complete this operation...\n\n👮‍♀ REPORT ISSUE HERE: <a href=https://t.me/HexaSupportOfficial>Hexa Support</a>\n\n
+    REQ_AUTH_TEXT = """ʜᴇʟʟᴏ {},
+\nꜱᴏʀʀʏ ꜱᴡᴇᴇᴛɪᴇ.. ʏᴏᴜ ᴍᴜꜱᴛ ʜᴀᴠᴇ ᴛᴏ ʙᴇ ᴛʜᴇ ᴀᴜᴛʜᴇɴᴛɪᴄ ᴜꜱᴇʀ ᴛᴏ ᴄᴏᴍᴘʟᴇᴛᴇ ᴛʜɪꜱ ᴏᴘᴇʀᴀᴛɪᴏɴ...\n\n👮‍♀ 𝚁𝙴𝙿𝙾𝚁𝚃 𝙸𝚂𝚂𝚄𝙴 𝙷𝙴𝚁𝙴: <a href=https://t.me/HexaSupportOfficial>ʜᴇxᴀ ꜱᴜᴘᴘᴏʀᴛ</a>\n\n
     """
-    ALRDY_UPLDD_TEXT = """✅ Content is already uploaded.\n\nName:{}\nPlease make sure about your spelling before submiting request..."""
+    ALRDY_UPLDD_TEXT = """✅ ᴄᴏɴᴛᴇɴᴛ ɪꜱ ᴀʟʀᴇᴀᴅʏ ᴜᴘʟᴏᴀᴅᴇᴅ.\n\nName:{}\nPlease make sure about your spelling before submiting request..."""
     HELP_TXT = """𝙷𝙴𝚈 {}
-Here is the help for my COMMANDS."""
+ʜᴇʀᴇ ɪꜱ ᴛʜᴇ ʜᴇʟᴘ ꜰᴏʀ ᴍʏ ᴄᴏᴍᴍᴀɴᴅꜱ."""
     ABOUT_TXT = """✯ 𝙼𝚈 𝙽𝙰𝙼𝙴: {}
 ✯ 𝙲𝚁𝙴𝙰𝚃𝙾𝚁: <a href=https://t.me/CinemaVenoOfficial>CinemaVenoOfficial</a>
 ✯ 𝙻𝙸𝙱𝚁𝙰𝚁𝚈: 𝙿𝚈𝚁𝙾𝙶𝚁𝙰𝙼
@@ -24,10 +19,10 @@ Here is the help for my COMMANDS."""
 ✯ 𝙱𝙾𝚃 𝚂𝙴𝚁𝚅𝙴𝚁: 𝙺𝙾𝚈𝙴𝙱
 ✯ 𝙱𝚄𝙸𝙻𝙳 𝚂𝚃𝙰𝚃𝚄𝚂: v2.0.1 [ 𝙱𝙴𝚃𝙰 ]"""
     SOURCE_TXT = """<b>NOTE:</b>
-- Hexa is a Professional Telegram bot. 
-- Source - https://t.me/CinemaVenoOfficial  
+- ʜᴇxᴀ ɪꜱ ᴀ ᴘʀᴏꜰᴇꜱꜱɪᴏɴᴀʟ ᴀᴜᴛᴏ ꜰɪʟᴛᴇʀ ᴛᴇʟᴇɢʀᴀᴍ ʙᴏᴛ. 
+- ꜱᴏᴜʀᴄᴇ - <a href=https://t.me/CinemaVenoOfficial>ɴᴏᴋɪ ɪʀɴᴏ</a>"  
 
-<b>DEVS:</b>
+<b>ᴍᴏᴠɪᴇ ᴄʜᴀɴɴᴇʟ:</b>
 - <a href=https://t.me/CinemaVenoOfficial>CinemaVenoOfficial</a>"""
     MANUELFILTER_TXT = """Help: <b>Filters</b>
 
@@ -48,9 +43,9 @@ Here is the help for my COMMANDS."""
 - Supports both url and alert inline buttons.
 
 <b>NOTE:</b>
-1. Telegram will not allows you to send buttons without any content, so content is mandatory.
-2. BOT supports buttons with any telegram media type.
-3. Buttons should be properly parsed as markdown format
+1. ᴛᴇʟᴇɢʀᴀᴍ ᴡɪʟʟ ɴᴏᴛ ᴀʟʟᴏᴡꜱ ʏᴏᴜ ᴛᴏ ꜱᴇɴᴅ ʙᴜᴛᴛᴏɴꜱ ᴡɪᴛʜᴏᴜᴛ ᴀɴʏ ᴄᴏɴᴛᴇɴᴛ, ꜱᴏ ᴄᴏɴᴛᴇɴᴛ ɪꜱ ᴍᴀɴᴅᴀᴛᴏʀʏ.
+2. ʙᴏᴛ ꜱᴜᴘᴘᴏʀᴛꜱ ʙᴜᴛᴛᴏɴꜱ ᴡɪᴛʜ ᴀɴʏ ᴛᴇʟᴇɢʀᴀᴍ ᴍᴇᴅɪᴀ ᴛʏᴘᴇ.
+3. ʙᴜᴛᴛᴏɴꜱ ꜱʜᴏᴜʟᴅ ʙᴇ ᴘʀᴏᴘᴇʀʟʏ ᴘᴀʀꜱᴇᴅ ᴀꜱ ᴍᴀʀᴋᴅᴏᴡɴ ꜰᴏʀᴍᴀᴛ
 
 <b>URL buttons:</b>
 <code>[Button Text](buttonurl:https://t.me/CinemaVenoOfficial)</code>
@@ -60,33 +55,33 @@ Here is the help for my COMMANDS."""
     AUTOFILTER_TXT = """Help: <b>Auto Filter</b>
 
 <b>NOTE:</b>
-1. Make me the admin of your channel if it's private.
-2. Make sure that your channel does not contains camrips, porn and fake files.
-3. Forward the last message to me with quotes.
- I'll add all the files in that channel to my db."""
-    CONNECTION_TXT = """Help: <b>Connections</b>
+1. ᴍᴀᴋᴇ ᴍᴇ ᴛʜᴇ ᴀᴅᴍɪɴ ᴏꜰ ʏᴏᴜʀ ᴄʜᴀɴɴᴇʟ ɪꜰ ɪᴛ'ꜱ ᴘʀɪᴠᴀᴛᴇ.
+2. ᴍᴀᴋᴇ ꜱᴜʀᴇ ᴛʜᴀᴛ ʏᴏᴜʀ ᴄʜᴀɴɴᴇʟ ᴅᴏᴇꜱ ɴᴏᴛ ᴄᴏɴᴛᴀɪɴꜱ ᴄᴀᴍʀɪᴘꜱ, ᴘᴏʀɴ ᴀɴᴅ ꜰᴀᴋᴇ ꜰɪʟᴇꜱ.
+3. ꜰᴏʀᴡᴀʀᴅ ᴛʜᴇ ʟᴀꜱᴛ ᴍᴇꜱꜱᴀɢᴇ ᴛᴏ ᴍᴇ ᴡɪᴛʜ Qᴜᴏᴛᴇꜱ.
+ ɪ'ʟʟ ᴀᴅᴅ ᴀʟʟ ᴛʜᴇ ꜰɪʟᴇꜱ ɪɴ ᴛʜᴀᴛ ᴄʜᴀɴɴᴇʟ ᴛᴏ ᴍʏ ᴅʙ."""
+    CONNECTION_TXT = """ʜᴇʟᴘ: <b>ᴄᴏɴɴᴇᴄᴛɪᴏɴꜱ</b>
 
-- Used to connect bot to PM for managing filters 
-- it helps to avoid spamming in groups.
+- ᴜꜱᴇᴅ ᴛᴏ ᴄᴏɴɴᴇᴄᴛ ʙᴏᴛ ᴛᴏ ᴘᴍ ꜰᴏʀ ᴍᴀɴᴀɢɪɴɢ ꜰɪʟᴛᴇʀꜱ 
+- ɪᴛ ʜᴇʟᴘꜱ ᴛᴏ ᴀᴠᴏɪᴅ ꜱᴘᴀᴍᴍɪɴɢ ɪɴ ɢʀᴏᴜᴘꜱ.
+
+<b>ɴᴏᴛᴇ:</b>
+1. ᴏɴʟʏ ᴀᴅᴍɪɴꜱ ᴄᴀɴ ᴀᴅᴅ ᴀ ᴄᴏɴɴᴇᴄᴛɪᴏɴ.
+2. ꜱᴇɴᴅ <code>/connect</code> ꜰᴏʀ ᴄᴏɴɴᴇᴄᴛɪɴɢ ᴍᴇ ᴛᴏ ᴜʀ ᴘᴍ
+
+<b>ᴄᴏᴍᴍᴀɴᴅꜱ ᴀɴᴅ ᴜꜱᴀɢᴇ:</b>
+• /connect  - <code>ᴄᴏɴɴᴇᴄᴛ ᴀ ᴘᴀʀᴛɪᴄᴜʟᴀʀ ᴄʜᴀᴛ ᴛᴏ ʏᴏᴜʀ ᴘᴍ</code>
+• /disconnect  - <code>ᴅɪꜱᴄᴏɴɴᴇᴄᴛ ꜰʀᴏᴍ ᴀ ᴄʜᴀᴛ ꜰʀᴏᴍ ᴘᴍ</code>
+• /connections - <code>ʟɪꜱᴛ ᴀʟʟ ʏᴏᴜʀ ᴄᴏɴɴᴇᴄᴛɪᴏɴꜱ</code>"""
+    EXTRAMOD_TXT = """ʜᴇʟᴘ: <b>ᴇxᴛʀᴀ ᴍᴏᴅᴜʟᴇꜱ</b>
 
 <b>NOTE:</b>
-1. Only admins can add a connection.
-2. Send <code>/connect</code> for connecting me to ur PM
+ᴛʜᴇꜱᴇ ᴀʀᴇ ᴛʜᴇ ᴇxᴛʀᴀ ꜰᴇᴀᴛᴜʀᴇꜱ ᴏꜰ ʜᴇxᴀ
 
-<b>Commands and Usage:</b>
-• /connect  - <code>connect a particular chat to your PM</code>
-• /disconnect  - <code>disconnect from a chat</code>
-• /connections - <code>list all your connections</code>"""
-    EXTRAMOD_TXT = """Help: <b>Extra Modules</b>
-
-<b>NOTE:</b>
-these are the extra features of Hexa
-
-<b>Commands and Usage:</b>
-• /id - <code>get id of a specified user.</code>
-• /info  - <code>get information about a user.</code>
-• /imdb  - <code>get the film information from IMDb source.</code>
-• /search  - <code>get the film information from various sources.</code>"""
+<b>ᴄᴏᴍᴍᴀɴᴅꜱ ᴀɴᴅ ᴜꜱᴀɢᴇ:</b>
+• /id - <code>ɢᴇᴛ ɪᴅ ᴏꜰ ᴀ ꜱᴘᴇᴄɪꜰɪᴇᴅ ᴜꜱᴇʀ.</code>
+• /info  - <code>ɢᴇᴛ ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ ᴀʙᴏᴜᴛ ᴀ ᴜꜱᴇʀ.</code>
+• /imdb  - <code>ɢᴇᴛ ᴛʜᴇ ꜰɪʟᴍ ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ ꜰʀᴏᴍ ɪᴍᴅʙ ꜱᴏᴜʀᴄᴇ.</code>
+• /search  - <code>ɢᴇᴛ ᴛʜᴇ ꜰɪʟᴍ ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ ꜰʀᴏᴍ ᴠᴀʀɪᴏᴜꜱ ꜱᴏᴜʀᴄᴇꜱ.</code>"""
     ADMIN_TXT = """Help: <b>Admin mods</b>
 
 <b>NOTE:</b>
