@@ -478,6 +478,16 @@ async def settings(client, message):
                     '✅ Yes' if settings["welcome"] else '❌ No',
                     callback_data=f'setgs#welcome#{settings["welcome"]}#{grp_id}',
                 ),
+            ],
+            [
+                InlineKeyboardButton(
+                    'Goodbye',
+                    callback_data=f'setgs#goodbye#{settings["goodbye"]}#{grp_id}',
+                ),
+                InlineKeyboardButton(
+                    '✅ Yes' if settings["goodbye"] else '❌ No',
+                    callback_data=f'setgs#goodbye#{settings["goodbye"]}#{grp_id}',
+                ),
             ]
         ]
         else:
@@ -540,6 +550,16 @@ async def settings(client, message):
                 InlineKeyboardButton(
                     '✅ Yes' if settings["welcome"] else '❌ No',
                     callback_data=f'setgs#welcome#{settings["welcome"]}#{grp_id}',
+                ),
+            ],
+            [
+                InlineKeyboardButton(
+                    'Goodbye',
+                    callback_data=f'setgs#goodbye#{settings["goodbye"]}#{grp_id}',
+                ),
+                InlineKeyboardButton(
+                    '✅ Yes' if settings["goodbye"] else '❌ No',
+                    callback_data=f'setgs#goodbye#{settings["goodbye"]}#{grp_id}',
                 ),
             ]
         ]
