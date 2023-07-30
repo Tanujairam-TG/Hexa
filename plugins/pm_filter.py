@@ -2,6 +2,7 @@ import asyncio
 import re
 import ast
 import math
+from aiogram import types
 from pyrogram.errors.exceptions.bad_request_400 import MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty
 from Script import script
 import pyrogram
@@ -1135,10 +1136,41 @@ async def auto_filter(client, msg, spoll=False):
                 ]
 
     btn.insert(0,
-        [ 
-	    InlineKeyboardButton(text="🦋 FOLLOW US 🦋", url='https://t.me/CinemaVenoOfficial'),
-        ] 
-    )
+    [ 
+        InlineKeyboardButton(text="🦋 FOLLOW US 🦋", url='https://t.me/CinemaVenoOfficial'),
+    ],
+)
+
+btn.append(
+    [
+        InlineKeyboardButton(text="Info", callback_data="info"),
+        InlineKeyboardButton(text="Movie", callback_data="movies"),
+    ]
+)
+btn.append(
+    [
+        InlineKeyboardButton(text="Series", callback_data="series"),
+        InlineKeyboardButton(text="Tips", callback_data="tips"),
+    ]
+)
+
+# Attach the on_button_click callback to handle button clicks
+dp.register_callback_query_handler(on_button_click)
+
+async def on_button_click(query: types.CallbackQuery):
+    data = query.data
+    if data == "info":
+        answer_message = "📢⚠️📂 File Deletion Notice 📂⚠️📢\n\nThe rest of the message ...\n\n🚀 Powered by CinemaVenoOfficial 🚀"
+    elif data == "movies":
+        answer_message = "🎬🍿 Movie Request 🍿🎬\n\n🎥 Movie Title: [Name of the Movie]\n\n🗓 Release Year: [Year of Release, if known]\n\n🎞 Genre: [Genre of the Movie, if known]\n\n🎟️ Let's gather for an amazing movie night! 🎟️\n\n🍿 Get the popcorn ready, it's movie time! 🎉\n\n🎬 Powered by CinemaVenoOfficial 🎬"
+    elif data == "series":
+        answer_message = "📺🍿 TV Series Request 🍿📺\n\n🔥 TV Series: [Name of the TV Series]\n\n📅 Release Year: [Year of Release, if known]\n\n🎭 Genre: [Genre of the TV Series, if known]\n\n🎉 Calling all binge-watchers! Let's dive into this series together! 🎉\n\n🍿 Grab your snacks, it's time for some TV series awesomeness! 📺🍿\n\n🚀 Powered by CinemaVenoOfficial 🚀"
+    elif data == "tips":
+        answer_message = "📢⚠️📂 File Deletion Notice 📂⚠️📢\n\nHello there!\nAfter 5 minutes this message will be automatically deleted.\n⏰ Please make sure to download or save any important files before the 5-minute duration expires, as they will not be retrievable after that time if you want files search again.\n🚀 Thank you for using CinemaVenoOfficial! If you have any questions or concerns, feel free to reach out to us.\nPowered by CinemaVenoOfficial."
+
+    # Send the answer alert with the specified message
+    await query.answer(answer_message, show_alert=True)
+
     if offset != "":
         key = f"{message.chat.id}-{message.id}"
         BUTTONS[key] = search
