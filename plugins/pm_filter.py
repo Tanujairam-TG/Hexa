@@ -973,6 +973,11 @@ async def cb_handler(client: Client, query: CallbackQuery):
                     InlineKeyboardButton('Welcome', callback_data=f'setgs#welcome#{settings["welcome"]}#{str(grp_id)}'),
                     InlineKeyboardButton('✅ Yes' if settings["welcome"] else '❌ No',
                                          callback_data=f'setgs#welcome#{settings["welcome"]}#{str(grp_id)}')
+                ],
+                [
+                    InlineKeyboardButton('Goodbye', callback_data=f'setgs#goodbye#{settings["goodbye"]}#{str(grp_id)}'),
+                    InlineKeyboardButton('✅ Yes' if settings["goodbye"] else '❌ No',
+                                         callback_data=f'setgs#goodbye#{settings["goodbye"]}#{str(grp_id)}')
                 ]
             ]
             else:
@@ -1009,6 +1014,11 @@ async def cb_handler(client: Client, query: CallbackQuery):
                     InlineKeyboardButton('Welcome', callback_data=f'setgs#welcome#{settings["welcome"]}#{str(grp_id)}'),
                     InlineKeyboardButton('✅ Yes' if settings["welcome"] else '❌ No',
                                          callback_data=f'setgs#welcome#{settings["welcome"]}#{str(grp_id)}')
+                ],
+                [
+                    InlineKeyboardButton('Goodbye', callback_data=f'setgs#goodbye#{settings["goodbye"]}#{str(grp_id)}'),
+                    InlineKeyboardButton('✅ Yes' if settings["goodbye"] else '❌ No',
+                                         callback_data=f'setgs#goodbye#{settings["goodbye"]}#{str(grp_id)}')
                 ]
             ]
             reply_markup = InlineKeyboardMarkup(buttons)
