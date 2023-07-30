@@ -2,7 +2,6 @@ import asyncio
 import re
 import ast
 import math
-from aiogram import types
 from pyrogram.errors.exceptions.bad_request_400 import MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty
 from Script import script
 import pyrogram
@@ -1136,33 +1135,10 @@ async def auto_filter(client, msg, spoll=False):
                 ]
 
     btn.insert(0,
-    [ 
-        InlineKeyboardButton(text="🦋 FOLLOW US 🦋", url='https://t.me/CinemaVenoOfficial'),
-    ],
-    [
-        InlineKeyboardButton(text="Info", callback_data="info"),
-        InlineKeyboardButton(text="Movie", callback_data="movies"),
-        InlineKeyboardButton(text="Series", callback_data="series"),
-        InlineKeyboardButton(text="Tips", callback_data="tips"),
-    ]
-)
-
-# Attach the on_button_click callback to handle button clicks
-dp.register_callback_query_handler(on_button_click)
-
-async def on_button_click(query: types.CallbackQuery):
-    data = query.data
-    if data == "info":
-        answer_message = "📢⚠️📂 File Deletion Notice 📂⚠️📢\n\nThe rest of the message ...\n\n🚀 Powered by CinemaVenoOfficial 🚀"
-    elif data == "movies":
-        answer_message = "🎬🍿 Movie Request 🍿🎬\n\n🎥 Movie Title: [Name of the Movie]\n\n🗓 Release Year: [Year of Release, if known]\n\n🎞 Genre: [Genre of the Movie, if known]\n\n🎟️ Let's gather for an amazing movie night! 🎟️\n\n🍿 Get the popcorn ready, it's movie time! 🎉\n\n🎬 Powered by CinemaVenoOfficial 🎬"
-    elif data == "series":
-        answer_message = "📺🍿 TV Series Request 🍿📺\n\n🔥 TV Series: [Name of the TV Series]\n\n📅 Release Year: [Year of Release, if known]\n\n🎭 Genre: [Genre of the TV Series, if known]\n\n🎉 Calling all binge-watchers! Let's dive into this series together! 🎉\n\n🍿 Grab your snacks, it's time for some TV series awesomeness! 📺🍿\n\n🚀 Powered by CinemaVenoOfficial 🚀"
-    elif data == "tips":
-        answer_message = "📌  How to Search for the Correct Movie or TV Series 📌\n\nWhen searching for a movie or TV series, follow these tips to find the correct information quickly:\nInclude Year  If you know the release year, include it in your search to refine results. For example, search for Inception 2010 or Breaking Bad 2008 This is particularly useful when there are multiple versions of the same title.\n🚀 Happy searching and enjoy your movie or TV series! 🍿🎬\n\n🔎 Powered by CinemaVenoOfficial 🔎"
-
-    # Send the answer alert with the specified message
-    await query.answer(answer_message, show_alert=True)
+        [ 
+	    InlineKeyboardButton(text="🦋 FOLLOW US 🦋", url='https://t.me/CinemaVenoOfficial'),
+        ] 
+    )
     if offset != "":
         key = f"{message.chat.id}-{message.id}"
         BUTTONS[key] = search
