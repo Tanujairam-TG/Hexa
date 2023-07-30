@@ -1139,16 +1139,9 @@ async def auto_filter(client, msg, spoll=False):
     [ 
         InlineKeyboardButton(text="🦋 FOLLOW US 🦋", url='https://t.me/CinemaVenoOfficial'),
     ],
-)
-
-btn.append(
     [
         InlineKeyboardButton(text="Info", callback_data="info"),
         InlineKeyboardButton(text="Movie", callback_data="movies"),
-    ]
-)
-btn.append(
-    [
         InlineKeyboardButton(text="Series", callback_data="series"),
         InlineKeyboardButton(text="Tips", callback_data="tips"),
     ]
@@ -1166,11 +1159,10 @@ async def on_button_click(query: types.CallbackQuery):
     elif data == "series":
         answer_message = "📺🍿 TV Series Request 🍿📺\n\n🔥 TV Series: [Name of the TV Series]\n\n📅 Release Year: [Year of Release, if known]\n\n🎭 Genre: [Genre of the TV Series, if known]\n\n🎉 Calling all binge-watchers! Let's dive into this series together! 🎉\n\n🍿 Grab your snacks, it's time for some TV series awesomeness! 📺🍿\n\n🚀 Powered by CinemaVenoOfficial 🚀"
     elif data == "tips":
-        answer_message = "📢⚠️📂 File Deletion Notice 📂⚠️📢\n\nHello there!\nAfter 5 minutes this message will be automatically deleted.\n⏰ Please make sure to download or save any important files before the 5-minute duration expires, as they will not be retrievable after that time if you want files search again.\n🚀 Thank you for using CinemaVenoOfficial! If you have any questions or concerns, feel free to reach out to us.\nPowered by CinemaVenoOfficial."
+        answer_message = "📌  How to Search for the Correct Movie or TV Series 📌\n\nWhen searching for a movie or TV series, follow these tips to find the correct information quickly:\nInclude Year  If you know the release year, include it in your search to refine results. For example, search for Inception 2010 or Breaking Bad 2008 This is particularly useful when there are multiple versions of the same title.\n🚀 Happy searching and enjoy your movie or TV series! 🍿🎬\n\n🔎 Powered by CinemaVenoOfficial 🔎"
 
     # Send the answer alert with the specified message
     await query.answer(answer_message, show_alert=True)
-
     if offset != "":
         key = f"{message.chat.id}-{message.id}"
         BUTTONS[key] = search
