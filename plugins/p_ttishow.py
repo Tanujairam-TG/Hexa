@@ -4,7 +4,7 @@ from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.errors import ChatAdminRequired
 from pyrogram.errors.exceptions.bad_request_400 import MessageTooLong, PeerIdInvalid
-from info import ADMINS, LOG_CHANNEL, SUPPORT_CHAT, MELCOW_NEW_USERS, DOGBYE_LEFT_USERS
+from info import ADMINS, LOG_CHANNEL, SUPPORT_CHAT, MELCOW_NEW_USERS
 from database.users_chats_db import db
 from database.ia_filterdb import Media
 from utils import get_size, temp, get_settings, extract_user, last_online
@@ -116,79 +116,6 @@ async def save_group_new_members(bot, message):
                             ]
                         )
                     )
-
-@Client.on_message(filters.left_chat_member & filters.group)
-async def save_group_left_member(bot, message):
-    r_j_check = [message.left_chat_member.id]
-    if temp.ME in r_j_check:
-        if not await db.get_chat(message.chat.id):
-            total = await bot.get_chat_members_count(message.chat.id)
-            r_j = message.from_user.mention if message.from_user else "Anonymous"
-            await bot.send_message(LOG_CHANNEL, script.LOG_TEXT_G.format(message.chat.title, message.chat.id, total, r_j))
-            await db.add_chat(message.chat.id, message.chat.title)
-    else:
-        settings = await get_settings(message.chat.id)
-        if settings.get("goodbye"):
-            for user_id in DOGBYE_LEFT_USERS:
-                try:
-                    user = await bot.get_chat_member(message.chat.id, user_id)
-                except:
-                    continue
-
-                custom_messages = [
-                    "Goodbye!",
-                    "Farewell!",
-                    "We'll miss you!",
-                ]
-                custom_message_string = "\n".join(f"├ ❖ {message}" for message in custom_messages)
-
-                # Retrieve user photo
-                user_photo = user.user.photo
-                local_user_photo = None
-                if user_photo:
-                    local_user_photo = await bot.download_media(user_photo.big_file_id)
-
-                # Prepare goodbye message
-                goodbye_message = f"┌─❖\n" \
-                                  f"│ 「 Bye 」\n" \
-                                  f"└┬❖\n" \
-                                  f"┌┤❖  「{user.mention}」\n" \
-                                  f"│└────────────┈ ⳹\n" \
-                                  f"├❖ Just left {message.chat.title}!\n" \
-                                  f"├ ❖ Hope to see you soon!\n" \
-                                  f"{custom_message_string}" \
-                                  f"└────────────┈ ⳹"
-
-                # Send goodbye message with user photo if available
-                if local_user_photo:
-                    await bot.send_photo(
-                        chat_id=message.chat.id,
-                        photo=local_user_photo,
-                        caption=goodbye_message,
-                        reply_markup=InlineKeyboardMarkup(
-                            [
-                                [
-                                    InlineKeyboardButton('🚑 Support 🚑', url=f"https://t.me/+9Y0zeiIAFeczMDJl"),
-                                    InlineKeyboardButton('🔔 Updates', url=f"https://t.me/CinemaVenoOfficial")
-                                ]
-                            ]
-                        )
-                    )
-                    os.remove(local_user_photo)
-                else:
-                    await bot.send_message(
-                        chat_id=message.chat.id,
-                        text=goodbye_message,
-                        reply_markup=InlineKeyboardMarkup(
-                            [
-                                [
-                                    InlineKeyboardButton('🚑 Support 🚑', url=f"https://t.me/+9Y0zeiIAFeczMDJl"),
-                                    InlineKeyboardButton('🔔 Updates', url=f"https://t.me/CinemaVenoOfficial")
-                                ]
-                            ]
-                        )
-                    )
-
 
 
 
