@@ -319,7 +319,7 @@ async def advantage_spoll_choker(bot, query):
             await auto_filter(bot, query, k)
         else:
             k = await query.message.edit('🌟 ᴄᴏɴᴛᴇɴᴛ ᴜɴᴀᴠᴀɪʟᴀʙʟᴇ 🌟\n😔 ᴡᴇ ᴀᴘᴏʟᴏɢɪᴢᴇ ꜰᴏʀ ᴛʜᴇ ɪɴᴄᴏɴᴠᴇɴɪᴇɴᴄᴇ ᴄᴀᴜꜱᴇᴅ, ʙᴜᴛ ᴛʜᴇ ʀᴇQᴜᴇꜱᴛᴇᴅ ᴄᴏɴᴛᴇɴᴛ ɪꜱ ᴄᴜʀʀᴇɴᴛʟʏ ᴜɴᴀᴠᴀɪʟᴀʙʟᴇ. ᴘʟᴇᴀꜱᴇ ʜᴀᴠᴇ ᴘᴀᴛɪᴇɴᴄᴇ ᴀꜱ ᴏᴜʀ ᴛᴇᴀᴍ ᴡᴏʀᴋꜱ ᴅɪʟɪɢᴇɴᴛʟʏ ᴛᴏ ᴜᴘʟᴏᴀᴅ ɪᴛ ᴀꜱ ꜱᴏᴏɴ ᴀꜱ ᴘᴏꜱꜱɪʙʟᴇ. ᴛʜᴀɴᴋ ʏᴏᴜ ꜰᴏʀ ʏᴏᴜʀ ᴜɴᴅᴇʀꜱᴛᴀɴᴅɪɴɢ. 🚀🤗')
-            await asyncio.sleep(40)
+            await asyncio.sleep(10)
             await k.delete()
 
 # Born to make history @Hexa !
@@ -1041,7 +1041,7 @@ async def auto_filter(client, msg, spoll=False):
                                                                                                                                                                             InlineKeyboardButton("✪ I G ✪", url=f"https://bit.ly/3FJVSPA"),
                                                                                                                                                                             InlineKeyboardButton("✪ ɢʀᴏᴜᴘ ✪", url=f"https://t.me/+H2kjULfnIWIyNDhl")],
                                                                                                                                                                            [InlineKeyboardButton("╚»♥️ ᴛʜᴀɴᴋ ʏᴏᴜ ♥️«╝", callback_data="close_data")]]))
-                await asyncio.sleep(50)
+                await asyncio.sleep(20)
                 await l.delete()    
                 if settings["spell_check"]:
                     return await advantage_spell_chok(msg)
@@ -1259,7 +1259,7 @@ async def advantage_spell_chok(msg):
     movielist = list(dict.fromkeys(movielist))  # removing duplicates
     if not movielist:
         k = await msg.reply("ʜᴇʏ ᴅᴇᴀʀ! ᴛʜᴇ ʀᴇQᴜᴇꜱᴛᴇᴅ ᴄᴏɴᴛᴇɴᴛ ɪꜱ ᴄᴜʀʀᴇɴᴛʟʏ ᴜɴᴀᴠᴀɪʟᴀʙʟᴇ ɪɴ ᴏᴜʀ ᴅᴀᴛᴀʙᴀꜱᴇ. ᴏᴜʀ ᴛᴇᴀᴍ ɪꜱ ᴀᴄᴛɪᴠᴇʟʏ ᴡᴏʀᴋɪɴɢ ᴛᴏ ᴜᴘʟᴏᴀᴅ ɪᴛ. ᴛʜᴀɴᴋ ʏᴏᴜ ꜰᴏʀ ʏᴏᴜʀ ᴘᴀᴛɪᴇɴᴄᴇ. 🚀🌟 ɪꜰ ʏᴏᴜ ʜᴀᴠᴇ ᴀɴʏ Qᴜᴇꜱᴛɪᴏɴꜱ ᴏʀ ɴᴇᴇᴅ ꜰᴜʀᴛʜᴇʀ ᴀꜱꜱɪꜱᴛᴀɴᴄᴇ, ꜰᴇᴇʟ ꜰʀᴇᴇ ᴛᴏ ʟᴇᴛ ᴜꜱ ᴋɴᴏᴡ. 💬🤗")
-        await asyncio.sleep(40)
+        await asyncio.sleep(30)
         await k.delete()
         return
     SPELL_CHECK[msg.id] = movielist
