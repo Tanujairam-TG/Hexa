@@ -5,7 +5,7 @@ import os
 import requests
 
 # Generating a random restart time between 2 and 16 minutes, and 0 to 59 seconds
-restart_time_minutes = random.randint(2, 6)
+restart_time_minutes = random.randint(2, 5)
 restart_time_seconds = random.randint(0, 59)
 restart_time = datetime.timedelta(minutes=restart_time_minutes, seconds=restart_time_seconds)
 
@@ -18,8 +18,8 @@ is_restarted = True
 
 # Sending the restart message to the support group
 def send_restart_message():
-    restart_message = f"âš¡ Bot Restarted âš¡\nðŸ¥‚ Time Taken: {restart_time_minutes} Minutes {restart_time_seconds} Seconds"
-    emoji_message = "🦋"
+    restart_message = f"⚡ Bot Restarted ⚡\n🥂 Time Taken: {restart_time_minutes} Minutes {restart_time_seconds} Seconds"
+    
 
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     data = {
@@ -29,14 +29,6 @@ def send_restart_message():
     response = requests.post(url, json=data)
     if response.status_code != 200:
         print(f"Failed to send restart message. Error: {response.text}")
-
-    data = {
-        "chat_id": support_group_id,
-        "text": emoji_message
-    }
-    response = requests.post(url, json=data)
-    if response.status_code != 200:
-        print(f"Failed to send emoji message. Error: {response.text}")
 
 # Delay before sending the restart message
 time.sleep(10)  # Adjust the delay as needed
