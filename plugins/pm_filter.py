@@ -1222,13 +1222,17 @@ async def auto_filter(client, msg, spoll=False):
 
     # Notify the user about the deleted request
     deleted_message = (
-        f"Hey {msg.from_user.first_name},\n\n"
-        "Your request has been deleted\n"
-        "(Due to copyright issues)\n\n"
-        "If you want to request again, please send a new request"
-    )
-    await message.reply_text(deleted_message)
+    f"🔒 ᴄᴏᴘʏʀɪɢʜᴛ ɴᴏᴛɪᴄᴇ: ᴄᴏɴᴛᴇɴᴛ ʀᴇᴍᴏᴠᴇᴅ 🔒\n\n"
+    f"ʜᴇʟʟᴏ {msg.from_user.first_name},\n\n"
+    "ᴡᴇ'ʀᴇ ʀᴇᴀᴄʜɪɴɢ ᴏᴜᴛ ᴛᴏ ʟᴇᴛ ʏᴏᴜ ᴋɴᴏᴡ ᴛʜᴀᴛ ʏᴏᴜʀ ᴘʀᴇᴠɪᴏᴜꜱ ʀᴇQᴜᴇꜱᴛ ʜᴀꜱ ʙᴇᴇɴ ʀᴇᴍᴏᴠᴇᴅ ᴅᴜᴇ ᴛᴏ ᴄᴏᴘʏʀɪɢʜᴛ ʀᴇꜱᴛʀɪᴄᴛɪᴏɴꜱ. ɪꜰ ʏᴏᴜ'ᴅ ʟɪᴋᴇ ᴛᴏ ᴍᴀᴋᴇ ᴀ ɴᴇᴡ ʀᴇQᴜᴇꜱᴛ, ᴘʟᴇᴀꜱᴇ ᴅᴏɴ'ᴛ ʜᴇꜱɪᴛᴀᴛᴇ ᴛᴏ ᴅᴏ ꜱᴏ.\n\n"
+    "ᴛʜᴀɴᴋ ʏᴏᴜ ꜰᴏʀ ʏᴏᴜʀ ᴜɴᴅᴇʀꜱᴛᴀɴᴅɪɴɢ.\n\n"
+    "👋 ʙᴇꜱᴛ ʀᴇɢᴀʀᴅꜱ,\n"
+    f"[{chat.title}]"
+)
 
+image_url = "https://imgur.com/a/Iyvbgi2"
+
+await message.reply_photo(photo=image_url, caption=deleted_message)
 
 async def advantage_spell_chok(msg):
     query = re.sub(
@@ -1331,4 +1335,3 @@ async def manual_filters(client, message, text=False):
                 break
     else:
         return False
-	
