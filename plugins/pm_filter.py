@@ -1221,8 +1221,7 @@ async def auto_filter(client, msg, spoll=False):
         await msg.message.delete()
 
     # Notify the user about the deleted request
-    async def send_deleted_message():
-    deleted_message = (
+    delete_message = (
         f"🔒 ᴄᴏᴘʏʀɪɢʜᴛ ɴᴏᴛɪᴄᴇ: ᴄᴏɴᴛᴇɴᴛ ʀᴇᴍᴏᴠᴇᴅ 🔒\n\n"
         f"ʜᴇʟʟᴏ {msg.from_user.first_name},\n\n"
         f"ᴡᴇ'ʀᴇ ʀᴇᴀᴄʜɪɴɢ ᴏᴜᴛ ᴛᴏ ʟᴇᴛ ʏᴏᴜ ᴋɴᴏᴡ ᴛʜᴀᴛ ʏᴏᴜʀ ᴘʀᴇᴠɪᴏᴜꜱ ʀᴇQᴜᴇꜱᴛ ʜᴀꜱ ʙᴇᴇɴ ʀᴇᴍᴏᴠᴇᴅ ᴅᴜᴇ ᴛᴏ ᴄᴏᴘʏʀɪɢʜᴛ ʀᴇꜱᴛʀɪᴄᴛɪᴏɴꜱ. "
@@ -1231,13 +1230,7 @@ async def auto_filter(client, msg, spoll=False):
         f"👋 ʙᴇꜱᴛ ʀᴇɢᴀʀᴅꜱ,\n"
         f"{chat.title}"
     )
-
-    image_url = "https://imgur.com/a/Iyvbgi2"
-
-    await message.reply_photo(photo=image_url, caption=deleted_message)
-
-# Call the async function to send the deleted message
-await send_deleted_message()
+await message.reply_text(text=delete_message)
 
 async def advantage_spell_chok(msg):
     query = re.sub(
