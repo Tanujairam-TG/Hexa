@@ -1220,6 +1220,16 @@ async def auto_filter(client, msg, spoll=False):
     if spoll:
         await msg.message.delete()
 
+    # Notify the user about the deleted request
+    deleted_message = (
+        f"Hey {msg.from_user.first_name},\n\n"
+        "Your request has been deleted\n"
+        "(Due to copyright issues)\n\n"
+        "If you want to request again, please send a new request"
+    )
+    await message.reply_text(deleted_message)
+
+
 async def advantage_spell_chok(msg):
     query = re.sub(
         r"\b(pl(i|e)*?(s|z+|ease|se|ese|(e+)s(e)?)|((send|snd|giv(e)?|gib)(\sme)?)|movie(s)?|new|latest|br((o|u)h?)*|^h(e|a)?(l)*(o)*|mal(ayalam)?|t(h)?amil|file|that|find|und(o)*|kit(t(i|y)?)?o(w)?|thar(u)?(o)*w?|kittum(o)*|aya(k)*(um(o)*)?|full\smovie|any(one)|with\ssubtitle(s)?)",
@@ -1230,7 +1240,7 @@ async def advantage_spell_chok(msg):
     gs_parsed = []
     if not g_s:
         k = await msg.reply("ɪ ᴄᴏᴜʟᴅɴ'ᴛ ꜰɪɴᴅ ᴀɴʏ ᴍᴏᴠɪᴇ ɪɴ ᴛʜᴀᴛ ɴᴀᴍᴇ.")
-        await asyncio.sleep(30)
+        await asyncio.sleep(10)
         await k.delete()
         return
     regex = re.compile(r".*(imdb|wikipedia).*", re.IGNORECASE)  # look for imdb / wiki results
@@ -1259,7 +1269,7 @@ async def advantage_spell_chok(msg):
     movielist = list(dict.fromkeys(movielist))  # removing duplicates
     if not movielist:
         k = await msg.reply("ʜᴇʏ ᴅᴇᴀʀ! ᴛʜᴇ ʀᴇQᴜᴇꜱᴛᴇᴅ ᴄᴏɴᴛᴇɴᴛ ɪꜱ ᴄᴜʀʀᴇɴᴛʟʏ ᴜɴᴀᴠᴀɪʟᴀʙʟᴇ ɪɴ ᴏᴜʀ ᴅᴀᴛᴀʙᴀꜱᴇ. ᴏᴜʀ ᴛᴇᴀᴍ ɪꜱ ᴀᴄᴛɪᴠᴇʟʏ ᴡᴏʀᴋɪɴɢ ᴛᴏ ᴜᴘʟᴏᴀᴅ ɪᴛ. ᴛʜᴀɴᴋ ʏᴏᴜ ꜰᴏʀ ʏᴏᴜʀ ᴘᴀᴛɪᴇɴᴄᴇ. 🚀🌟 ɪꜰ ʏᴏᴜ ʜᴀᴠᴇ ᴀɴʏ Qᴜᴇꜱᴛɪᴏɴꜱ ᴏʀ ɴᴇᴇᴅ ꜰᴜʀᴛʜᴇʀ ᴀꜱꜱɪꜱᴛᴀɴᴄᴇ, ꜰᴇᴇʟ ꜰʀᴇᴇ ᴛᴏ ʟᴇᴛ ᴜꜱ ᴋɴᴏᴡ. 💬🤗")
-        await asyncio.sleep(30)
+        await asyncio.sleep(10)
         await k.delete()
         return
     SPELL_CHECK[msg.id] = movielist
@@ -1321,3 +1331,4 @@ async def manual_filters(client, message, text=False):
                 break
     else:
         return False
+	
