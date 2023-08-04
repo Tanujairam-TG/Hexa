@@ -1221,18 +1221,16 @@ async def auto_filter(client, msg, spoll=False):
         await msg.message.delete()
 
     # Notify the user about the deleted request
-    delete_message = (
-            f"🔒 ᴄᴏᴘʏʀɪɢʜᴛ ɴᴏᴛɪᴄᴇ: ᴄᴏɴᴛᴇɴᴛ ʀᴇᴍᴏᴠᴇᴅ 🔒\n\n"
+    deleted_message = (
+        f"🔒 ᴄᴏᴘʏʀɪɢʜᴛ ɴᴏᴛɪᴄᴇ: ᴄᴏɴᴛᴇɴᴛ ʀᴇᴍᴏᴠᴇᴅ 🔒\n\n"
             f"ʜᴇʟʟᴏ {msg.from_user.first_name},\n\n"
             f"ᴡᴇ'ʀᴇ ʀᴇᴀᴄʜɪɴɢ ᴏᴜᴛ ᴛᴏ ʟᴇᴛ ʏᴏᴜ ᴋɴᴏᴡ ᴛʜᴀᴛ ʏᴏᴜʀ ᴘʀᴇᴠɪᴏᴜꜱ ʀᴇQᴜᴇꜱᴛ ʜᴀꜱ ʙᴇᴇɴ ʀᴇᴍᴏᴠᴇᴅ ᴅᴜᴇ ᴛᴏ ᴄᴏᴘʏʀɪɢʜᴛ ʀᴇꜱᴛʀɪᴄᴛɪᴏɴꜱ. "
             f"ɪꜰ ʏᴏᴜ'ᴅ ʟɪᴋᴇ ᴛᴏ ᴍᴀᴋᴇ ᴀ ɴᴇᴡ ʀᴇQᴜᴇꜱᴛ, ᴘʟᴇᴀꜱᴇ ᴅᴏɴ'ᴛ ʜᴇꜱɪᴛᴀᴛᴇ ᴛᴏ ᴅᴏ ꜱᴏ.\n\n"
             f"ᴛʜᴀɴᴋ ʏᴏᴜ ꜰᴏʀ ʏᴏᴜʀ ᴜɴᴅᴇʀꜱᴛᴀɴᴅɪɴɢ.\n\n"
             f"👋 ʙᴇꜱᴛ ʀᴇɢᴀʀᴅꜱ,\n"
             f"{chat.title}"
-        )
-        
-        # Call the asynchronous function to send the delete message
-        await send_delete_message(message, delete_message)
+    )
+    await message.reply_text(deleted_message)
 
 async def advantage_spell_chok(msg):
     query = re.sub(
