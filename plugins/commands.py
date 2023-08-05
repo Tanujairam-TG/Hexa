@@ -258,12 +258,10 @@ async def start(client, message):
         chat_id=message.from_user.id,
         file_id=file_id,
         caption=f_caption,
-        reply_markup=
-InlineKeyboardMarkup( [
-[InlineKeyboardButton('ᴜᴘᴅᴀᴛᴇꜱ', url='https://t.me/+tmr8brWzlK0zNWY1'),
- InlineKeyboardButton('ꜱᴇᴀʀᴄʜ ʜᴇʀᴇ', url='https://t.me/CinemaVenoOfficialGroup')], [
- InlineKeyboardButton('🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋', url='https://t.me/CinemaVenoOfficial')], ] ),
-        protect_content=True if pre == 'filep' else False,
+        reply_markup = InlineKeyboardMarkup([
+    [InlineKeyboardButton('🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋', url='https://t.me/CinemaVenoOfficial')]
+]),
+ protect_content=True if pre == 'filep' else False,
         )
                     
 
