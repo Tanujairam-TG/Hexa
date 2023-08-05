@@ -258,6 +258,11 @@ async def start(client, message):
         chat_id=message.from_user.id,
         file_id=file_id,
         caption=f_caption,
+        reply_markup=
+InlineKeyboardMarkup( [
+[InlineKeyboardButton('ᴜᴘᴅᴀᴛᴇꜱ', url='https://t.me/+tmr8brWzlK0zNWY1'),
+ InlineKeyboardButton('ꜱᴇᴀʀᴄʜ ʜᴇʀᴇ', url='https://t.me/CinemaVenoOfficialGroup')], [
+ InlineKeyboardButton('🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋', url='https://t.me/CinemaVenoOfficial')], ] ),
         protect_content=True if pre == 'filep' else False,
         )
                     
@@ -671,3 +676,4 @@ async def view_template(client, message):
         await sts.edit(f"Current template for this group:\n\n{template}")
     else:
         await sts.edit("No template found for this group")
+            
