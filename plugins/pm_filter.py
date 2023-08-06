@@ -1139,10 +1139,17 @@ async def auto_filter(client, msg, spoll=False):
                 ]
 
     btn.insert(0,
-        [ 
-	    InlineKeyboardButton(text="🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋", url='https://t.me/CinemaVenoOfficial'),
-        ] 
-    )
+    [InlineKeyboardButton('File Deletion', callback_data='file_deletion')]
+)
+
+@Client.on_callback_query()
+async def handle_callback_query(_, query):
+    callback_data = query.data
+    
+    if callback_data == 'file_deletion':
+        await query.answer('📢⚠️📂 File Deletion Notice 📂⚠️📢\n\nThe rest of the message ...\n\n🚀 Powered by CinemaVenoOfficial 🚀', show_alert=True)
+        # Perform processing for File Deletion button
+
     if offset != "":
         key = f"{message.chat.id}-{message.id}"
         BUTTONS[key] = search
