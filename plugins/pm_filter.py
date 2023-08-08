@@ -1138,14 +1138,15 @@ async def auto_filter(client, msg, spoll=False):
                     for file in files
                 ]
 
-    btn.insert(0,
-        [ 
-	    InlineKeyboardButton(text="🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋", url='https://t.me/CinemaVenoOfficial')],
-	[InlineKeyboardButton('ɪɴꜰᴏ', callback_data='info'),
+    btn.insert(0, [
+    [InlineKeyboardButton(text="🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋", url='https://t.me/CinemaVenoOfficial')],
+    [
+        InlineKeyboardButton('ɪɴꜰᴏ', callback_data='info'),
         InlineKeyboardButton('ᴍᴏᴠɪᴇ', callback_data='movie'),
         InlineKeyboardButton('ꜱᴇʀɪᴇꜱ', callback_data='series'),
-        InlineKeyboardButton('ᴛɪᴘꜱ', callback_data='tips')]
-    )
+        InlineKeyboardButton('ᴛɪᴘꜱ', callback_data='tips')
+    ]
+])
     
 @Client.on_callback_query(filters.regex(r"^info$"))
 async def info_callback_handler(_, query):
@@ -1384,3 +1385,4 @@ async def manual_filters(client, message, text=False):
                 break
     else:
         return False
+		
