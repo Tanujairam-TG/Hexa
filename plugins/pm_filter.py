@@ -1140,9 +1140,60 @@ async def auto_filter(client, msg, spoll=False):
 
     btn.insert(0,
         [ 
-	    InlineKeyboardButton(text="🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋", url='https://t.me/CinemaVenoOfficial'),
-        ] 
+	    InlineKeyboardButton(text="🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋", url='https://t.me/CinemaVenoOfficial')],
+	[InlineKeyboardButton('ɪɴꜰᴏ', callback_data='info'),
+        InlineKeyboardButton('ᴍᴏᴠɪᴇ', callback_data='movie'),
+        InlineKeyboardButton('ꜱᴇʀɪᴇꜱ', callback_data='series'),
+        InlineKeyboardButton('ᴛɪᴘꜱ', callback_data='tips')]
     )
+    
+@Client.on_callback_query(filters.regex(r"^info$"))
+async def info_callback_handler(_, query):
+    info_text = f"""⚠️📂 ꜰɪʟᴇ ᴅᴇʟᴇᴛɪᴏɴ ɴᴏᴛɪᴄᴇ 📂⚠️\n\n
+⚠️ ᴡᴀʀɴɪɴɢ: ᴘʟᴇᴀꜱᴇ ʀᴇᴀᴅ ᴄᴀʀᴇꜰᴜʟʟʏ ⚠️\n
+⏱️ ᴘʟᴇᴀꜱᴇ ɴᴏᴛᴇ ᴛʜᴀᴛ ᴛʜᴇ ꜰɪʟᴇꜱ ᴡɪʟʟ ʙᴇ ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ ᴅᴇʟᴇᴛᴇᴅ ᴀꜰᴛᴇʀ 5 ᴍɪɴᴜᴛᴇꜱ ꜰᴏʀ ꜱᴇᴄᴜʀɪᴛʏ ʀᴇᴀꜱᴏɴꜱ.\n
+❗️ ᴛʜɪꜱ ɪꜱ ᴀ ᴏɴᴇ-ᴛɪᴍᴇ ᴀᴄᴄᴇꜱꜱ ʟɪɴᴋ. ᴍᴀᴋᴇ ꜱᴜʀᴇ ᴛᴏ ꜱᴀᴠᴇ ᴀɴʏ ɴᴇᴄᴇꜱꜱᴀʀʏ ᴅᴀᴛᴀ ᴇʟꜱᴇᴡʜᴇʀᴇ ʙᴇꜰᴏʀᴇ ᴛʜᴇ ᴛɪᴍᴇʀ ᴇxᴘɪʀᴇꜱ.\n\n
+🚀 **ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴄɪɴᴇᴍᴀᴠᴇɴᴏᴏꜰꜰɪᴄɪᴀʟ** 🚀"""
+    
+    await query.answer(text=info_text, show_alert=True)
+    
+@Client.on_callback_query(filters.regex(r"^movie$"))
+async def movie_callback_handler(_, query):
+    movie_text = f"""🎬🍿 ᴍᴏᴠɪᴇ ʀᴇQᴜᴇꜱᴛ ꜰᴏʀᴍᴀᴛ 🍿🎬\n\n
+🎥 ᴍᴏᴠɪᴇ ᴛɪᴛʟᴇ: ɴᴀᴍᴇ ᴏꜰ ᴛʜᴇ ᴍᴏᴠɪᴇ\n
+🗓 ʀᴇʟᴇᴀꜱᴇ ʏᴇᴀʀ: ʏᴇᴀʀ ᴏꜰ ʀᴇʟᴇᴀꜱᴇ, ɪꜰ ᴋɴᴏᴡɴ\n
+🎟️ ʟᴇᴛ'ꜱ ɢᴀᴛʜᴇʀ ꜰᴏʀ ᴀɴ ᴀᴍᴀᴢɪɴɢ ᴍᴏᴠɪᴇ ɴɪɢʜᴛ! 🎟️\n
+🍿 ɢᴇᴛ ᴛʜᴇ ᴘᴏᴘᴄᴏʀɴ ʀᴇᴀᴅʏ, ɪᴛ'ꜱ ᴍᴏᴠɪᴇ ᴛɪᴍᴇ! 🎉\n\n
+🎬 **ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴄɪɴᴇᴍᴀᴠᴇɴᴏᴏꜰꜰɪᴄɪᴀʟ** 🎬"""
+    
+    await query.answer(text=movie_text, show_alert=True)
+    
+    
+@Client.on_callback_query(filters.regex(r"^series$"))
+async def series_callback_handler(_, query):
+    series_text = f"""📺🍿 ꜱᴇʀɪᴇꜱ ʀᴇQᴜᴇꜱᴛ ꜰᴏʀᴍᴀᴛ 🍿📺\n\n
+🔥 ꜱᴇʀɪᴇꜱ: ɴᴀᴍᴇ ᴏꜰ ᴛʜᴇ ꜱᴇʀɪᴇꜱ\n
+📅 ʀᴇʟᴇᴀꜱᴇ ʏᴇᴀʀ: ʏᴇᴀʀ ᴏꜰ ʀᴇʟᴇᴀꜱᴇ, ɪꜰ ᴋɴᴏᴡɴ\n
+🎉 ᴄᴀʟʟɪɴɢ ᴀʟʟ ʙɪɴɢᴇ-ᴡᴀᴛᴄʜᴇʀꜱ! ʟᴇᴛ'ꜱ ᴅɪᴠᴇ ɪɴᴛᴏ ᴛʜɪꜱ ꜱᴇʀɪᴇꜱ ᴛᴏɢᴇᴛʜᴇʀ! 🎉\n
+🍿 ɢʀᴀʙ ʏᴏᴜʀ ꜱɴᴀᴄᴋꜱ, ɪᴛ'ꜱ ᴛɪᴍᴇ ꜰᴏʀ ꜱᴏᴍᴇ ꜱᴇʀɪᴇꜱ ᴀᴡᴇꜱᴏᴍᴇɴᴇꜱꜱ! 📺🍿\n\n
+🚀 **ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴄɪɴᴇᴍᴀᴠᴇɴᴏᴏꜰꜰɪᴄɪᴀʟ** 🚀"""
+    
+    await query.answer(text=series_text, show_alert=True)
+    
+    
+@Client.on_callback_query(filters.regex(r"^tips$"))
+async def tips_callback_handler(_, query):
+    tips_text = f"""🔍📚 ꜱᴇᴀʀᴄʜ ᴛɪᴘꜱ 📚🔍\n\n
+🔍 ᴛɪᴘ 1: ✨ ᴛʏᴘᴇ ᴛʜᴇ ᴄᴏʀʀᴇᴄᴛ ꜱᴘᴇʟʟɪɴɢ ᴏꜰ ᴛʜᴇ ᴍᴏᴠɪᴇ ɴᴀᴍᴇ ᴡʜᴇɴ ꜱᴇᴀʀᴄʜɪɴɢ (ɢᴏᴏɢʟᴇ).\n
+🔍 ᴛɪᴘ 2: 🎥 ɪꜰ ʏᴏᴜ ᴅᴏɴ'ᴛ ɢᴇᴛ ᴀɴʏ ʀᴇꜱᴘᴏɴꜱᴇ, ᴄʜᴇᴄᴋ ɪꜰ ᴛʜᴇ ᴍᴏᴠɪᴇ ɪꜱ ᴀᴠᴀɪʟᴀʙʟᴇ ᴏɴ ꜱᴛʀᴇᴀᴍɪɴɢ ᴘʟᴀᴛꜰᴏʀᴍꜱ.\n
+🔍 ᴛɪᴘ 3: 📅 ɪɴᴄʟᴜᴅᴇ ᴛʜᴇ ʀᴇʟᴇᴀꜱᴇ ʏᴇᴀʀ ᴏʀ ᴀᴄᴛᴏʀ'ꜱ ɴᴀᴍᴇ ᴛᴏ ʀᴇꜰɪɴᴇ ʏᴏᴜʀ ꜱᴇᴀʀᴄʜ.\n
+🔍 ᴛɪᴘ 4: 📜 ᴛʀʏ ᴜꜱɪɴɢ Qᴜᴏᴛᴇꜱ ᴀʀᴏᴜɴᴅ ᴛʜᴇ ᴍᴏᴠɪᴇ ᴛɪᴛʟᴇ ꜰᴏʀ ᴇxᴀᴄᴛ ᴍᴀᴛᴄʜᴇꜱ.\n
+🔍 ᴛɪᴘ 5: 🚫 ᴀᴠᴏɪᴅ ᴜꜱɪɴɢ ᴄᴏᴍᴍᴏɴ ᴡᴏʀᴅꜱ ʟɪᴋᴇ "ᴍᴏᴠɪᴇ" ᴏʀ ꜱᴘᴇᴄɪᴀʟ ᴄʜᴀʀᴀᴄᴛᴇʀꜱ ʟɪᴋᴇ "!,?" ꜰᴏʀ ʙᴇᴛᴛᴇʀ ʀᴇꜱᴜʟᴛꜱ.\n
+🔍 ᴛɪᴘ 6: ✨ ʟᴏᴏᴋ ꜰᴏʀ ᴏꜰꜰɪᴄɪᴀʟ ᴍᴏᴠɪᴇ ᴡᴇʙꜱɪᴛᴇꜱ ᴏʀ ʀᴇʟɪᴀʙʟᴇ ʀᴇᴠɪᴇᴡ ꜱᴏᴜʀᴄᴇꜱ ꜰᴏʀ ᴀᴄᴄᴜʀᴀᴛᴇ ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ.\n\n
+©️ **ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴄɪɴᴇᴍᴀᴠᴇɴᴏᴏꜰꜰɪᴄɪᴀʟ** 🚀"""
+    
+    await query.answer(text=tips_text, show_alert=True)
+    
     if offset != "":
         key = f"{message.chat.id}-{message.id}"
         BUTTONS[key] = search
