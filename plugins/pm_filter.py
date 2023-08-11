@@ -71,27 +71,27 @@ async def doc(bot, update):
     splitpath = path.split("/downloads/")
 dow_file_name = splitpath[1]
 old_file_name = f"downloads/{dow_file_name}"
-file_path = f"downloads/{new_filename}"
+file_path = f"downloads/{new_filename}"  # Define the correct file_path for the new file name
 os.rename(old_file_name, file_path)
-    duration = 0
+duration = 0  # Make sure this line has the correct indentation
+try:
+    metadata = extractMetadata(createParser(file_path))
+    if metadata.has("duration"):
+        duration = metadata.get('duration').seconds
+except:
+    pass
+user_id = int(update.message.chat.id) 
+ph_path = None 
+media = getattr(file, file.media.value)
+filesize = humanize.naturalsize(media.file_size) 
+c_caption = await db.get_caption(update.message.chat.id)
+c_thumb = await db.get_thumbnail(update.message.chat.id)
+if c_caption:
     try:
-        metadata = extractMetadata(createParser(file_path))
-        if metadata.has("duration"):
-           duration = metadata.get('duration').seconds
-    except:
-        pass
-    user_id = int(update.message.chat.id) 
-    ph_path = None 
-    media = getattr(file, file.media.value)
-    filesize = humanize.naturalsize(media.file_size) 
-    c_caption = await db.get_caption(update.message.chat.id)
-    c_thumb = await db.get_thumbnail(update.message.chat.id)
-    if c_caption:
-         try:
-             caption = c_caption.format(filename=new_filename, filesize=humanize.naturalsize(media.file_size), duration=convert(duration))
-         except Exception as e:
-             await ms.edit(text=f"Your caption Error unexpected keyword ●> ({e})")
-             return 
+        caption = c_caption.format(filename=new_filename, filesize=humanize.naturalsize(media.file_size), duration=convert(duration))
+    except Exception as e:
+        await ms.edit(text=f"Your caption Error unexpected keyword ●> ({e})")
+        return
     else:
         caption = f"**{new_filename}**"
     if (media.thumbs or c_thumb):
