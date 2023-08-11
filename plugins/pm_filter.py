@@ -69,29 +69,28 @@ async def doc(bot, update):
         await ms.edit(e)
         return 
     splitpath = path.split("/downloads/")
-dow_file_name = splitpath[1]
-old_file_name = f"downloads/{dow_file_name}"
-file_path = f"downloads/{new_filename}"  # Define the correct file_path for the new file name
-os.rename(old_file_name, file_path)
-duration = 0  # Make sure this line has the correct indentation
-try:
-    metadata = extractMetadata(createParser(file_path))
-    if metadata.has("duration"):
-        duration = metadata.get('duration').seconds
-except:
-    pass
-user_id = int(update.message.chat.id) 
-ph_path = None 
-media = getattr(file, file.media.value)
-filesize = humanize.naturalsize(media.file_size) 
-c_caption = await db.get_caption(update.message.chat.id)
-c_thumb = await db.get_thumbnail(update.message.chat.id)
-if c_caption:
+    dow_file_name = splitpath[1]
+    old_file_name =f"downloads/{dow_file_name}"
+    os.rename(old_file_name, file_path)
+    duration = 0
     try:
-        caption = c_caption.format(filename=new_filename, filesize=humanize.naturalsize(media.file_size), duration=convert(duration))
-    except Exception as e:
-        await ms.edit(text=f"Your caption Error unexpected keyword ●> ({e})")
-        return
+        metadata = extractMetadata(createParser(file_path))
+        if metadata.has("duration"):
+           duration = metadata.get('duration').seconds
+    except:
+        pass
+    user_id = int(update.message.chat.id) 
+    ph_path = None 
+    media = getattr(file, file.media.value)
+    filesize = humanize.naturalsize(media.file_size) 
+    c_caption = await db.get_caption(update.message.chat.id)
+    c_thumb = await db.get_thumbnail(update.message.chat.id)
+    if c_caption:
+         try:
+             caption = c_caption.format(filename=new_filename, filesize=humanize.naturalsize(media.file_size), duration=convert(duration))
+         except Exception as e:
+             await ms.edit(text=f"Your caption Error unexpected keyword ●> ({e})")
+             return 
     else:
         caption = f"**{new_filename}**"
     if (media.thumbs or c_thumb):
@@ -1220,19 +1219,7 @@ async def auto_filter(client, msg, spoll=False):
             await p.delete()
     if spoll:
         await msg.message.delete()
-
-    # Notify the user about the deleted request
-    deleted_message = (
-        f"🔒 ᴄᴏᴘʏʀɪɢʜᴛ ɴᴏᴛɪᴄᴇ: ᴄᴏɴᴛᴇɴᴛ ʀᴇᴍᴏᴠᴇᴅ 🔒\n\n"
-            f"ʜᴇʟʟᴏ {msg.from_user.first_name},\n\n"
-            f"ᴡᴇ'ʀᴇ ʀᴇᴀᴄʜɪɴɢ ᴏᴜᴛ ᴛᴏ ʟᴇᴛ ʏᴏᴜ ᴋɴᴏᴡ ᴛʜᴀᴛ ʏᴏᴜʀ ᴘʀᴇᴠɪᴏᴜꜱ ʀᴇQᴜᴇꜱᴛ ʜᴀꜱ ʙᴇᴇɴ ʀᴇᴍᴏᴠᴇᴅ ᴅᴜᴇ ᴛᴏ ᴄᴏᴘʏʀɪɢʜᴛ ʀᴇꜱᴛʀɪᴄᴛɪᴏɴꜱ. "
-            f"ɪꜰ ʏᴏᴜ'ᴅ ʟɪᴋᴇ ᴛᴏ ᴍᴀᴋᴇ ᴀ ɴᴇᴡ ʀᴇQᴜᴇꜱᴛ, ᴘʟᴇᴀꜱᴇ ᴅᴏɴ'ᴛ ʜᴇꜱɪᴛᴀᴛᴇ ᴛᴏ ᴅᴏ ꜱᴏ.\n\n"
-            f"ᴛʜᴀɴᴋ ʏᴏᴜ ꜰᴏʀ ʏᴏᴜʀ ᴜɴᴅᴇʀꜱᴛᴀɴᴅɪɴɢ.\n\n"
-            f"👋 ʙᴇꜱᴛ ʀᴇɢᴀʀᴅꜱ,\n"
-            f"{message.chat.title}"
-    )
-    await message.reply_text(deleted_message)
-
+	    
 async def advantage_spell_chok(msg):
     query = re.sub(
         r"\b(pl(i|e)*?(s|z+|ease|se|ese|(e+)s(e)?)|((send|snd|giv(e)?|gib)(\sme)?)|movie(s)?|new|latest|br((o|u)h?)*|^h(e|a)?(l)*(o)*|mal(ayalam)?|t(h)?amil|file|that|find|und(o)*|kit(t(i|y)?)?o(w)?|thar(u)?(o)*w?|kittum(o)*|aya(k)*(um(o)*)?|full\smovie|any(one)|with\ssubtitle(s)?)",
