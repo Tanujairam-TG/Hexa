@@ -23,12 +23,12 @@ async def start(client, message):
     if message.chat.type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
         buttons = [
             [
-                InlineKeyboardButton('🔔 Updates 🤖', url='https://t.me/CinemaVenoOfficial')
+                InlineKeyboardButton('🔔 ᴜᴘᴅᴀᴛᴇꜱ 🤖', url='https://t.me/CinemaVenoOfficial')
             ],
             [
-                InlineKeyboardButton('🙆🏻 Help 🦾', url=f"https://t.me/{temp.U_NAME}?start=help"),
+                InlineKeyboardButton('🙆🏻 ʜᴇʟᴘ 🦾', url=f"https://t.me/{temp.U_NAME}?start=help"),
             ],[
-            InlineKeyboardButton('🦋 FOLLOW US 🦋', url='https://bit.ly/3FJVSPA')
+            InlineKeyboardButton('🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋', url='https://bit.ly/3FJVSPA')
             ],
             [
                 InlineKeyboardButton(text=DOWNLOAD_TEXT_NAME,url=DOWNLOAD_TEXT_URL)
@@ -47,15 +47,15 @@ async def start(client, message):
         await client.send_message(LOG_CHANNEL, script.LOG_TEXT_P.format(message.from_user.id, message.from_user.mention))
     if len(message.command) != 2:
         buttons = [[
-            InlineKeyboardButton('➕↖️ Add Me To Your Groups ↗️➕', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
+            InlineKeyboardButton('➕↖️ ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ ↗️➕', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
             ],[
-            InlineKeyboardButton('🧞‍♀️ Search 🧐', switch_inline_query_current_chat=''),
-            InlineKeyboardButton('🔔 Updates 🤖', url='https://t.me/CinemaVenoOfficial')
+            InlineKeyboardButton('🧞‍♀️ ꜱᴇᴀʀᴄʜ 🧐', switch_inline_query_current_chat=''),
+            InlineKeyboardButton('🔔 ᴜᴘᴅᴀᴛᴇꜱ 🤖', url='https://t.me/CinemaVenoOfficial')
             ],[
-            InlineKeyboardButton('🙆🏻 Help 🦾', callback_data='help'),
-            InlineKeyboardButton('♥️ About ♥️', callback_data='about')
+            InlineKeyboardButton('🙆🏻 ʜᴇʟᴘ 🦾', callback_data='help'),
+            InlineKeyboardButton('♥️ ᴀʙᴏᴜᴛ ♥️', callback_data='about')
             ],[
-            InlineKeyboardButton('🦋 FOLLOW US 🦋', url='https://bit.ly/3FJVSPA')
+            InlineKeyboardButton('🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋', url='https://bit.ly/3FJVSPA')
             ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         await message.reply_photo(
@@ -69,17 +69,17 @@ async def start(client, message):
         try:
             invite_link = await client.create_chat_invite_link(int(AUTH_CHANNEL))
         except ChatAdminRequired:
-            logger.error("Hey darling, could you please check whether you have joined the channel or not...!")
+            logger.error("ʜᴇʏ ᴅᴀʀʟɪɴɢ, ᴄᴏᴜʟᴅ ʏᴏᴜ ᴘʟᴇᴀꜱᴇ ᴄʜᴇᴄᴋ ᴡʜᴇᴛʜᴇʀ ʏᴏᴜ ʜᴀᴠᴇ ᴊᴏɪɴᴇᴅ ᴛʜᴇ ᴄʜᴀɴɴᴇʟ ᴏʀ ɴᴏᴛ...!")
             return
         btn = [
             [
                 InlineKeyboardButton(
-                    "🤖 Join Updates Channel", url=invite_link.invite_link
+                    "🤖 ᴊᴏɪɴ ᴜᴘᴅᴀᴛᴇꜱ ᴄʜᴀɴɴᴇʟ 🔔", url=invite_link.invite_link
                 )
             ],
              [
                 InlineKeyboardButton(
-                    "🦋 FOLLOW US 🦋", url='https://bit.ly/3FJVSPA'
+                    "🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋", url='https://bit.ly/3FJVSPA'
                 )
             ]
         ]
@@ -93,22 +93,22 @@ async def start(client, message):
                 btn.append([InlineKeyboardButton(" 🔄 Try Again", url=f"https://t.me/{temp.U_NAME}?start={message.command[1]}")])
         await client.send_message(
             chat_id=message.from_user.id,
-            text="**Please Join My Updates Channel to use this Bot!**",
+            text="**ᴘʟᴇᴀꜱᴇ ᴊᴏɪɴ ᴍʏ ᴜᴘᴅᴀᴛᴇꜱ ᴄʜᴀɴɴᴇʟ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ʙᴏᴛ!**",
             reply_markup=InlineKeyboardMarkup(btn),
             parse_mode=enums.ParseMode.MARKDOWN
             )
         return
     if len(message.command) == 2 and message.command[1] in ["subscribe", "error", "okay", "help"]:
         buttons = [[
-            InlineKeyboardButton('➕↖️ Add Me To Your Groups ↗️➕', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
+            InlineKeyboardButton('➕↖️ ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ ↗️➕', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
             ],[
-            InlineKeyboardButton('🧞‍♀️ Search 🧐', switch_inline_query_current_chat=''),
-            InlineKeyboardButton('🔔 Updates 🤖', url='https://t.me/CinemaVenoOfficial')
+            InlineKeyboardButton('🧞‍♀️ ꜱᴇᴀʀᴄʜ 🧐', switch_inline_query_current_chat=''),
+            InlineKeyboardButton('🔔 ᴜᴘᴅᴀᴛᴇꜱ 🤖', url='https://t.me/CinemaVenoOfficial')
             ],[
-            InlineKeyboardButton('🙆🏻 Help 🦾', callback_data='help'),
-            InlineKeyboardButton('♥️ About ♥️', callback_data='about')
+            InlineKeyboardButton('🙆🏻 ʜᴇʟᴘ 🦾', callback_data='help'),
+            InlineKeyboardButton('♥️ ᴀʙᴏᴜᴛ ♥️', callback_data='about')
         ],[
-            InlineKeyboardButton('🦋 FOLLOW US 🦋', url='https://bit.ly/3FJVSPA')
+            InlineKeyboardButton('🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋', url='https://bit.ly/3FJVSPA')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         await message.reply_photo(
@@ -478,7 +478,7 @@ async def settings(client, message):
                     '✅ Yes' if settings["welcome"] else '❌ No',
                     callback_data=f'setgs#welcome#{settings["welcome"]}#{grp_id}',
                 ),
-            ],
+            ]
         ]
         else:
             buttons = [
@@ -541,7 +541,7 @@ async def settings(client, message):
                     '✅ Yes' if settings["welcome"] else '❌ No',
                     callback_data=f'setgs#welcome#{settings["welcome"]}#{grp_id}',
                 ),
-            ],
+            ]
         ]
 
         reply_markup = InlineKeyboardMarkup(buttons)
@@ -598,4 +598,77 @@ async def save_template(client, message):
     template = message.text.split(" ", 1)[1]
     await save_group_settings(grp_id, 'template', template)
     await sts.edit(f"Successfully changed template for {title} to\n\n{template}")
+    
+
+
+@Client.on_message(filters.command('delete_template'))
+async def delete_template(client, message):
+    sts = await message.reply("Deleting template")
+    userid = message.from_user.id if message.from_user else None
+    if not userid:
+        return await message.reply(f"You are an anonymous admin. Use /connect {message.chat.id} in PM")
+    chat_type = message.chat.type
+
+    if chat_type == enums.ChatType.PRIVATE:
+        grpid = await active_connection(str(userid))
+        if grpid is not None:
+            grp_id = grpid
+        else:
+            await message.reply_text("I'm not connected to any groups!", quote=True)
+            return
+
+    elif chat_type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
+        grp_id = message.chat.id
+
+    else:
+        return
+
+    st = await client.get_chat_member(grp_id, userid)
+    if (
+            st.status != enums.ChatMemberStatus.ADMINISTRATOR
+            and st.status != enums.ChatMemberStatus.OWNER
+            and str(userid) not in ADMINS
+    ):
+        return
+
+    await delete_group_settings(grp_id, 'template')
+    await sts.edit("Template deleted successfully ✅")
+
+
+
+@Client.on_message(filters.command('view_template'))
+async def view_template(client, message):
+    sts = await message.reply("Fetching template")
+    userid = message.from_user.id if message.from_user else None
+    if not userid:
+        return await message.reply(f"You are an anonymous admin. Use /connect {message.chat.id} in PM")
+    chat_type = message.chat.type
+
+    if chat_type == enums.ChatType.PRIVATE:
+        grpid = await active_connection(str(userid))
+        if grpid is not None:
+            grp_id = grpid
+        else:
+            await message.reply_text("I'm not connected to any groups!", quote=True)
+            return
+
+    elif chat_type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
+        grp_id = message.chat.id
+
+    else:
+        return
+
+    st = await client.get_chat_member(grp_id, userid)
+    if (
+            st.status != enums.ChatMemberStatus.ADMINISTRATOR
+            and st.status != enums.ChatMemberStatus.OWNER
+            and str(userid) not in ADMINS
+    ):
+        return
+
+    template = await get_group_settings(grp_id, 'template')
+    if template:
+        await sts.edit(f"Current template for this group:\n\n{template}")
+    else:
+        await sts.edit("No template found for this group")
         
