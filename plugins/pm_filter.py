@@ -261,10 +261,9 @@ async def next_page(bot, query):
                     for file in files
                 ]
     btn.insert(0,
-        [
-        [InlineKeyboardButton("⚡ How to Download ⚡", url='https://telegram.me/CinemaVenoOfficial')],
-        [InlineKeyboardButton("Movie", callback_data="movies"), InlineKeyboardButton("Series", callback_data="series")]
-	] 
+        [ 
+	    InlineKeyboardButton(text="⚡ʜᴏᴡ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ⚡", url='https://telegram.me/CinemaVenoOfficial')
+        ] 
     )
 
     if 0 < offset <= 10:
@@ -1139,12 +1138,12 @@ async def auto_filter(client, msg, spoll=False):
                     for file in files
                 ]
 
-    btn.insert(0,
-        [
-        [InlineKeyboardButton("⚡ How to Download ⚡", url='https://telegram.me/CinemaVenoOfficial')],
-        [InlineKeyboardButton("Movie", callback_data="movies"), InlineKeyboardButton("Series", callback_data="series")]
-        ] 
-    )
+    saji = [
+    [InlineKeyboardButton('🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋', url='https://t.me/CinemaVenoOfficial')],
+    [InlineKeyboardButton('Movie', callback_data='movie'), 
+    InlineKeyboardButton('series', callback_data='series')]
+   ]
+   reply_markup = InlineKeyboardMarkup(saji)
     if offset != "":
         key = f"{message.chat.id}-{message.id}"
         BUTTONS[key] = search
@@ -1335,8 +1334,7 @@ async def manual_filters(client, message, text=False):
                 break
     else:
         return False
-	
-
+        
 @Client.on_callback_query(filters.regex(r"^movies$"))
 async def movies_callback_handler(_, query):
     movies_text = f""""🎬🍿 Movie Request 🍿🎬\n\n
