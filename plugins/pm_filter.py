@@ -1140,7 +1140,7 @@ async def auto_filter(client, msg, spoll=False):
 
     btn.insert(0, [
     InlineKeyboardButton(text="🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋", url='https://t.me/CinemaVenoOfficial')],
-    [InlineKeyboardButton(text="movie", callback_data='movie'),
+    [InlineKeyboardButton(text="movie", callback_data='movies'),
      InlineKeyboardButton(text="series", callback_data='series'),
     ])
     if offset != "":
