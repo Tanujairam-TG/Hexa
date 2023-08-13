@@ -1141,97 +1141,97 @@ async def auto_filter(client, msg, spoll=False):
     saji = [
     [InlineKeyboardButton('🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋', url='https://t.me/CinemaVenoOfficial')],
     [InlineKeyboardButton('Movie', callback_data='movie'), 
-    InlineKeyboardButton('series', callback_data='series')]
-   ]
-   reply_markup = InlineKeyboardMarkup(saji)
-    if offset != "":
-        key = f"{message.chat.id}-{message.id}"
-        BUTTONS[key] = search
-        req = message.from_user.id if message.from_user else 0
-        btn.append(
-            [InlineKeyboardButton(text=f"🗓 1/{math.ceil(int(total_results) / 10)}", callback_data="pages"),
-             InlineKeyboardButton(text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}")]
-        )
-    else:
-        btn.append(
-            [InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
-        )
-    imdb = await get_poster(search, file=(files[0]).file_name) if settings["imdb"] else None
-    TEMPLATE = settings['template']
-    if imdb:
-        cap = TEMPLATE.format(
-            query=search,
-            title=imdb['title'],
-            votes=imdb['votes'],
-            aka=imdb["aka"],
-            seasons=imdb["seasons"],
-            box_office=imdb['box_office'],
-            localized_title=imdb['localized_title'],
-            kind=imdb['kind'],
-            imdb_id=imdb["imdb_id"],
-            cast=imdb["cast"],
-            runtime=imdb["runtime"],
-            countries=imdb["countries"],
-            certificates=imdb["certificates"],
-            languages=imdb["languages"],
-            director=imdb["director"],
-            writer=imdb["writer"],
-            producer=imdb["producer"],
-            composer=imdb["composer"],
-            cinematographer=imdb["cinematographer"],
-            music_team=imdb["music_team"],
-            distributors=imdb["distributors"],
-            release_date=imdb['release_date'],
-            year=imdb['year'],
-            genres=imdb['genres'],
-            poster=imdb['poster'],
-            plot=imdb['plot'],
-            rating=imdb['rating'],
-            url=imdb['url'],
-            **locals()
-        )
-    else:
-        cap = f"{message.from_user.first_name}, ʜᴇʀᴇ ɪꜱ ᴡʜᴀᴛ ɪ ꜰᴏᴜɴᴅ ꜰᴏʀ ʏᴏᴜʀ Qᴜᴇʀʏ {search}"
-    if imdb and imdb.get('poster'):
-        try:
-            z = await message.reply_photo(photo=imdb.get('poster'), caption=cap[:1024],
-                                      reply_markup=InlineKeyboardMarkup(btn))
-            if SELF_DELETE is True:
-                await asyncio.sleep(SELF_DELETE_SECONDS)
-                await z.delete()
-        except (MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty):
-            pic = imdb.get('poster')
-            poster = pic.replace('.jpg', "._V1_UX360.jpg")
-            m = await message.reply_photo(photo=poster, caption=cap[:1024], reply_markup=InlineKeyboardMarkup(btn))
-            if SELF_DELETE is True:
-                await asyncio.sleep(SELF_DELETE_SECONDS)
-                await m.delete()
-            
-        except Exception as e:
-            logger.exception(e)
-            n = await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
-            if SELF_DELETE is True:
-                await asyncio.sleep(SELF_DELETE_SECONDS)
-                await n.delete()         
-    else:
-        p = await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
+     InlineKeyboardButton('series', callback_data='series')]
+]
+reply_markup = InlineKeyboardMarkup(saji)
+if offset != "":
+    key = f"{message.chat.id}-{message.id}"
+    BUTTONS[key] = search
+    req = message.from_user.id if message.from_user else 0
+    btn.append(
+        [InlineKeyboardButton(text=f"🗓 1/{math.ceil(int(total_results) / 10)}", callback_data="pages"),
+         InlineKeyboardButton(text="NEXT ⏩", callback_data=f"next_{req}_{key}_{offset}")]
+    )
+else:
+    btn.append(
+        [InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
+    )
+imdb = await get_poster(search, file=(files[0]).file_name) if settings["imdb"] else None
+TEMPLATE = settings['template']
+if imdb:
+    cap = TEMPLATE.format(
+        query=search,
+        title=imdb['title'],
+        votes=imdb['votes'],
+        aka=imdb["aka"],
+        seasons=imdb["seasons"],
+        box_office=imdb['box_office'],
+        localized_title=imdb['localized_title'],
+        kind=imdb['kind'],
+        imdb_id=imdb["imdb_id"],
+        cast=imdb["cast"],
+        runtime=imdb["runtime"],
+        countries=imdb["countries"],
+        certificates=imdb["certificates"],
+        languages=imdb["languages"],
+        director=imdb["director"],
+        writer=imdb["writer"],
+        producer=imdb["producer"],
+        composer=imdb["composer"],
+        cinematographer=imdb["cinematographer"],
+        music_team=imdb["music_team"],
+        distributors=imdb["distributors"],
+        release_date=imdb['release_date'],
+        year=imdb['year'],
+        genres=imdb['genres'],
+        poster=imdb['poster'],
+        plot=imdb['plot'],
+        rating=imdb['rating'],
+        url=imdb['url'],
+        **locals()
+    )
+else:
+    cap = f"{message.from_user.first_name}, ʜᴇʀᴇ ɪꜱ ᴡʜᴀᴛ ɪ ꜰᴏᴜɴᴅ ꜰᴏʀ ʏᴏᴜʀ Qᴜᴇʀʏ {search}"
+if imdb and imdb.get('poster'):
+    try:
+        z = await message.reply_photo(photo=imdb.get('poster'), caption=cap[:1024],
+                                  reply_markup=InlineKeyboardMarkup(btn))
         if SELF_DELETE is True:
             await asyncio.sleep(SELF_DELETE_SECONDS)
-            await p.delete()
-    if spoll:
-        await msg.message.delete()
+            await z.delete()
+    except (MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty):
+        pic = imdb.get('poster')
+        poster = pic.replace('.jpg', "._V1_UX360.jpg")
+        m = await message.reply_photo(photo=poster, caption=cap[:1024], reply_markup=InlineKeyboardMarkup(btn))
+        if SELF_DELETE is True:
+            await asyncio.sleep(SELF_DELETE_SECONDS)
+            await m.delete()
 
-    # Notify the user about the deleted request
-    deleted_message = (
-        f"🔒 ᴄᴏᴘʏʀɪɢʜᴛ ɴᴏᴛɪᴄᴇ: ᴄᴏɴᴛᴇɴᴛ ʀᴇᴍᴏᴠᴇᴅ 🔒\n\n"
-            f"ʜᴇʟʟᴏ {msg.from_user.first_name},\n\n"
-            f"ᴡᴇ'ʀᴇ ʀᴇᴀᴄʜɪɴɢ ᴏᴜᴛ ᴛᴏ ʟᴇᴛ ʏᴏᴜ ᴋɴᴏᴡ ᴛʜᴀᴛ ʏᴏᴜʀ ᴘʀᴇᴠɪᴏᴜꜱ ʀᴇQᴜᴇꜱᴛ ʜᴀꜱ ʙᴇᴇɴ ʀᴇᴍᴏᴠᴇᴅ ᴅᴜᴇ ᴛᴏ ᴄᴏᴘʏʀɪɢʜᴛ ʀᴇꜱᴛʀɪᴄᴛɪᴏɴꜱ. "
-            f"ɪꜰ ʏᴏᴜ'ᴅ ʟɪᴋᴇ ᴛᴏ ᴍᴀᴋᴇ ᴀ ɴᴇᴡ ʀᴇQᴜᴇꜱᴛ, ᴘʟᴇᴀꜱᴇ ᴅᴏɴ'ᴛ ʜᴇꜱɪᴛᴀᴛᴇ ᴛᴏ ᴅᴏ ꜱᴏ.\n\n"
-            f"ᴛʜᴀɴᴋ ʏᴏᴜ ꜰᴏʀ ʏᴏᴜʀ ᴜɴᴅᴇʀꜱᴛᴀɴᴅɪɴɢ.\n\n"
-            f"👋 ʙᴇꜱᴛ ʀᴇɢᴀʀᴅꜱ,\n"
-            f"{message.chat.title}"
-    )
-    await message.reply_text(deleted_message)
+    except Exception as e:
+        logger.exception(e)
+        n = await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
+        if SELF_DELETE is True:
+            await asyncio.sleep(SELF_DELETE_SECONDS)
+            await n.delete()         
+else:
+    p = await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
+    if SELF_DELETE is True:
+        await asyncio.sleep(SELF_DELETE_SECONDS)
+        await p.delete()
+if spoll:
+    await msg.message.delete()
+
+# Notify the user about the deleted request
+deleted_message = (
+    f"🔒 ᴄᴏᴘʏʀɪɢʜᴛ ɴᴏᴛɪᴄᴇ: ᴄᴏɴᴛᴇɴᴛ ʀᴇᴍᴏᴠᴇᴅ 🔒\n\n"
+        f"ʜᴇʟʟᴏ {msg.from_user.first_name},\n\n"
+        f"ᴡᴇ'ʀᴇ ʀᴇᴀᴄʜɪɴɢ ᴏᴜᴛ ᴛᴏ ʏᴏᴜ ʙᴇᴄᴀᴜsᴇ ᴡᴇ'ᴠᴇ ʀᴇᴄᴇɴᴛʟʏ ʀᴇᴄᴇɪᴠᴇᴅ ᴀ ʀᴇᴘᴏʀᴛ\n\n"
+        f"ʏᴏᴜʀ ʀᴇǫᴜᴇsᴛᴇᴅ ᴄᴏɴᴛᴇɴᴛ ʜᴀꜱ ʙᴇᴇɴ ʀᴇᴍᴏᴠᴇᴅ ꜰʀᴏᴍ ᴏᴜʀ ʙᴏᴛ ʙʏ ᴀᴅᴍɪɴɪsᴛʀᴀᴛᴏʀꜱ.\n\n"
+        f"ᴡᴇ ᴛᴀᴋᴇ ᴄᴏᴘʏʀɪɢʜᴛ ɪɴꜰʀɪɴɢᴇᴍᴇɴᴛ ᴠᴇʀʏ sᴇʀɪᴏᴜsʟʏ ᴀɴᴅ ᴡᴇ'ʀᴇ ꜱᴏʀʀʏ ғᴏʀ ᴀɴʏ ɪɴᴄᴏɴᴠᴇɴɪᴇɴᴄᴇ ᴛʜɪꜱ ᴍᴀʏ ʜᴀᴠᴇ ᴄᴀᴜꜱᴇᴅ.\n\n"
+        f"ᴡᴇ'ʀᴇ ᴡɪʟʟɪɴɢ ᴛᴏ ʜᴇʟᴘ ʏᴏᴜ ᴡɪᴛʜ ᴠᴀʟɪᴅ ᴄᴏɴᴛᴇɴᴛ ᴀɴᴅ ʀᴇǫᴜᴇꜱᴛ ʏᴏᴜ ᴛᴏ ꜰᴏʟʟᴏᴡ ʀᴜʟᴇꜱ.\n\n"
+        f"ᴛʜᴀɴᴋ ʏᴏᴜ ғᴏʀ ʏᴏᴜʀ ᴜɴᴅᴇʀꜱᴛᴀɴᴅɪɴɢ."
+)
+await msg.message.reply_text(deleted_message)
 
 async def advantage_spell_chok(msg):
     query = re.sub(
