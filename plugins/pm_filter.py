@@ -262,7 +262,7 @@ async def next_page(bot, query):
                 ]
     btn.insert(0,
         [ 
-	    InlineKeyboardButton(text="⚡ʜᴏᴡ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ⚡", url='https://telegram.me/CinemaVenoOfficial')
+	    InlineKeyboardButton(text="🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋", url='https://telegram.me/CinemaVenoOfficial')
         ] 
     )
 
@@ -1138,11 +1138,11 @@ async def auto_filter(client, msg, spoll=False):
                     for file in files
                 ]
 
-    btn.insert(0, [
-    InlineKeyboardButton(text="🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋", url='https://t.me/CinemaVenoOfficial'),
-    InlineKeyboardButton(text="movie", callback_data='movies'),
-    InlineKeyboardButton(text="series", callback_data='series'),
-])
+    btn.insert(0,
+        [ 
+	    InlineKeyboardButton(text="🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋", url='https://t.me/CinemaVenoOfficial'),
+        ] 
+    )
     if offset != "":
         key = f"{message.chat.id}-{message.id}"
         BUTTONS[key] = search
@@ -1224,7 +1224,7 @@ async def auto_filter(client, msg, spoll=False):
     deleted_message = (
         f"🔒 ᴄᴏᴘʏʀɪɢʜᴛ ɴᴏᴛɪᴄᴇ: ᴄᴏɴᴛᴇɴᴛ ʀᴇᴍᴏᴠᴇᴅ 🔒\n\n"
             f"ʜᴇʟʟᴏ {msg.from_user.first_name},\n\n"
-            f"ᴡᴇ'ʀᴇ ʀᴇᴀᴄʜɪɴɢ ᴏᴜᴛ ᴛᴏ ʟᴇᴛ ʏᴏᴜ ᴋɴᴏᴡ ᴛʜᴀᴛ ʏᴏᴜʀ ᴘʀᴇᴠɪᴏᴜꜱ ʀᴇQᴜᴇꜱᴛ ʜᴀꜱ ʙᴇᴇɴ ʀᴇᴍᴏᴠᴇᴅ ᴅᴜᴇ ᴛᴏ ᴄᴏᴘʏʀɪɢʜᴛ ʀᴇꜱᴛʀɪᴄᴛɪᴏɴꜱ. "
+            f"ᴡᴇ'ʀᴇ ʀᴇᴀᴄʜɪɴɢ ᴏᴜᴛ ᴛᴏ ʟᴇᴛ ʏᴏᴜ ᴋɴᴏᴡ ᴛʜᴀᴛ ʏᴏᴜʀ ᴘʀᴇᴠɪᴏᴜꜱ ʀᴇQᴜᴇꜱᴛ `{search}` ʜᴀꜱ ʙᴇᴇɴ ʀᴇᴍᴏᴠᴇᴅ ᴅᴜᴇ ᴛᴏ ᴄᴏᴘʏʀɪɢʜᴛ ʀᴇꜱᴛʀɪᴄᴛɪᴏɴꜱ. "
             f"ɪꜰ ʏᴏᴜ'ᴅ ʟɪᴋᴇ ᴛᴏ ᴍᴀᴋᴇ ᴀ ɴᴇᴡ ʀᴇQᴜᴇꜱᴛ, ᴘʟᴇᴀꜱᴇ ᴅᴏɴ'ᴛ ʜᴇꜱɪᴛᴀᴛᴇ ᴛᴏ ᴅᴏ ꜱᴏ.\n\n"
             f"ᴛʜᴀɴᴋ ʏᴏᴜ ꜰᴏʀ ʏᴏᴜʀ ᴜɴᴅᴇʀꜱᴛᴀɴᴅɪɴɢ.\n\n"
             f"👋 ʙᴇꜱᴛ ʀᴇɢᴀʀᴅꜱ,\n"
@@ -1333,28 +1333,4 @@ async def manual_filters(client, message, text=False):
                 break
     else:
         return False
-        
-@Client.on_callback_query(filters.regex(r"^movies$"))
-async def movies_callback_handler(_, query):
-    movies_text = f""""🎬🍿 Movie Request 🍿🎬\n\n
-🎥 Movie Title: [Name of the Movie]\n
-🗓 Release Year: [Year of Release, if known]\n
-🎞 Genre: [Genre of the Movie, if known]\n
-🎟️ Let's gather for an amazing movie night! 🎟️\n
-🍿 Get the popcorn ready, it's movie time! 🎉\n\n
-🎬 Powered by CinemaVenoOfficial 🎬"""
-    
-    await query.answer(text=movies_text, show_alert=True)
-    
-@Client.on_callback_query(filters.regex(r"^series$"))
-async def series_callback_handler(_, query):
-    series_text = f"""""📺🍿 Series Request 🍿📺\n\n
-🔥 Series: [Name of the Series]\n
-📅 Release Year: [Year of Release, if known]\n
-🎭 Genre: [Genre of the TV Series, if known]\n
-🎉 Calling all binge-watchers! Let's dive into this series together! 🎉\n
-🍿 Grab your snacks, it's time for some Series awesomeness! 📺🍿\n\n
-🚀 Powered by CinemaVenoOfficial 🚀"""
-    
-    await query.answer(text=series_text, show_alert=True)
-    
+	
