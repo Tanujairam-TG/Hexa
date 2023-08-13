@@ -261,9 +261,10 @@ async def next_page(bot, query):
                     for file in files
                 ]
     btn.insert(0,
-        [ 
-	    InlineKeyboardButton(text="⚡ʜᴏᴡ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ⚡", url='https://telegram.me/CinemaVenoOfficial')
-        ] 
+        [
+        [InlineKeyboardButton("⚡ How to Download ⚡", url='https://telegram.me/CinemaVenoOfficial')],
+        [InlineKeyboardButton("Movie", callback_data="movies"), InlineKeyboardButton("Series", callback_data="series")]
+	] 
     )
 
     if 0 < offset <= 10:
@@ -1139,8 +1140,9 @@ async def auto_filter(client, msg, spoll=False):
                 ]
 
     btn.insert(0,
-        [ 
-	    InlineKeyboardButton(text="🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋", url='https://t.me/CinemaVenoOfficial'),
+        [
+        [InlineKeyboardButton("⚡ How to Download ⚡", url='https://telegram.me/CinemaVenoOfficial')],
+        [InlineKeyboardButton("Movie", callback_data="movies"), InlineKeyboardButton("Series", callback_data="series")]
         ] 
     )
     if offset != "":
@@ -1334,3 +1336,28 @@ async def manual_filters(client, message, text=False):
     else:
         return False
 	
+
+@Client.on_callback_query(filters.regex(r"^movies$"))
+async def movies_callback_handler(_, query):
+    movies_text = f""""🎬🍿 Movie Request 🍿🎬\n\n
+🎥 Movie Title: [Name of the Movie]\n
+🗓 Release Year: [Year of Release, if known]\n
+🎞 Genre: [Genre of the Movie, if known]\n
+🎟️ Let's gather for an amazing movie night! 🎟️\n
+🍿 Get the popcorn ready, it's movie time! 🎉\n\n
+🎬 Powered by CinemaVenoOfficial 🎬"""
+    
+    await query.answer(text=movies_text, show_alert=True)
+    
+@Client.on_callback_query(filters.regex(r"^series$"))
+async def series_callback_handler(_, query):
+    series_text = f"""""📺🍿 Series Request 🍿📺\n\n
+🔥 Series: [Name of the Series]\n
+📅 Release Year: [Year of Release, if known]\n
+🎭 Genre: [Genre of the TV Series, if known]\n
+🎉 Calling all binge-watchers! Let's dive into this series together! 🎉\n
+🍿 Grab your snacks, it's time for some Series awesomeness! 📺🍿\n\n
+🚀 Powered by CinemaVenoOfficial 🚀"""
+    
+    await query.answer(text=series_text, show_alert=True)
+    
