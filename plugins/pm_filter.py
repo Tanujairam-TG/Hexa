@@ -1139,10 +1139,13 @@ async def auto_filter(client, msg, spoll=False):
                 ]
 
     btn.insert(0, [
-    InlineKeyboardButton(text="🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋", url='https://t.me/CinemaVenoOfficial'),
-    InlineKeyboardButton(text="movie", callback_data='movies'),
-    InlineKeyboardButton(text="series", callback_data='series'),
+    InlineKeyboardButton(text="🦋 ꜰᴏʟʟᴏᴡ ᴜꜱ 🦋", url='https://t.me/CinemaVenoOfficial')
 ])
+
+btn.insert(1, [
+    InlineKeyboardButton(text="movie", callback_data='movies'),
+    InlineKeyboardButton(text="series", callback_data='series')
+]) 
     if offset != "":
         key = f"{message.chat.id}-{message.id}"
         BUTTONS[key] = search
